@@ -330,5 +330,5 @@ build/q_shared.o:      			src/q_shared.c
 
 # Quake II - Ground Zero
 release/game.so : $(ROGUE_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(ROGUE_OBJS) $(LDFLAGS)
+	$(CC) -o $@ $(ROGUE_OBJS) $(LDFLAGS)
 
