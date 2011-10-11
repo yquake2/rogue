@@ -2,7 +2,7 @@
 # Makefile for the rogue game module for Quake II       #
 #                                                       #
 # Just type "make" to compile the                       #
-#  - Ground Zero Game (game.so                          #
+#  - Ground Zero Game (game.so)                         #
 #                                                       #
 # Dependencies:                                         #
 # - None, but you need a Quake II to play.              #
