@@ -92,7 +92,7 @@ ROGUE_OBJS = \
 	build/g_newtrig.o \
 	build/g_newweap.o \
 	build/g_phys.o \
-	build/g_save.o \
+	build/savegame.o \
 	build/g_spawn.o \
 	build/g_sphere.o \
 	build/g_svcmds.o \
@@ -194,7 +194,7 @@ build/g_newweap.o:	  		  	src/g_newweap.c
 build/g_phys.o:					src/g_phys.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-build/g_save.o:					src/g_save.c
+build/savegame.o:					src/savegame/savegame.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 build/g_sphere.o:				src/g_sphere.c
