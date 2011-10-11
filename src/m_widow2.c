@@ -415,7 +415,7 @@ mframe_t widow2_frames_spawn [] =
 };
 mmove_t widow2_move_spawn = {FRAME_spawn01, FRAME_spawn18, widow2_frames_spawn, NULL};
 
-static qboolean widow2_tongue_attack_ok (vec3_t start, vec3_t end, float range)
+qboolean widow2_tongue_attack_ok (vec3_t start, vec3_t end, float range)
 {
 	vec3_t	dir, angles;
 

@@ -43,7 +43,7 @@ byte P_DamageModifier(edict_t *ent)
 //ROGUE
 //========
 
-static void P_ProjectSource (gclient_t *client, vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)
+void P_ProjectSource (gclient_t *client, vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)
 {
 	vec3_t	_distance;
 
@@ -55,7 +55,7 @@ static void P_ProjectSource (gclient_t *client, vec3_t point, vec3_t distance, v
 	G_ProjectSource (point, _distance, forward, right, result);
 }
 
-static void P_ProjectSource2 (gclient_t *client, vec3_t point, vec3_t distance, vec3_t forward, 
+void P_ProjectSource2 (gclient_t *client, vec3_t point, vec3_t distance, vec3_t forward, 
 							  vec3_t right, vec3_t up, vec3_t result)
 {
 	vec3_t	_distance;

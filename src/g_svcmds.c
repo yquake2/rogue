@@ -54,7 +54,7 @@ int			numipfilters;
 StringToFilter
 =================
 */
-static qboolean StringToFilter (char *s, ipfilter_t *f)
+qboolean StringToFilter (char *s, ipfilter_t *f)
 {
 	char	num[128];
 	int		i, j;

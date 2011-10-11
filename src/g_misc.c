@@ -528,7 +528,7 @@ Default _cone value is 10 (used to set size of light for spotlights)
 
 #define START_OFF	1
 
-static void light_use (edict_t *self, edict_t *other, edict_t *activator)
+void light_use (edict_t *self, edict_t *other, edict_t *activator)
 {
 	if (self->spawnflags & START_OFF)
 	{
@@ -1703,7 +1703,7 @@ If START_OFF, this entity must be used before it starts
 // don't let field width of any clock messages change, or it
 // could cause an overwrite after a game load
 
-static void func_clock_reset (edict_t *self)
+void func_clock_reset (edict_t *self)
 {
 	self->activator = NULL;
 	if (self->spawnflags & 1)
@@ -1718,7 +1718,7 @@ static void func_clock_reset (edict_t *self)
 	}
 }
 
-static void func_clock_format_countdown (edict_t *self)
+void func_clock_format_countdown (edict_t *self)
 {
 	if (self->style == 0)
 	{
