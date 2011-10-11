@@ -9,5 +9,5 @@ Installation:
 2. Create a subdirectory rogue/ in your quake2 directory.
 3. Copy pak0.pak and videos/ from the Ground Zero CD to
    the newly created directory rogue/.
-4. Copy release/game.so to rogue.
+4. Copy release/game.so to rogue/.
 5. Start the game with "./quake2 +set game rogue"
