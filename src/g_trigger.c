@@ -1,4 +1,4 @@
-#include "g_local.h"
+#include "header/local.h"
 
 //PGM - some of these are mine, some id's. I added the define's.
 #define TRIGGER_MONSTER		0x01

@@ -1,6 +1,6 @@
 // g_utils.c -- misc utility functions for game module
 
-#include "g_local.h"
+#include "header/local.h"
 
 
 void G_ProjectSource (vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)

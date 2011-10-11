@@ -1,6 +1,6 @@
 // g_turret.c
 
-#include "g_local.h"
+#include "header/local.h"
 
 void SpawnTargetingSystem (edict_t *turret);	// PGM
 

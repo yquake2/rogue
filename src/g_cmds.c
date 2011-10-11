@@ -1,5 +1,5 @@
-#include "g_local.h"
-#include "m_player.h"
+#include "header/local.h"
+#include "monster/misc/player.h"
 
 
 char *ClientTeam (edict_t *ent)

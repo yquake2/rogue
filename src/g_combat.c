@@ -1,6 +1,6 @@
 // g_combat.c
 
-#include "g_local.h"
+#include "header/local.h"
 
 void M_SetEffects (edict_t *self);
 

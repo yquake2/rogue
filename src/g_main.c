@@ -1,5 +1,5 @@
 
-#include "g_local.h"
+#include "header/local.h"
 
 game_locals_t	game;
 level_locals_t	level;

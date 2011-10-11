@@ -1,4 +1,4 @@
-#include "g_local.h"
+#include "header/local.h"
 
 void UpdateChaseCam(edict_t *ent)
 {

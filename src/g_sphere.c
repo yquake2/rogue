@@ -6,7 +6,7 @@
 // hunter - waits until < 25% health and vore ball tracks person who hurt you
 // vengeance - kills person who killed you.
 
-#include "g_local.h"
+#include "header/local.h"
 
 #define DEFENDER_LIFESPAN	30
 #define HUNTER_LIFESPAN		30

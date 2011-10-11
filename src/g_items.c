@@ -1,4 +1,4 @@
-#include "g_local.h"
+#include "header/local.h"
 
 
 qboolean	Pickup_Weapon (edict_t *ent, edict_t *other);

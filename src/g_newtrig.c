@@ -2,7 +2,7 @@
 // pmack
 // october 1997
 
-#include "g_local.h"
+#include "header/local.h"
 
 #define TELEPORT_PLAYER_ONLY	1
 #define TELEPORT_SILENT			2

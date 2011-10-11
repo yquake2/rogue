@@ -1,4 +1,4 @@
-#include "g_local.h"
+#include "header/local.h"
 
 //void plat_CalcMove (edict_t *ent, vec3_t dest, void(*func)(edict_t*));
 void Move_Calc (edict_t *ent, vec3_t dest, void(*func)(edict_t*));
