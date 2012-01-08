@@ -1,3 +1,7 @@
+Ground Zero 1.04 to 1.05
+- Port new savegame system from baseq2
+- Reorder files to reflect the new structure of baseq2
+
 Ground Zero 1.03 to 1.04:
 - Fix a crash when a proxy mine is attached to a flying enemy
 - Fix a crash in coop when multible rockets are in flight
