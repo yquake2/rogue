@@ -168,8 +168,6 @@ SpawnDamage
 */
 void SpawnDamage (int type, vec3_t origin, vec3_t normal, int damage)
 {
-	if (damage > 255)
-		damage = 255;
 	gi.WriteByte (svc_temp_entity);
 	gi.WriteByte (type);
 	gi.WritePosition (origin);
@@ -680,7 +678,6 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	{
 		if(client && client->owned_sphere)
 		{
-			sphere_notified = true;
 			if(client->owned_sphere->pain)
 				client->owned_sphere->pain (client->owned_sphere, attacker, 0, 0);
 		}

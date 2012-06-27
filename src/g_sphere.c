@@ -123,7 +123,6 @@ void sphere_chase (edict_t *self, int stupidChase)
 	else if (VectorCompare (self->monsterinfo.saved_goal, vec3_origin))
 	{
 		VectorSubtract(self->enemy->s.origin, self->s.origin, dir);
-		dist = VectorNormalize(dir);
 		vectoangles2(dir, self->s.angles);
 
 		// if lurking, hunter sphere uses lurking sound
@@ -153,7 +152,6 @@ void sphere_chase (edict_t *self, int stupidChase)
 		else
 		{
 			VectorSubtract(self->enemy->s.origin, self->s.origin, dir);
-			dist = VectorNormalize(dir);
 			vectoangles2(dir, self->s.angles);
 
 			// if not moving, hunter sphere uses lurk sound

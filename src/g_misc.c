@@ -864,21 +864,6 @@ void func_explosive_use(edict_t *self, edict_t *other, edict_t *activator)
 //PGM
 void func_explosive_activate(edict_t *self, edict_t *other, edict_t *activator)
 {
-	int approved;
-
-	approved = 0;
-	// PMM - looked like target and targetname were flipped here
-	if (other != NULL && other->target)
-	{
-		if(!strcmp(other->target, self->targetname))
-			approved = 1;
-	}
-	if (!approved && activator!=NULL && activator->target)
-	{
-		if(!strcmp(activator->target, self->targetname))
-			approved = 1;
-	}
-
 	self->use = func_explosive_use;
 	if (!self->health)
 		self->health = 100;

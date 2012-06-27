@@ -338,13 +338,9 @@ void TurretFire (edict_t *self)
 		return;
 	}
 
-	chance = random();
-
 	// rockets fire less often than the others do.
 	if (self->spawnflags & SPAWN_ROCKET)
 	{
-		chance = chance * 3;
-
 		rocketSpeed = 550;
 		if (skill->value == 2)
 		{
@@ -363,12 +359,8 @@ void TurretFire (edict_t *self)
 			rocketSpeed = 800;
 		else
 			rocketSpeed = 1000;
-		chance = chance * 2;
 	}
 	
-	// up the fire chance 20% per skill level.
-	chance = chance - (0.2 * skill->value);
-
 	if(/*chance < 0.5 && */visible(self, self->enemy))
 	{
 		VectorCopy(self->s.origin, start);
@@ -420,7 +412,7 @@ void TurretFireBlind (edict_t *self)
 {
 	vec3_t	forward;
 	vec3_t	start, end, dir;
-	float	dist, chance;
+	float	chance;
 	int		rocketSpeed = 0;
 
 	TurretAim(self);
@@ -459,8 +451,6 @@ void TurretFireBlind (edict_t *self)
 		end[2] += self->enemy->mins[2] - 10;
 
 	VectorSubtract(end, start, dir);
-	dist = VectorLength(dir);
-		
 	VectorNormalize(dir);
 
 	if(self->spawnflags & SPAWN_BLASTER)

@@ -1250,10 +1250,7 @@ edict_t *CreateGroundMonster (vec3_t origin, vec3_t angles, vec3_t entMins, vec3
 qboolean FindSpawnPoint (vec3_t startpoint, vec3_t mins, vec3_t maxs, vec3_t spawnpoint, float maxMoveUp)
 {
 	trace_t		tr;
-	float		height;
 	vec3_t		top;
-
-	height = maxs[2] - mins[2];
 
 	tr = gi.trace (startpoint, mins, maxs, startpoint, NULL, MASK_MONSTERSOLID|CONTENTS_PLAYERCLIP);
 	if((tr.startsolid || tr.allsolid) || (tr.ent != world))
@@ -1386,7 +1383,6 @@ realcheck:
 
 		if (tr.fraction == 1.0)
 			return false;
-		mid = bottom = tr.endpos[2];
 
 		if(gravity < 0)
 		{

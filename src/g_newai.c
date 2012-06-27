@@ -426,8 +426,7 @@ qboolean monsterlost_checkhint (edict_t *self)
 	edict_t		*closest;
 	float		closest_range = 1000000;
 	edict_t		*start, *destination;
-	int			field;
-	int			count1=0, count2=0, count3=0, count4=0, count5=0;
+	int			count1=0, count2=0, count4=0, count5=0;
 	float		r;
 	int			i;
 	qboolean	hint_path_represented[MAX_HINT_CHAINS];
@@ -446,8 +445,6 @@ qboolean monsterlost_checkhint (edict_t *self)
 		return false;
 
 	monster_pathchain = NULL;
-
-	field = FOFS(classname);
 
 	// find all the hint_paths.
 	// FIXME - can we not do this every time?
@@ -562,9 +559,7 @@ qboolean monsterlost_checkhint (edict_t *self)
 		e = e->monster_hint_chain;
 	}
 
-	count1 = 0;
 	count2 = 0;
-	count3 = 0;
 	count4 = 0;
 	count5 = 0;
 
@@ -854,7 +849,6 @@ void InitHintPaths (void)
 {
 	edict_t		*e, *current;
 	int			field, i, count2;
-	qboolean	errors = false;
 
 	hint_paths_present = 0;
 	
@@ -882,7 +876,6 @@ void InitHintPaths (void)
 				{
 					gi.dprintf ("Hint path at %s marked as endpoint with both target (%s) and targetname (%s)\n",
 						vtos (e->s.origin), e->target, e->targetname);
-					errors = true;
 				}
 				else
 				{
@@ -909,8 +902,6 @@ void InitHintPaths (void)
 			gi.dprintf ("\nForked hint path at %s detected for chain %d, target %s\n", 
 				vtos (current->s.origin), num_hint_paths, current->target);
 			hint_path_start[i]->hint_chain = NULL;
-			count2 = 0;
-			errors = true;
 			continue;
 		}
 		while (e)
@@ -920,8 +911,6 @@ void InitHintPaths (void)
 				gi.dprintf ("\nCircular hint path at %s detected for chain %d, targetname %s\n", 
 					vtos (e->s.origin), num_hint_paths, e->targetname);
 				hint_path_start[i]->hint_chain = NULL;
-				count2 = 0;
-				errors = true;
 				break;
 			}
 			count2++;
@@ -936,7 +925,6 @@ void InitHintPaths (void)
 				gi.dprintf ("\nForked hint path at %s detected for chain %d, target %s\n", 
 					vtos (current->s.origin), num_hint_paths, current->target);
 				hint_path_start[i]->hint_chain = NULL;
-				count2 = 0;
 				break;
 			}
 		}

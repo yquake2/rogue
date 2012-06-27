@@ -1586,6 +1586,12 @@ void door_use (edict_t *self, edict_t *other, edict_t *activator)
 	edict_t	*ent;
 	vec3_t	center;			//PGM
 
+	if (!self)
+		return;
+
+	if (!self->flags)
+		return;
+
 	if (self->flags & FL_TEAMSLAVE)
 		return;
 

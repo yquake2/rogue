@@ -475,7 +475,6 @@ void Widow2Tongue (edict_t *self)
 void Widow2TonguePull (edict_t *self)
 {
 	vec3_t	vec;
-	float	len;
 	vec3_t	f, r, u;
 	vec3_t	start, end;
 
@@ -501,7 +500,6 @@ void Widow2TonguePull (edict_t *self)
 	}
 	
 	VectorSubtract (self->s.origin, self->enemy->s.origin, vec);
-	len = VectorLength (vec);
 	if (self->enemy->client)
 	{
 		VectorNormalize (vec);
@@ -950,7 +948,6 @@ qboolean Widow2_CheckAttack (edict_t *self)
 	vec3_t		temp;
 	float		chance = 0;
 	trace_t		tr;
-	qboolean	enemy_infront;
 	int			enemy_range;
 	float		enemy_yaw;
 	float		real_enemy_range;
@@ -994,8 +991,6 @@ qboolean Widow2_CheckAttack (edict_t *self)
 		}
 	}
 	
-	enemy_infront = infront(self, self->enemy);
-
 	enemy_range = range(self, self->enemy);
 	VectorSubtract (self->enemy->s.origin, self->s.origin, temp);
 	enemy_yaw = vectoyaw2(temp);

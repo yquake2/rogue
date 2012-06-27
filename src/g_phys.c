@@ -1117,7 +1117,6 @@ void SV_Physics_NewToss (edict_t *ent)
 	edict_t		*slave;
 	qboolean	wasinwater;
 	qboolean	isinwater;
-	qboolean	wasonground;
 	float		speed, newspeed;
 	vec3_t		old_origin;
 
@@ -1127,13 +1126,6 @@ void SV_Physics_NewToss (edict_t *ent)
 	// if not a team captain, so movement will be handled elsewhere
 	if ( ent->flags & FL_TEAMSLAVE)
 		return;
-
-	if (ent->groundentity)
-		wasonground = true;
-	else
-		wasonground = false;
-	
-	wasinwater = ent->waterlevel;
 
 	// find out what we're sitting on.
 	VectorCopy (ent->s.origin, move);

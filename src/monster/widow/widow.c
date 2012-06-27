@@ -297,23 +297,6 @@ void WidowSpawn (edict_t *self)
 			
 			ent->monsterinfo.aiflags |= AI_SPAWNED_WIDOW|AI_DO_NOT_COUNT|AI_IGNORE_SHOTS;
 
-			if (!(coop && coop->value))
-			{
-				designated_enemy = self->enemy;
-			}
-			else
-			{
-				designated_enemy = PickCoopTarget(ent);
-				if (designated_enemy)
-				{
-					// try to avoid using my enemy
-					if (designated_enemy == self->enemy)
-					{
-						designated_enemy = PickCoopTarget(ent);
-						designated_enemy = self->enemy;
-					}
-				}
-			}
 			designated_enemy = self->enemy;
 
 			if ((designated_enemy->inuse) && (designated_enemy->health > 0))
@@ -1156,7 +1139,6 @@ qboolean Widow_CheckAttack (edict_t *self)
 	vec3_t	temp;
 	float	chance = 0;
 	trace_t	tr;
-	qboolean	enemy_infront;
 	int			enemy_range;
 	float		enemy_yaw;
 	float		real_enemy_range;
@@ -1221,8 +1203,6 @@ qboolean Widow_CheckAttack (edict_t *self)
 		}
 	}
 	
-	enemy_infront = infront(self, self->enemy);
-
 	enemy_range = range(self, self->enemy);
 	VectorSubtract (self->enemy->s.origin, self->s.origin, temp);
 	enemy_yaw = vectoyaw2(temp);
@@ -1302,10 +1282,6 @@ qboolean widow_blocked (edict_t *self, float dist)
 
 void WidowCalcSlots (edict_t *self)
 {
-	int old_slots;
-
-	old_slots = self->monsterinfo.monster_slots;
-
 	switch ((int)skill->value)
 	{
 		case 0:
