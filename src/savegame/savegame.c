@@ -68,6 +68,8 @@
  #define OS "FreeBSD"
 #elif defined(__linux__)
  #define OS "Linux"
+#elif defined(_WIN32)
+ #define OS "Windows"
 #else
  #define OS "Unknown"
 #endif
