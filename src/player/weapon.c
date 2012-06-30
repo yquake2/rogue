@@ -1844,7 +1844,6 @@ void weapon_etf_rifle_fire (edict_t *ent)
 	int		damage;
 	int		kick = 3;
 	int		i;
-	vec3_t	angles;
 	vec3_t	offset;
 
 	if(deathmatch->value)
@@ -1881,7 +1880,6 @@ void weapon_etf_rifle_fire (edict_t *ent)
 	}
 
 	// get start / end positions
-	VectorAdd (ent->client->v_angle, ent->client->kick_angles, angles);
 	AngleVectors (ent->client->v_angle, forward, right, up);
 
 	// FIXME - set correct frames for different offsets.

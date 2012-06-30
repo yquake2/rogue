@@ -588,12 +588,8 @@ void makron_sight(edict_t *self, edict_t *other)
 
 void makron_attack(edict_t *self)
 {
-	vec3_t	vec;
 	float	r;
-
 	r = random();
-
-	VectorSubtract (self->enemy->s.origin, self->s.origin, vec);
 
 	if (r <= 0.3)
 		self->monsterinfo.currentmove = &makron_move_attack3;
