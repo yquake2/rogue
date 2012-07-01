@@ -1,3 +1,8 @@
+Ground Zero 1.05 to 1.06
+- Port 'Ground Zero' to Windows.
+- Use randk() instead of rand(), a better PNRG.
+- Fix some potential problems found by scan-build.
+
 Ground Zero 1.04 to 1.05
 - Port new savegame system from baseq2
 - Reorder files to reflect the new structure of baseq2
