@@ -57,13 +57,22 @@ endif
 # -fPIC for position independend code.
 #
 # -MMD to generate header dependencies.
+ifeq ($(OSTYPE), Darwin)
+CFLAGS := -O2 -fno-strict-aliasing -fomit-frame-pointer \
+		  -Wall -pipe -g -arch i386 -arch x86_64 
+else
 CFLAGS := -O2 -fno-strict-aliasing -fomit-frame-pointer \
 		  -Wall -pipe -g -MMD
+endif
 
 # ----------
 
 # Base LDFLAGS.
+ifeq ($(OSTYPE), Darwin)
+LDFLAGS := -shared -arch i386 -arch x86_64 
+else
 LDFLAGS := -shared
+endif
 
 # ----------
 
