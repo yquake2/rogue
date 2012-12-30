@@ -1,3 +1,6 @@
+Ground Zero 1.06 to 1.07
+- Port 'Ground Zero' to Mac OS X.
+
 Ground Zero 1.05 to 1.06
 - Port 'Ground Zero' to Windows.
 - Use randk() instead of rand(), a better PNRG.
