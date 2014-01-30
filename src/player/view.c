@@ -1,3 +1,10 @@
+/* =======================================================================
+ *
+ * The "camera" through that the player looks into the game.
+ *
+ * =======================================================================
+ */
+
 #include "../header/local.h"
 #include "../monster/misc/player.h"
 

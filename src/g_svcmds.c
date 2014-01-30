@@ -1,3 +1,10 @@
+/* =======================================================================
+ *
+ * Game side of server CMDs. At this time only the ipfilter.
+ *
+ * =======================================================================
+ */
+
 #include "header/local.h"
 
 #define MAX_IPFILTERS 1024

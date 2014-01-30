@@ -1,3 +1,10 @@
+/* =======================================================================
+ *
+ * Deathmatch tag.
+ *
+ * =======================================================================
+ */
+
 #include "../header/local.h"
 
 extern edict_t *SelectFarthestDeathmatchSpawnPoint(void);

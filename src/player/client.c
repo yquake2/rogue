@@ -1,3 +1,10 @@
+/* =======================================================================
+ *
+ * Interface between client <-> game and client calculations.
+ *
+ * =======================================================================
+ */
+
 #include "../header/local.h"
 #include "../monster/misc/player.h"
 
