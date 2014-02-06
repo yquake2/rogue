@@ -14,75 +14,6 @@ void ClientUserinfoChanged(edict_t *ent, char *userinfo);
 void SP_misc_teleporter_dest(edict_t *ent);
 void Touch_Item(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf);
 
-/* Gross, ugly, disgustuing hack section */
-
-/* This function is an ugly as hell hack to fix some map flaws.
- *  The coop spawn spots on some maps are SNAFU. There are coop spots
- *  with the wrong targetname as well as spots with no name at all.
- *
- *  we use carnal knowledge of the maps to fix the coop spot targetnames
- *  to match that of the nearest named single player spot. 
- */
-#if 0
-static void
-SP_FixCoopSpots(edict_t *self)
-{
-	edict_t *spot;
-	vec3_t d;
-
-	spot = NULL;
-  
-	if (!self)
-	{
-		return;
-	}
- 
-	while (1)
-	{
-		spot = G_Find(spot, FOFS(classname), "info_player_start");
-
-		if (!spot)
-		{
-			return;
-		}
-
-		if (!spot->targetname)
-		{
-			continue;
-		}
-
-		VectorSubtract(self->s.origin, spot->s.origin, d);
-
-		if (VectorLength(d) < 384)
-		{
-			if ((!self->targetname) ||
-				(Q_stricmp(self->targetname, spot->targetname) != 0))
-			{
-				self->targetname = spot->targetname;
-			}
-
-			return;
-		}
-	}
-}
-#endif
-
-/*
- * Sow if that one wasn't ugly enough for you then try this one on for size
- * some maps don't have any coop spots at all, so we need to create them
- * where they should have been 
- */
-#if 0
-static void
-SP_CreateCoopSpots(edict_t *self)
-{
-	if (!self)
-	{
-		return;
-	}
-}
-#endif
-
 /*
  * QUAKED info_player_start (1 0 0) (-16 -16 -24) (16 16 32)
  * 
@@ -1298,7 +1229,11 @@ void
 SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles)
 {
 	edict_t *spot = NULL;
- 
+	edict_t *coopspot = NULL;
+	int index;
+	int counter = 0;
+	vec3_t d;
+
 	if (!ent)
 	{
 		return;
@@ -1345,6 +1280,44 @@ SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles)
 			if (!spot)
 			{
 				gi.error("Couldn't find spawn point %s\n", game.spawnpoint);
+			}
+		}
+	}
+
+	/* If we are in coop and we didn't find a coop
+	   spawnpoint due to map bugs (not correctly
+	   connected or the map was loaded via console
+	   and thus no previously map is known to the
+	   client) use one in 550 units radius. */
+	if (coop->value)
+	{
+		index = ent->client - game.clients;
+
+		if (Q_stricmp(spot->classname, "info_player_start") == 0 && index != 0)
+		{
+			while(counter < 3)
+			{
+				coopspot = G_Find(coopspot, FOFS(classname), "info_player_coop");
+
+				if (!coopspot)
+				{
+					break;
+				}
+
+				VectorSubtract(coopspot->s.origin, spot->s.origin, d);
+
+				if ((VectorLength(d) < 550))
+				{
+					if (index == counter)
+					{
+						spot = coopspot;
+						break;
+					}
+					else
+					{
+						counter++;
+					}
+				}
 			}
 		}
 	}
