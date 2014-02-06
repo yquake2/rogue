@@ -1,3 +1,10 @@
+Ground Zero 1.07 to 2.00RC
+- Cleanup of the whole source, nearly every line
+  was audited and touched.
+- Add sanity checks to all function.
+- Fix all known bugs.
+- Merge all missing changes from baseq2.
+
 Ground Zero 1.06 to 1.07
 - Port 'Ground Zero' to Mac OS X.
 
