@@ -1493,7 +1493,6 @@ medic_finish_spawn(edict_t *self)
 	int count;
 	int inc;
 	int num_summoned; /* should be 1, 3, or 5 */
-	qboolean behind = false;
 	edict_t *designated_enemy;
   
 	if (!self)
@@ -1503,7 +1502,6 @@ medic_finish_spawn(edict_t *self)
  
 	if (self->plat2flags < 0)
 	{
-		behind = true;
 		self->plat2flags *= -1;
 	}
 
@@ -1770,7 +1768,6 @@ void
 MedicCommanderCache(void)
 {
 	edict_t *newEnt;
-	int modelidx;
 	int i;
 
 	/* better way to do this?  this is quick and dirty */
@@ -1788,8 +1785,8 @@ MedicCommanderCache(void)
 		G_FreeEdict(newEnt);
 	}
 
-	modelidx = gi.modelindex("models/items/spawngro/tris.md2");
-	modelidx = gi.modelindex("models/items/spawngro2/tris.md2");
+	gi.modelindex("models/items/spawngro/tris.md2");
+	gi.modelindex("models/items/spawngro2/tris.md2");
 }
 
 void
