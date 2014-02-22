@@ -131,7 +131,7 @@ GetGameAPI(game_import_t *import)
 	return &globals;
 }
 
-/* 
+/*
  * this is only here so the functions in
  * q_shared.c and q_shwin.c can link
  */
@@ -275,7 +275,7 @@ EndDMLevel(void)
 		ent = G_Find(NULL, FOFS(classname), "target_changelevel");
 
 		if (!ent)
-		{   
+		{
 			/* the map designer didn't include a changelevel,
 			   so create a fake ent that goes back to the same
 			   level */
@@ -292,7 +292,7 @@ CheckNeedPass(void)
 {
 	int need;
 
-	/* if password or spectator_password has 
+	/* if password or spectator_password has
 	   changed, update needpass as needed */
 	if (password->modified || spectator_password->modified)
 	{
@@ -423,7 +423,7 @@ G_RunFrame(void)
 		return;
 	}
 
-	/* treat each object in turn  even the 
+	/* treat each object in turn  even the
 	   world gets a chance to think */
 	ent = &g_edicts[0];
 

@@ -6,7 +6,7 @@
  */
 
 #include "header/local.h"
- 
+
 qboolean FindTarget(edict_t *self);
 void infantry_die(edict_t *self, edict_t *inflictor, edict_t *attacker, int damage);
 void infantry_stand(edict_t *self);
@@ -56,12 +56,12 @@ SnapToEights(float x)
 
 void
 turret_blocked(edict_t *self, edict_t *other)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
-  
+
 	edict_t *attacker;
 
 	if (other->takedamage)
@@ -80,7 +80,7 @@ turret_blocked(edict_t *self, edict_t *other)
 	}
 }
 
-/* 
+/*
  * QUAKED turret_breach (0 0 0) ?
  * This portion of the turret can change both pitch and yaw.
  * The model  should be made with a flat pitch.
@@ -104,12 +104,12 @@ turret_breach_fire(edict_t *self)
 	vec3_t start;
 	int damage;
 	int speed;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	VectorMA(self->s.origin, self->move_origin[0], f, start);
 	VectorMA(start, self->move_origin[1], r, start);
@@ -127,12 +127,12 @@ turret_breach_think(edict_t *self)
 	edict_t *ent;
 	vec3_t current_angles;
 	vec3_t delta;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorCopy(self->s.angles, current_angles);
 	AnglesNormalize(current_angles);
 
@@ -282,12 +282,12 @@ turret_breach_think(edict_t *self)
 
 void
 turret_breach_finish_init(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* get and save info for muzzle location */
 	if (!self->target)
 	{
@@ -315,12 +315,12 @@ turret_breach_finish_init(edict_t *self)
 
 void
 SP_turret_breach(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->solid = SOLID_BSP;
 	self->movetype = MOVETYPE_PUSH;
 	gi.setmodel(self, self->model);
@@ -373,12 +373,12 @@ SP_turret_breach(edict_t *self)
 
 void
 SP_turret_base(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->solid = SOLID_BSP;
 	self->movetype = MOVETYPE_PUSH;
 	gi.setmodel(self, self->model);
@@ -396,12 +396,12 @@ turret_driver_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 	   	int damage, vec3_t point)
 {
 	edict_t *ent;
-  
+
 	if (!self || !inflictor || !attacker)
 	{
 		return;
 	}
- 
+
 	/* level the gun */
 	self->target_ent->move_angles[0] = 0;
 
@@ -428,12 +428,12 @@ turret_driver_think(edict_t *self)
 	vec3_t target;
 	vec3_t dir;
 	float reaction_time;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->nextthink = level.time + FRAMETIME;
 
 	if (self->enemy && (!self->enemy->inuse || (self->enemy->health <= 0)))
@@ -496,12 +496,12 @@ turret_driver_link(edict_t *self)
 {
 	vec3_t vec;
 	edict_t *ent;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->think = turret_driver_think;
 	self->nextthink = level.time + FRAMETIME;
 
@@ -534,12 +534,12 @@ turret_driver_link(edict_t *self)
 
 void
 SP_turret_driver(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -590,7 +590,7 @@ SP_turret_driver(edict_t *self)
 
 /*
  * invisible turret drivers so we can have unmanned turrets.
- * originally designed to shoot at func_trains and such, so they 
+ * originally designed to shoot at func_trains and such, so they
  * fire at the center of the bounding box, rather than the entity's
  * origin. */
 
@@ -602,12 +602,12 @@ turret_brain_think(edict_t *self)
 	vec3_t endpos;
 	float reaction_time;
 	trace_t trace;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->nextthink = level.time + FRAMETIME;
 
 	if (self->enemy)
@@ -689,12 +689,12 @@ turret_brain_link(edict_t *self)
 {
 	vec3_t vec;
 	edict_t *ent;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->killtarget)
 	{
 		self->enemy = G_PickTarget(self->killtarget);
@@ -732,24 +732,24 @@ turret_brain_link(edict_t *self)
 
 void
 turret_brain_deactivate(edict_t *self, edict_t *other /* unused */, edict_t *activator /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->think = NULL;
 	self->nextthink = 0;
 }
 
 void
 turret_brain_activate(edict_t *self, edict_t *other /* unused */, edict_t *activator)
-{  
+{
 	if (!self || !activator)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy)
 	{
 		self->enemy = activator;
@@ -778,12 +778,12 @@ turret_brain_activate(edict_t *self, edict_t *other /* unused */, edict_t *activ
  */
 void
 SP_turret_invisible_brain(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->killtarget)
 	{
 		gi.dprintf("turret_invisible_brain with no killtarget!\n");

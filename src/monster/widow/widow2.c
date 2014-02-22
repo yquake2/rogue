@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "widow2.h"
 
@@ -49,7 +49,7 @@ void Widow2SaveBeamTarget(edict_t *self);
 void widow2_start_searching(edict_t *self);
 void widow2_keep_searching(edict_t *self);
 void widow2_finaldeath(edict_t *self);
- 
+
 void WidowExplode(edict_t *self);
 void gib_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 		int damage, vec3_t point);
@@ -88,23 +88,23 @@ static vec3_t offsets[] = {
 
 void
 pauseme(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.aiflags |= AI_HOLD_FRAME;
 }
 
 void
 widow2_search(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() < 0.5)
 	{
 		gi.sound(self, CHAN_VOICE, sound_search1, 1, ATTN_NONE, 0);
@@ -117,12 +117,12 @@ Widow2Beam(edict_t *self)
 	vec3_t forward, right, target;
 	vec3_t start, targ_angles, vec;
 	int flashnum;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((!self->enemy) || (!self->enemy->inuse))
 	{
 		return;
@@ -182,12 +182,12 @@ Widow2Spawn(edict_t *self)
 	vec3_t f, r, u, offset, startpoint, spawnpoint;
 	edict_t *ent, *designated_enemy;
 	int i;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 
 	for (i = 0; i < 2; i++)
@@ -256,12 +256,12 @@ Widow2Spawn(edict_t *self)
 
 void
 widow2_spawn_check(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	Widow2Beam(self);
 	Widow2Spawn(self);
 }
@@ -271,12 +271,12 @@ widow2_ready_spawn(edict_t *self)
 {
 	vec3_t f, r, u, offset, startpoint, spawnpoint;
 	int i;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	Widow2Beam(self);
 	AngleVectors(self->s.angles, f, r, u);
 
@@ -391,12 +391,12 @@ WidowDisrupt(edict_t *self)
 	vec3_t dir;
 	vec3_t forward, right;
 	float len;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, forward, right, NULL);
 	G_ProjectSource(self->s.origin, monster_flash_offset[MZ2_WIDOW_DISRUPTOR],
 			forward, right, start);
@@ -420,12 +420,12 @@ WidowDisrupt(edict_t *self)
 
 void
 Widow2SaveDisruptLoc(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->enemy && self->enemy->inuse)
 	{
 		VectorCopy(self->enemy->s.origin, self->pos1); /* save for aiming the shot */
@@ -441,12 +441,12 @@ void
 widow2_disrupt_reattack(edict_t *self)
 {
 	float luck;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	luck = random();
 
 	if (luck < (0.25 + ((float)(skill->value)) * 0.15))
@@ -474,12 +474,12 @@ mmove_t widow2_move_attack_disrupt = {
 
 void
 Widow2SaveBeamTarget(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->enemy && self->enemy->inuse)
 	{
 		VectorCopy(self->pos1, self->pos2);
@@ -494,24 +494,24 @@ Widow2SaveBeamTarget(edict_t *self)
 
 void
 Widow2BeamTargetRemove(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorCopy(vec3_origin, self->pos1);
 	VectorCopy(vec3_origin, self->pos2);
 }
 
 void
 Widow2StartSweep(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	Widow2SaveBeamTarget(self);
 }
 
@@ -578,12 +578,12 @@ Widow2Tongue(edict_t *self)
 	vec3_t f, r, u;
 	vec3_t start, end, dir;
 	trace_t tr;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offsets[self->s.frame - FRAME_tongs01], f, r, u, start);
 	VectorCopy(self->enemy->s.origin, end);
@@ -632,12 +632,12 @@ Widow2TonguePull(edict_t *self)
 	vec3_t vec;
 	vec3_t f, r, u;
 	vec3_t start, end;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((!self->enemy) || (!self->enemy->inuse))
 	{
 		self->monsterinfo.run(self);
@@ -679,12 +679,12 @@ void
 Widow2Crunch(edict_t *self)
 {
 	vec3_t aim;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((!self->enemy) || (!self->enemy->inuse))
 	{
 		self->monsterinfo.run(self);
@@ -715,12 +715,12 @@ Widow2Crunch(edict_t *self)
 
 void
 Widow2Toss(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->timestamp = level.time + 3;
 	return;
 }
@@ -860,30 +860,30 @@ mframe_t widow2_frames_really_dead[] = {
 
 mmove_t widow2_move_really_dead = {
 	FRAME_dthsrh16,
-   	FRAME_dthsrh22, 
+   	FRAME_dthsrh22,
 	widow2_frames_really_dead,
    	NULL
 };
 
 void
 widow2_start_searching(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->count = 0;
 }
 
 void
 widow2_keep_searching(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->count <= 2)
 	{
 		self->monsterinfo.currentmove = &widow2_move_dead;
@@ -897,12 +897,12 @@ widow2_keep_searching(edict_t *self)
 
 void
 widow2_finaldeath(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -70, -70, 0);
 	VectorSet(self->maxs, 70, 70, 80);
 	self->movetype = MOVETYPE_TOSS;
@@ -913,23 +913,23 @@ widow2_finaldeath(edict_t *self)
 
 void
 widow2_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &widow2_move_stand;
 }
 
 void
 widow2_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.aiflags &= ~AI_HOLD_FRAME;
 
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
@@ -944,23 +944,23 @@ widow2_run(edict_t *self)
 
 void
 widow2_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &widow2_move_walk;
 }
 
 void
 widow2_melee(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &widow2_move_tongs;
 }
 
@@ -969,12 +969,12 @@ widow2_attack(edict_t *self)
 {
 	float range, luck;
 	qboolean blocked = false;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_BLOCKED)
 	{
 		blocked = true;
@@ -1084,23 +1084,23 @@ widow2_attack(edict_t *self)
 
 void
 widow2_attack_beam(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &widow2_move_attack_beam;
 }
 
 void
 widow2_reattack_beam(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.aiflags &= ~AI_MANUAL_STEERING;
 
 	if (infront(self, self->enemy))
@@ -1129,12 +1129,12 @@ widow2_reattack_beam(edict_t *self)
 
 void
 widow2_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum = 1;
@@ -1190,12 +1190,12 @@ KillChildren(edict_t *self)
 {
 	edict_t *ent;
 	int field;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	ent = NULL;
 	field = FOFS(classname);
 
@@ -1222,12 +1222,12 @@ widow2_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* 
 {
 	int n;
 	int clipped;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* check for gib */
 	if (self->health <= self->gib_health)
 	{
@@ -1296,12 +1296,12 @@ Widow2_CheckAttack(edict_t *self)
 	float enemy_yaw;
 	float real_enemy_range;
 	vec3_t f, r, u;
-  
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return false;
@@ -1453,12 +1453,12 @@ Widow2Precache()
  */
 void
 SP_monster_widow2(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -1530,12 +1530,12 @@ WidowVelocityForDamage(int damage, vec3_t v)
 void
 widow_gib_touch(edict_t *self, edict_t *other /* unused */, cplane_t *plane /* unused */,
 		csurface_t *surf /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->solid = SOLID_NOT;
 	self->touch = NULL;
 	self->s.angles[PITCH] = 0;
@@ -1550,36 +1550,36 @@ widow_gib_touch(edict_t *self, edict_t *other /* unused */, cplane_t *plane /* u
 
 void
 ThrowWidowGib(edict_t *self, char *gibname, int damage, int type)
-{  
+{
 	if (!self || !gibname)
 	{
 		return;
 	}
- 
+
 	ThrowWidowGibReal(self, gibname, damage, type, NULL, false, 0, true);
 }
 
 void
 ThrowWidowGibLoc(edict_t *self, char *gibname, int damage,
 		int type, vec3_t startpos, qboolean fade)
-{ 
+{
 	if (!self || !gibname)
 	{
 		return;
 	}
- 
+
 	ThrowWidowGibReal(self, gibname, damage, type, startpos, false, 0, fade);
 }
 
 void
 ThrowWidowGibSized(edict_t *self, char *gibname, int damage, int type,
 		vec3_t startpos, int hitsound, qboolean fade)
-{  
+{
 	if (!self || !gibname)
 	{
 		return;
 	}
- 
+
 	ThrowWidowGibReal(self, gibname, damage, type, startpos,
 			true, hitsound, fade);
 }
@@ -1718,12 +1718,12 @@ BloodFountain(edict_t *self, int number, vec3_t startpos, int damage)
 	int n;
 	vec3_t vd;
 	vec3_t origin, size, velocity;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	return;
 
 	for (n = 0; n < number; n++)
@@ -1752,12 +1752,12 @@ void
 ThrowSmallStuff(edict_t *self, vec3_t point)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	for (n = 0; n < 2; n++)
 	{
 		ThrowWidowGibLoc(self, "models/objects/gibs/sm_meat/tris.md2",
@@ -1774,12 +1774,12 @@ void
 ThrowMoreStuff(edict_t *self, vec3_t point)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (coop && coop->value)
 	{
 		ThrowSmallStuff(self, point);
@@ -1810,12 +1810,12 @@ WidowExplode(edict_t *self)
 {
 	vec3_t org;
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->think = WidowExplode;
 	VectorCopy(self->s.origin, org);
 	org[2] += 24 + (rand() & 15);
@@ -1948,12 +1948,12 @@ WidowExplosion1(edict_t *self)
 	int n;
 	vec3_t f, r, u, startpoint;
 	vec3_t offset = {23.74, -37.67, 76.96};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offset, f, r, u, startpoint);
 
@@ -1987,12 +1987,12 @@ WidowExplosion2(edict_t *self)
 	int n;
 	vec3_t f, r, u, startpoint;
 	vec3_t offset = {-20.49, 36.92, 73.52};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offset, f, r, u, startpoint);
 
@@ -2026,12 +2026,12 @@ WidowExplosion3(edict_t *self)
 	int n;
 	vec3_t f, r, u, startpoint;
 	vec3_t offset = {2.11, 0.05, 92.20};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offset, f, r, u, startpoint);
 
@@ -2065,12 +2065,12 @@ WidowExplosion4(edict_t *self)
 	int n;
 	vec3_t f, r, u, startpoint;
 	vec3_t offset = {-28.04, -35.57, -77.56};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offset, f, r, u, startpoint);
 
@@ -2104,12 +2104,12 @@ WidowExplosion5(edict_t *self)
 	int n;
 	vec3_t f, r, u, startpoint;
 	vec3_t offset = {-20.11, -1.11, 40.76};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offset, f, r, u, startpoint);
 
@@ -2143,12 +2143,12 @@ WidowExplosion6(edict_t *self)
 	int n;
 	vec3_t f, r, u, startpoint;
 	vec3_t offset = {-20.11, -1.11, 40.76};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offset, f, r, u, startpoint);
 
@@ -2182,12 +2182,12 @@ WidowExplosion7(edict_t *self)
 	int n;
 	vec3_t f, r, u, startpoint;
 	vec3_t offset = {-20.11, -1.11, 40.76};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offset, f, r, u, startpoint);
 
@@ -2221,12 +2221,12 @@ WidowExplosionLeg(edict_t *self)
 	vec3_t f, r, u, startpoint;
 	vec3_t offset1 = {-31.89, -47.86, 67.02};
 	vec3_t offset2 = {-44.9, -82.14, 54.72};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offset1, f, r, u, startpoint);
 
@@ -2265,12 +2265,12 @@ ThrowArm1(edict_t *self)
 	int n;
 	vec3_t f, r, u, startpoint;
 	vec3_t offset1 = {65.76, 17.52, 7.56};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offset1, f, r, u, startpoint);
 
@@ -2291,12 +2291,12 @@ ThrowArm2(edict_t *self)
 {
 	vec3_t f, r, u, startpoint;
 	vec3_t offset1 = {65.76, 17.52, 7.56};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, u);
 	G_ProjectSource2(self->s.origin, offset1, f, r, u, startpoint);
 

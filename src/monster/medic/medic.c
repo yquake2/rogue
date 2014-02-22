@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "medic.h"
 
@@ -88,12 +88,12 @@ vec3_t reinforcement_position[] = {
 
 void
 cleanupHeal(edict_t *self, qboolean change_frame)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* clean up target, if we have one and it's legit */
 	if (self->enemy && self->enemy->inuse)
 	{
@@ -114,12 +114,12 @@ abortHeal(edict_t *self, qboolean change_frame, qboolean gib, qboolean mark)
 {
 	int hurt;
 	static vec3_t pain_normal = {0, 0, 1};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* clean up target */
 	cleanupHeal(self, change_frame);
 
@@ -174,12 +174,12 @@ canReach(edict_t *self, edict_t *other)
 	vec3_t spot1;
 	vec3_t spot2;
 	trace_t trace;
- 
+
 	if (!self || !other)
 	{
 		return false;
 	}
- 
+
 	VectorCopy(self->s.origin, spot1);
 	spot1[2] += self->viewheight;
 	VectorCopy(other->s.origin, spot2);
@@ -201,12 +201,12 @@ medic_FindDeadMonster(edict_t *self)
 	float radius;
 	edict_t *ent = NULL;
 	edict_t *best = NULL;
-  
+
 	if (!self)
 	{
 		return NULL;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
 		radius = MEDIC_MAX_HEAL_DISTANCE;
@@ -304,12 +304,12 @@ void
 medic_idle(edict_t *self)
 {
 	edict_t *ent;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* commander sounds */
 	if (self->mass == 400)
 	{
@@ -367,12 +367,12 @@ medic_search(edict_t *self)
 
 void
 medic_sight(edict_t *self, edict_t *other /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* commander sounds */
 	if (self->mass == 400)
 	{
@@ -486,12 +486,12 @@ mmove_t medic_move_stand = {
 
 void
 medic_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &medic_move_stand;
 }
 
@@ -519,12 +519,12 @@ mmove_t medic_move_walk = {
 
 void
 medic_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &medic_move_walk;
 }
 
@@ -542,16 +542,16 @@ mmove_t medic_move_run = {
    	FRAME_run6,
    	medic_frames_run,
    	NULL
-}; 
+};
 
 void
 medic_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_done_dodge(self);
 
 	if (!(self->monsterinfo.aiflags & AI_MEDIC))
@@ -626,12 +626,12 @@ mmove_t medic_move_pain2 = {
 
 void
 medic_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_done_dodge(self);
 
 	if ((self->health < (self->max_health / 2)))
@@ -713,12 +713,12 @@ medic_fire_blaster(edict_t *self)
 	vec3_t dir;
 	int effect;
 	int damage = 2;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* paranoia checking */
 	if (!(self->enemy && self->enemy->inuse))
 	{
@@ -769,12 +769,12 @@ medic_fire_blaster(edict_t *self)
 
 void
 medic_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -16, -16, -24);
 	VectorSet(self->maxs, 16, 16, -8);
 	self->movetype = MOVETYPE_TOSS;
@@ -828,12 +828,12 @@ medic_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* u
 		int damage, vec3_t point /* unused */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* check for gib */
 	if (self->health <= self->gib_health)
 	{
@@ -929,12 +929,12 @@ mmove_t medic_move_attackHyperBlaster = {
 
 void
 medic_continue(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (visible(self, self->enemy))
 	{
 		if (random() <= 0.95)
@@ -970,12 +970,12 @@ mmove_t medic_move_attackBlaster = {
 
 void
 medic_hook_launch(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* commander sounds */
 	if (self->mass == 400)
 	{
@@ -1007,12 +1007,12 @@ medic_cable_attack(edict_t *self)
 	trace_t tr;
 	vec3_t dir;
 	float distance;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((!self->enemy) || (!self->enemy->inuse) ||
 		(self->enemy->s.effects & EF_GIB))
 	{
@@ -1020,7 +1020,7 @@ medic_cable_attack(edict_t *self)
 		return;
 	}
 
-	/* see if our enemy has changed to a client, or our 
+	/* see if our enemy has changed to a client, or our
 	   target has more than 0 health, abort it .. we got
 	   switched to someone else due to damage */
 	if ((self->enemy->client) || (self->enemy->health > 0))
@@ -1191,12 +1191,12 @@ medic_cable_attack(edict_t *self)
 
 void
 medic_hook_retract(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->mass == 400)
 	{
 		gi.sound(self, CHAN_WEAPON, sound_hook_retract, 1, ATTN_NORM, 0);
@@ -1267,12 +1267,12 @@ mmove_t medic_move_attackCable = {
 
 void
 medic_start_spawn(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_WEAPON, commander_sound_spawn, 1, ATTN_NORM, 0);
 	self->monsterinfo.nextframe = FRAME_attack48;
 }
@@ -1290,7 +1290,7 @@ medic_determine_spawn(edict_t *self)
 
 	lucky = random();
 	summonStr = skill->value;
-  
+
 	if (!self)
 	{
 		return;
@@ -1415,12 +1415,12 @@ medic_spawngrows(edict_t *self)
 	int num_summoned; /* should be 1, 3, or 5 */
 	int num_success = 0;
 	float current_yaw;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* if we've been directed to turn around */
 	if (self->monsterinfo.aiflags & AI_MANUAL_STEERING)
 	{
@@ -1494,12 +1494,12 @@ medic_finish_spawn(edict_t *self)
 	int inc;
 	int num_summoned; /* should be 1, 3, or 5 */
 	edict_t *designated_enemy;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->plat2flags < 0)
 	{
 		self->plat2flags *= -1;
@@ -1649,12 +1649,12 @@ medic_attack(edict_t *self)
 {
 	int enemy_range;
 	float r;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_done_dodge(self);
 
 	enemy_range = range(self, self->enemy);
@@ -1702,12 +1702,12 @@ medic_attack(edict_t *self)
 
 qboolean
 medic_checkattack(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_MEDIC)
 	{
 		/* if our target went away */
@@ -1791,12 +1791,12 @@ MedicCommanderCache(void)
 
 void
 medic_duck(edict_t *self, float eta)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/*	don't dodge if you're healing */
 	if (self->monsterinfo.aiflags & AI_MEDIC)
 	{
@@ -1833,12 +1833,12 @@ medic_duck(edict_t *self, float eta)
 
 void
 medic_sidestep(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((self->monsterinfo.currentmove == &medic_move_attackHyperBlaster) ||
 		(self->monsterinfo.currentmove == &medic_move_attackCable) ||
 		(self->monsterinfo.currentmove == &medic_move_attackBlaster) ||
@@ -1860,12 +1860,12 @@ medic_sidestep(edict_t *self)
 
 qboolean
 medic_blocked(edict_t *self, float dist)
-{  
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (blocked_checkshot(self, 0.25 + (0.05 * skill->value)))
 	{
 		return true;
@@ -1886,12 +1886,12 @@ medic_blocked(edict_t *self, float dist)
  */
 void
 SP_monster_medic(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

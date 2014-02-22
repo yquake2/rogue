@@ -70,12 +70,12 @@ carrier_sight(edict_t *self, edict_t *other /* other */)
 
 void
 CarrierCoopCheck(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* no more than 4 players in coop, so.. */
 	edict_t *targets[4];
 	int num_targets = 0, target, player;
@@ -162,12 +162,12 @@ CarrierGrenade(edict_t *self)
 	float direction; /* from lower left to upper right, or lower right to upper left */
 	float spreadR, spreadU;
 	int mytime;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 
 	if (!self->enemy)
@@ -242,12 +242,12 @@ CarrierPredictiveRocket(edict_t *self)
 	vec3_t forward, right;
 	vec3_t start;
 	vec3_t dir;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, forward, right, NULL);
 
 	/* 1 */
@@ -282,12 +282,12 @@ CarrierRocket(edict_t *self)
 	vec3_t start;
 	vec3_t dir;
 	vec3_t vec;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->enemy)
 	{
 		if (self->enemy->client && (random() < 0.5))
@@ -352,12 +352,12 @@ carrier_firebullet_right(edict_t *self)
 	vec3_t forward, right, target;
 	vec3_t start;
 	int flashnum;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* if we're in manual steering mode, it means we're leaning down .. use the lower shot */
 	if (self->monsterinfo.aiflags & AI_MANUAL_STEERING)
 	{
@@ -386,12 +386,12 @@ carrier_firebullet_left(edict_t *self)
 	vec3_t forward, right, target;
 	vec3_t start;
 	int flashnum;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* if we're in manual steering mode, it means we're leaning down .. use the lower shot */
 	if (self->monsterinfo.aiflags & AI_MANUAL_STEERING)
 	{
@@ -418,12 +418,12 @@ carrier_firebullet_left(edict_t *self)
 
 void
 CarrierMachineGun(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 
 	if (self->enemy)
@@ -443,12 +443,12 @@ CarrierSpawn(edict_t *self)
 	vec3_t f, r, offset, startpoint, spawnpoint;
 	edict_t *ent;
 	int mytime;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(offset, 105, 0, -58);
 	AngleVectors(self->s.angles, f, r, NULL);
 
@@ -516,12 +516,12 @@ CarrierSpawn(edict_t *self)
 
 void
 carrier_prep_spawn(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 	self->monsterinfo.aiflags |= AI_MANUAL_STEERING;
 	self->timestamp = level.time;
@@ -531,12 +531,12 @@ carrier_prep_spawn(edict_t *self)
 
 void
 carrier_spawn_check(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 	CarrierMachineGun(self);
 	CarrierSpawn(self);
@@ -558,12 +558,12 @@ carrier_ready_spawn(edict_t *self)
 {
 	float current_yaw;
 	vec3_t offset, f, r, startpoint, spawnpoint;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 	CarrierMachineGun(self);
 
@@ -594,12 +594,12 @@ carrier_start_spawn(edict_t *self)
 	int mytime;
 	float enemy_yaw;
 	vec3_t temp;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 
 	if (!orig_yaw_speed)
@@ -812,12 +812,12 @@ CarrierRail(edict_t *self)
 	vec3_t start;
 	vec3_t dir;
 	vec3_t forward, right;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 	AngleVectors(self->s.angles, forward, right, NULL);
 	G_ProjectSource(self->s.origin, monster_flash_offset[MZ2_CARRIER_RAILGUN],
@@ -833,12 +833,12 @@ CarrierRail(edict_t *self)
 
 void
 CarrierSaveLoc(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 	VectorCopy(self->enemy->s.origin, self->pos1);  /* save for aiming the shot */
 	self->pos1[2] += self->enemy->viewheight;
@@ -953,23 +953,23 @@ mmove_t carrier_move_death = {
 
 void
 carrier_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &carrier_move_stand;
 }
 
 void
 carrier_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.aiflags &= ~AI_HOLD_FRAME;
 
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
@@ -984,23 +984,23 @@ carrier_run(edict_t *self)
 
 void
 carrier_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &carrier_move_walk;
 }
 
 void
 CarrierMachineGunHold(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierMachineGun(self);
 }
 
@@ -1010,12 +1010,12 @@ carrier_attack(edict_t *self)
 	vec3_t vec;
 	float range, luck;
 	qboolean enemy_inback, enemy_infront, enemy_below;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.aiflags &= ~AI_HOLD_FRAME;
 
 	if ((!self->enemy) || (!self->enemy->inuse))
@@ -1180,24 +1180,24 @@ carrier_attack(edict_t *self)
 
 void
 carrier_attack_mg(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 	self->monsterinfo.currentmove = &carrier_move_attack_mg;
 }
 
 void
 carrier_reattack_mg(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 
 	if (infront(self, self->enemy))
@@ -1226,12 +1226,12 @@ carrier_reattack_mg(edict_t *self)
 
 void
 carrier_attack_gren(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 	self->timestamp = level.time;
 	self->monsterinfo.currentmove = &carrier_move_attack_gren;
@@ -1239,12 +1239,12 @@ carrier_attack_gren(edict_t *self)
 
 void
 carrier_reattack_gren(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	CarrierCoopCheck(self);
 
 	if (infront(self, self->enemy))
@@ -1263,12 +1263,12 @@ void
 carrier_pain(edict_t *self, edict_t *other /* unused */, float kick /* unused */, int damage)
 {
 	qboolean changed = false;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum = 1;
@@ -1317,12 +1317,12 @@ carrier_pain(edict_t *self, edict_t *other /* unused */, float kick /* unused */
 
 void
 carrier_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -56, -56, 0);
 	VectorSet(self->maxs, 56, 56, 80);
 	self->movetype = MOVETYPE_TOSS;
@@ -1334,12 +1334,12 @@ carrier_dead(edict_t *self)
 void
 carrier_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
 		int damage /* unused */, vec3_t point /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_death, 1, ATTN_NONE, 0);
 	self->deadflag = DEAD_DEAD;
 	self->takedamage = DAMAGE_NO;
@@ -1357,12 +1357,12 @@ Carrier_CheckAttack(edict_t *self)
 	qboolean enemy_infront, enemy_inback, enemy_below;
 	int enemy_range;
 	float enemy_yaw;
-  
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (self->enemy->health > 0)
 	{
 		/* see if any entities are in the way of the shot */
@@ -1508,12 +1508,12 @@ CarrierPrecache()
  */
 void
 SP_monster_carrier(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

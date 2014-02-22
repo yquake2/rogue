@@ -15,12 +15,12 @@ void M_SetEffects(edict_t *self);
  */
 void
 cleanupHealTarget(edict_t *ent)
-{  
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->monsterinfo.healer = NULL;
 	ent->takedamage = DAMAGE_YES;
 	ent->monsterinfo.aiflags &= ~AI_RESURRECTING;
@@ -36,12 +36,12 @@ CanDamage(edict_t *targ, edict_t *inflictor)
 {
 	vec3_t dest;
 	trace_t trace;
-  
+
 	if (!targ || !inflictor)
 	{
 		return false;
 	}
- 
+
 	/* bmodels need special checking because their origin is 0,0,0 */
 	if (targ->movetype == MOVETYPE_PUSH)
 	{
@@ -176,7 +176,7 @@ Killed(edict_t *targ, edict_t *inflictor, edict_t *attacker,
 
 		if (targ->monsterinfo.aiflags & AI_SPAWNED_WIDOW)
 		{
-			/* need to check this because we can 
+			/* need to check this because we can
 			   have variable numbers of coop players */
 			if (targ->monsterinfo.commander &&
 				targ->monsterinfo.commander->inuse &&
@@ -263,12 +263,12 @@ CheckPowerArmor(edict_t *ent, vec3_t point, vec3_t normal,
 	int pa_te_type;
 	int power = 0;
 	int power_used;
-  
+
 	if (!ent)
 	{
 		return 0;
 	}
- 
+
 	if (!damage)
 	{
 		return 0;
@@ -391,12 +391,12 @@ CheckArmor(edict_t *ent, vec3_t point, vec3_t normal,
 	int save;
 	int index;
 	gitem_t *armor;
-  
+
 	if (!ent)
 	{
 		return 0;
 	}
- 
+
 	if (!damage)
 	{
 		return 0;
@@ -463,7 +463,7 @@ M_ReactToDamage(edict_t *targ, edict_t *attacker, edict_t *inflictor)
 		return;
 	}
 
-	/* logic for tesla - if you are hit by a tesla, 
+	/* logic for tesla - if you are hit by a tesla,
 	   and can't see who you should be mad at (attacker)
 	   attack the tesla also, target the tesla if it's
 	   a "new" tesla */
@@ -484,7 +484,7 @@ M_ReactToDamage(edict_t *targ, edict_t *attacker, edict_t *inflictor)
 		return;
 	}
 
-	/* if we are a good guy monster and 
+	/* if we are a good guy monster and
 	   our attacker is a player or another
 	   good guy, do not get mad at them */
 	if (targ->monsterinfo.aiflags & AI_GOOD_GUY)
@@ -495,7 +495,7 @@ M_ReactToDamage(edict_t *targ, edict_t *attacker, edict_t *inflictor)
 		}
 	}
 
-	/* if we're currently mad at something 
+	/* if we're currently mad at something
 	   a target_anger made us mad at, ignore
 	   damage */
 	if (targ->enemy && targ->monsterinfo.aiflags & AI_TARGET_ANGER)
@@ -535,7 +535,7 @@ M_ReactToDamage(edict_t *targ, edict_t *attacker, edict_t *inflictor)
 		cleanupHealTarget(targ->enemy);
 	}
 
-	/* if attacker is a client, get mad at them 
+	/* if attacker is a client, get mad at them
 	   because he's good and we're not */
 	if (attacker->client)
 	{
@@ -827,7 +827,7 @@ T_Damage(edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		return;
 	}
 
-	/* this option will do damage both to the armor 
+	/* this option will do damage both to the armor
 	   and person. originally for DPU rounds */
 	if (dflags & DAMAGE_DESTROY_ARMOR)
 	{
@@ -1115,7 +1115,7 @@ T_RadiusNukeDamage(edict_t *inflictor, edict_t *attacker, float damage,
 }
 
 /*
- * Like T_RadiusDamage, but ignores 
+ * Like T_RadiusDamage, but ignores
  * anything with classname=ignoreClass
  */
 void

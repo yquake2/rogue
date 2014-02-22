@@ -17,12 +17,12 @@ int tag_count;
 
 void
 Tag_PlayerDeath(edict_t *targ, edict_t *inflictor /* unused */, edict_t *attacker /* unused */)
-{ 
+{
 	if (!targ)
 	{
 		return;
 	}
- 
+
 	if (tag_token && targ && (targ == tag_owner))
 	{
 		Tag_DropToken(targ, FindItem("Tag Token"));
@@ -35,12 +35,12 @@ void
 Tag_KillItBonus(edict_t *self)
 {
 	edict_t *armor;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* if the player is hurt, boost them up to max. */
 	if (self->health < self->max_health)
 	{
@@ -66,12 +66,12 @@ Tag_KillItBonus(edict_t *self)
 
 void
 Tag_PlayerDisconnect(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (tag_token && self && (self == tag_owner))
 	{
 		Tag_DropToken(self, FindItem("Tag Token"));
@@ -85,12 +85,12 @@ Tag_Score(edict_t *attacker, edict_t *victim, int scoreChange)
 {
 	gitem_t *quad;
 	int mod;
-  
+
 	if (!attacker || !victim)
 	{
 		return;
 	}
- 
+
 	mod = meansOfDeath & ~MOD_FRIENDLY_FIRE;
 
 	if (tag_token && tag_owner)
@@ -141,12 +141,12 @@ Tag_PickupToken(edict_t *ent, edict_t *other)
 	{
 		return false;
 	}
- 
+
 	if (!ent || !other)
 	{
 		return false;
 	}
- 
+
 	/* sanity checking is good. */
 	if (tag_token != ent)
 	{
@@ -167,12 +167,12 @@ void
 Tag_Respawn(edict_t *ent)
 {
 	edict_t *spot;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	spot = SelectFarthestDeathmatchSpawnPoint();
 
 	if (spot == NULL)
@@ -187,12 +187,12 @@ Tag_Respawn(edict_t *ent)
 
 void
 Tag_MakeTouchable(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->touch = Touch_Item;
 
 	tag_token->think = Tag_Respawn;
@@ -214,12 +214,12 @@ Tag_DropToken(edict_t *ent, gitem_t *item)
 	trace_t trace;
 	vec3_t forward, right;
 	vec3_t offset;
- 
+
 	if (!ent || !item)
 	{
 		return;
 	}
- 
+
 	/* reset the score count for next player */
 	tag_count = 0;
 	tag_owner = NULL;
@@ -259,12 +259,12 @@ Tag_DropToken(edict_t *ent, gitem_t *item)
 
 void
 Tag_PlayerEffects(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (ent == tag_owner)
 	{
 		ent->s.effects |= EF_TAGTRAIL;
@@ -273,12 +273,12 @@ Tag_PlayerEffects(edict_t *ent)
 
 void
 Tag_DogTag(edict_t *ent, edict_t *killer /* unused */, char **pic)
-{ 
+{
 	if (!ent || !pic)
 	{
 		return;
 	}
- 
+
 	if (ent == tag_owner)
 	{
 		(*pic) = "tag3";
@@ -287,12 +287,12 @@ Tag_DogTag(edict_t *ent, edict_t *killer /* unused */, char **pic)
 
 int
 Tag_ChangeDamage(edict_t *targ, edict_t *attacker, int damage, int mod)
-{ 
+{
 	if (!targ || !attacker)
 	{
 		return 0;
 	}
- 
+
 	if ((targ != tag_owner) && (attacker != tag_owner))
 	{
 		return damage * 3 / 4;
@@ -337,12 +337,12 @@ Tag_PostInitSetup(void)
  */
 void
 SP_dm_tag_token(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!(deathmatch->value))
 	{
 		G_FreeEdict(self);

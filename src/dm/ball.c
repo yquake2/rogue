@@ -66,12 +66,12 @@ DBall_ClientBegin(edict_t *ent)
 	team1 = 0;
 	team2 = 0;
 	unassigned = 0;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	for (j = 1; j <= game.maxclients; j++)
 	{
 		other = &g_edicts[j];
@@ -142,12 +142,12 @@ DBall_SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles)
 	edict_t *spot;
 	char *spottype;
 	char skin[512];
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	strcpy(skin, Info_ValueForKey(ent->client->pers.userinfo, "skin"));
 
 	if (!strcmp(dball_team1_skin->string, skin))
@@ -237,12 +237,12 @@ DBall_PostInitSetup(void)
 
 int
 DBall_ChangeDamage(edict_t *targ, edict_t *attacker, int damage, int mod)
-{ 
+{
 	if (!targ || !attacker)
 	{
 		return 0;
 	}
- 
+
 	/* cut player -> ball damage to 1 */
 	if (targ == dball_ball_entity)
 	{
@@ -260,12 +260,12 @@ DBall_ChangeDamage(edict_t *targ, edict_t *attacker, int damage, int mod)
 
 int
 DBall_ChangeKnockback(edict_t *targ, edict_t *attacker, int knockback, int mod)
-{  
+{
 	if (!targ || !attacker)
 	{
 		return 0;
 	}
-  
+
 	if (targ != dball_ball_entity)
 	{
 		return knockback;
@@ -338,12 +338,12 @@ DBall_GoalTouch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
 	char value[512];
 	char *p;
 	edict_t *ent;
- 
+
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (other != dball_ball_entity)
 	{
 		return;
@@ -439,12 +439,12 @@ PickBallStart(edict_t *ent)
 {
 	int which, current;
 	edict_t *e;
- 
+
 	if (!ent)
 	{
 		return NULL;
 	}
- 
+
 	which = ceil(random() * dball_ball_startpt_count);
 	e = NULL;
 	current = 0;
@@ -473,12 +473,12 @@ DBall_BallTouch(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 	vec3_t dir;
 	float dot;
 	float speed;
- 
+
 	if (!ent || !other)
 	{
 		return;
 	}
- 
+
 	if (other->takedamage == DAMAGE_NO)
 	{
 		return;
@@ -505,12 +505,12 @@ DBall_BallTouch(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 
 void
 DBall_BallPain(edict_t *self, edict_t *other, float kick, int damage)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	self->enemy = other;
 	self->health = self->max_health;
 }
@@ -518,12 +518,12 @@ DBall_BallPain(edict_t *self, edict_t *other, float kick, int damage)
 void
 DBall_BallDie(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
 		int damage, vec3_t point)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* do the splash effect */
 	gi.WriteByte(svc_temp_entity);
 	gi.WriteByte(TE_DBALL_GOAL);
@@ -545,12 +545,12 @@ void
 DBall_BallRespawn(edict_t *self)
 {
 	edict_t *start;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* do the splash effect */
 	gi.WriteByte(svc_temp_entity);
 	gi.WriteByte(TE_DBALL_GOAL);
@@ -587,12 +587,12 @@ DBall_SpeedTouch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
 {
 	float dot;
 	vec3_t vel;
- 
+
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (other != dball_ball_entity)
 	{
 		return;
@@ -626,12 +626,12 @@ DBall_SpeedTouch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
 
 void
 SP_dm_dball_ball(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!(deathmatch->value))
 	{
 		G_FreeEdict(self);
@@ -670,12 +670,12 @@ SP_dm_dball_ball(edict_t *self)
  */
 void
 SP_dm_dball_team1_start(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -695,12 +695,12 @@ SP_dm_dball_team1_start(edict_t *self)
  */
 void
 SP_dm_dball_team2_start(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -720,12 +720,12 @@ SP_dm_dball_team2_start(edict_t *self)
  */
 void
 SP_dm_dball_ball_start(edict_t *self)
-{ 
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -749,12 +749,12 @@ SP_dm_dball_ball_start(edict_t *self)
  */
 void
 SP_dm_dball_speed_change(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -805,12 +805,12 @@ SP_dm_dball_speed_change(edict_t *self)
  */
 void
 SP_dm_dball_goal(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!(deathmatch->value))
 	{
 		G_FreeEdict(self);

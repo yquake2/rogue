@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "boss32.h"
 
@@ -37,12 +37,12 @@ void
 makron_taunt(edict_t *self)
 {
 	float r;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	r = random();
 
 	if (r <= 0.3)
@@ -132,12 +132,12 @@ mmove_t makron_move_stand = {
 
 void
 makron_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &makron_move_stand;
 }
 
@@ -163,67 +163,67 @@ mmove_t makron_move_run = {
 
 void
 makron_hit(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_AUTO, sound_hit, 1, ATTN_NONE, 0);
 }
 
 void
 makron_popup(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_BODY, sound_popup, 1, ATTN_NONE, 0);
 }
 
 void
 makron_step_left(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_BODY, sound_step_left, 1, ATTN_NORM, 0);
 }
 
 void
 makron_step_right(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_BODY, sound_step_right, 1, ATTN_NORM, 0);
 }
 
 void
 makron_brainsplorch(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_brainsplorch, 1, ATTN_NORM, 0);
 }
 
 void
 makron_prerailgun(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_WEAPON, sound_prerailgun, 1, ATTN_NORM, 0);
 }
 
@@ -249,23 +249,23 @@ mmove_t makron_move_walk = {
 
 void
 makron_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &makron_move_walk;
 }
 
 void
 makron_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
 		self->monsterinfo.currentmove = &makron_move_stand;
@@ -506,12 +506,12 @@ makronBFG(edict_t *self)
 	vec3_t start;
 	vec3_t dir;
 	vec3_t vec;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, forward, right, NULL);
 	G_ProjectSource(self->s.origin, monster_flash_offset[MZ2_MAKRON_BFG],
 			forward, right, start);
@@ -606,12 +606,12 @@ mmove_t makron_move_attack5 = {
 
 void
 MakronSaveloc(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorCopy(self->enemy->s.origin, self->pos1);  /* save for aiming the shot */
 	self->pos1[2] += self->enemy->viewheight;
 }
@@ -622,12 +622,12 @@ MakronRailgun(edict_t *self)
 	vec3_t start;
 	vec3_t dir;
 	vec3_t forward, right;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, forward, right, NULL);
 	G_ProjectSource(self->s.origin, monster_flash_offset[MZ2_MAKRON_RAILGUN_1],
 			forward, right, start);
@@ -647,12 +647,12 @@ MakronHyperblaster(edict_t *self)
 	vec3_t start;
 	vec3_t forward, right;
 	int flash_number;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	flash_number = MZ2_MAKRON_BLASTER_1 + (self->s.frame - FRAME_attak405);
 
 	AngleVectors(self->s.angles, forward, right, NULL);
@@ -691,12 +691,12 @@ MakronHyperblaster(edict_t *self)
 
 void
 makron_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum = 1;
@@ -754,12 +754,12 @@ makron_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 
 void
 makron_sight(edict_t *self, edict_t *other /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &makron_move_sight;
 }
 
@@ -767,12 +767,12 @@ void
 makron_attack(edict_t *self)
 {
 	float r;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	r = random();
 
 	if (r <= 0.3)
@@ -791,12 +791,12 @@ makron_attack(edict_t *self)
 
 void
 makron_torso_think(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (++self->s.frame < 365)
 	{
 		self->nextthink = level.time + FRAMETIME;
@@ -810,12 +810,12 @@ makron_torso_think(edict_t *self)
 
 void
 makron_torso(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->movetype = MOVETYPE_NONE;
 	ent->solid = SOLID_NOT;
 	VectorSet(ent->mins, -8, -8, 0);
@@ -831,12 +831,12 @@ makron_torso(edict_t *ent)
 /* death */
 void
 makron_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -60, -60, 0);
 	VectorSet(self->maxs, 60, 60, 72);
 	self->movetype = MOVETYPE_TOSS;
@@ -851,12 +851,12 @@ makron_die(edict_t *self, edict_t *inflictor /* update */, edict_t *attacker /* 
 {
 	edict_t *tempent;
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->s.sound = 0;
 
 	/* check for gib */
@@ -907,12 +907,12 @@ Makron_CheckAttack(edict_t *self)
 	trace_t tr;
 	int enemy_range;
 	float enemy_yaw;
-  
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (self->enemy->health > 0)
 	{
 		/* see if any entities are in the way of the shot */
@@ -1038,12 +1038,12 @@ MakronPrecache(void)
  */
 void
 SP_monster_makron(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -1086,12 +1086,12 @@ MakronSpawn(edict_t *self)
 {
 	vec3_t vec;
 	edict_t *player;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	SP_monster_makron(self);
 
 	/* jump at player */
@@ -1117,12 +1117,12 @@ void
 MakronToss(edict_t *self)
 {
 	edict_t *ent;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	ent = G_Spawn();
 	ent->nextthink = level.time + 0.8;
 	ent->think = MakronSpawn;

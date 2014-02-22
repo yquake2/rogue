@@ -12,7 +12,7 @@
 #define IT_TYPE_MASK (IT_WEAPON | IT_AMMO | IT_POWERUP | IT_ARMOR | IT_KEY)
 
 dm_game_rt DMGame;
- 
+
 extern qboolean Pickup_Health(edict_t *ent, edict_t *other);
 extern qboolean Pickup_Adrenaline(edict_t *ent, edict_t *other);
 extern qboolean Pickup_Armor(edict_t *ent, edict_t *other);
@@ -20,7 +20,7 @@ extern qboolean Pickup_PowerArmor(edict_t *ent, edict_t *other);
 extern edict_t *Sphere_Spawn(edict_t *owner, int spawnflags);
 extern void ED_CallSpawn(edict_t *ent);
 void fire_doppleganger(edict_t *ent, vec3_t start, vec3_t aimdir);
- 
+
 void
 InitGameRules(void)
 {
@@ -70,8 +70,8 @@ FindSubstituteItem(edict_t *ent)
 	int pick;
 	gitem_t *it;
 
-	/* there are only two classes of power armor, and we don't want 
-	   to give out power screens. therefore, power shields should 
+	/* there are only two classes of power armor, and we don't want
+	   to give out power screens. therefore, power shields should
 	   remain power shields. (powerscreens shouldn't be there at all...) */
 	if (ent->item->pickup == Pickup_PowerArmor)
 	{
@@ -246,12 +246,12 @@ DoRandomRespawn(edict_t *ent)
 {
 	edict_t *newEnt;
 	char *classname;
- 
+
 	if (!ent)
 	{
 		return NULL;
 	}
- 
+
 	classname = FindSubstituteItem(ent);
 
 	if (classname == NULL)
@@ -306,12 +306,12 @@ doppleganger_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attack
 	edict_t *sphere;
 	float dist;
 	vec3_t dir;
- 
+
 	if (!self || !attacker)
 	{
 		return;
 	}
- 
+
 	if ((self->enemy) && (self->enemy != self->teammaster))
 	{
 		VectorSubtract(self->enemy->s.origin, self->s.origin, dir);
@@ -395,12 +395,12 @@ fire_doppleganger(edict_t *ent, vec3_t start, vec3_t aimdir)
 	vec3_t dir;
 	vec3_t forward, right, up;
 	int number;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	vectoangles2(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
 

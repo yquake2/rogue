@@ -6,7 +6,7 @@
  */
 
 #include "header/local.h"
- 
+
 extern cvar_t *maxclients;
 int enemy_range;
 float enemy_yaw;
@@ -94,12 +94,12 @@ ai_stand(edict_t *self, float dist)
 {
 	vec3_t v;
 	qboolean retval;
- 
+
 	if (!self)
 	{
 		return;
 	}
-  
+
 	if (dist)
 	{
 		M_walkmove(self, self->s.angles[YAW], dist);
@@ -186,12 +186,12 @@ void
 ai_walk(edict_t *self, float dist)
 {
 	M_MoveToGoal(self, dist);
- 
+
 	if (!self)
 	{
 		return;
 	}
-  
+
 	/* check for noticing a player */
 	if (FindTarget(self))
 	{
@@ -217,18 +217,18 @@ ai_walk(edict_t *self, float dist)
  * Turns towards target and advances
  * Use this call with a distnace of 0
  * to replace ai_face
- */ 
+ */
 void
 ai_charge(edict_t *self, float dist)
 {
 	vec3_t v;
 	float ofs;
- 
+
 	if (!self)
 	{
 		return;
 	}
-  
+
 	if (!self->enemy || !self->enemy->inuse)
 	{
 		return;
@@ -296,12 +296,12 @@ ai_charge(edict_t *self, float dist)
  */
 void
 ai_turn(edict_t *self, float dist)
-{ 
+{
 	if (!self)
 	{
 		return;
 	}
-  
+
 	if (dist)
 	{
 		M_walkmove(self, self->s.angles[YAW], dist);
@@ -387,7 +387,7 @@ range(edict_t *self, edict_t *other)
 /*
  * returns 1 if the entity is visible
  * to self, even if not infront
- */ 
+ */
 qboolean
 visible(edict_t *self, edict_t *other)
 {
@@ -455,12 +455,12 @@ void
 HuntTarget(edict_t *self)
 {
 	vec3_t vec;
- 
+
 	if (!self)
 	{
 		return;
 	}
-  
+
 	self->goalentity = self->enemy;
 
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
@@ -485,12 +485,12 @@ HuntTarget(edict_t *self)
 
 void
 FoundTarget(edict_t *self)
-{ 
+{
 	if (!self)
 	{
 		return;
 	}
-  
+
 	/* let other monsters see this monster for a while */
 	if (self->enemy->client)
 	{
@@ -564,12 +564,12 @@ FindTarget(edict_t *self)
 	edict_t *client;
 	qboolean heardit;
 	int r;
-     
+
 	if (!self)
 	{
 		return false;
 	}
-  
+
 	if (self->monsterinfo.aiflags & AI_GOOD_GUY)
 	{
 		return false;
@@ -750,7 +750,7 @@ FindTarget(edict_t *self)
 			return false;
 		}
 
-		/* check area portals - if they are different 
+		/* check area portals - if they are different
 		   and not connected then we can't hear it */
 		if (client->areanum != self->areanum)
 		{
@@ -799,12 +799,12 @@ qboolean
 FacingIdeal(edict_t *self)
 {
 	float delta;
-      
+
 	if (!self)
 	{
 		return false;
 	}
-  
+
 	delta = anglemod(self->s.angles[YAW] - self->ideal_yaw);
 
 	if ((delta > 45) && (delta < 315))
@@ -823,12 +823,12 @@ M_CheckAttack(edict_t *self)
 	vec3_t spot1, spot2;
 	float chance;
 	trace_t tr;
- 
+
 	if (!self)
 	{
 		return false;
 	}
-  
+
 	if (self->enemy->health > 0)
 	{
 		/* see if any entities are in the way of the shot */
@@ -848,7 +848,7 @@ M_CheckAttack(edict_t *self)
 			if ((self->enemy->solid != SOLID_NOT) || (tr.fraction < 1.0))
 			{
 				/* if we can't see our target, and we're not
-				   blocked by a monster, go into blind fire 
+				   blocked by a monster, go into blind fire
 				   if available */
 				if ((!(tr.ent->svflags & SVF_MONSTER)) &&
 					(!visible(self, self->enemy)))
@@ -1027,12 +1027,12 @@ M_CheckAttack(edict_t *self)
  */
 void
 ai_run_melee(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
-  
+
 	self->ideal_yaw = enemy_yaw;
 
 	if (!(self->monsterinfo.aiflags & AI_MANUAL_STEERING))
@@ -1050,15 +1050,15 @@ ai_run_melee(edict_t *self)
 /*
  * Turn in place until within an
  * angle to launch a missile attack
- */ 
+ */
 void
 ai_run_missile(edict_t *self)
-{    
+{
 	if (!self)
 	{
 		return;
 	}
-  
+
 	self->ideal_yaw = enemy_yaw;
 
 	if (!(self->monsterinfo.aiflags & AI_MANUAL_STEERING))
@@ -1087,12 +1087,12 @@ ai_run_slide(edict_t *self, float distance)
 {
 	float ofs;
 	float angle;
- 
+
 	if (!self)
 	{
 		return;
 	}
-  
+
 	self->ideal_yaw = enemy_yaw;
 	angle = 90;
 
@@ -1157,12 +1157,12 @@ ai_checkattack(edict_t *self, float dist)
 	vec3_t temp;
 	qboolean hesDeadJim;
 	qboolean retval;
- 
+
 	if (!self)
 	{
 		return false;
 	}
-  
+
 	/* this causes monsters to run blindly
 	   to the combat point w/o firing */
 	if (self->goalentity)
@@ -1265,9 +1265,9 @@ ai_checkattack(edict_t *self, float dist)
 			}
 			else
 			{
-				/* we need the pausetime otherwise the stand code 
-				   will just revert to walking with no target and 
-				   the monsters will wonder around aimlessly trying 
+				/* we need the pausetime otherwise the stand code
+				   will just revert to walking with no target and
+				   the monsters will wonder around aimlessly trying
 				   to hunt the world entity */
 				self->monsterinfo.pausetime = level.time + 100000000;
 				self->monsterinfo.stand(self);
@@ -1331,7 +1331,7 @@ ai_checkattack(edict_t *self, float dist)
 }
 
 /*
- * The monster has an enemy 
+ * The monster has an enemy
  * it is trying to kill
  */
 void
@@ -1351,12 +1351,12 @@ ai_run(edict_t *self, float dist)
 	qboolean alreadyMoved = false;
 	qboolean gotcha = false;
 	edict_t *realEnemy;
-    
+
 	if (!self)
 	{
 		return;
 	}
-  
+
 	/* if we're going to a combat point, just proceed */
 	if (self->monsterinfo.aiflags & AI_COMBAT_POINT)
 	{
@@ -1502,7 +1502,7 @@ ai_run(edict_t *self, float dist)
 		}
 
 		/* we're using attack_state as the return value out of
-		   ai_run_slide to indicate whether or not the move 
+		   ai_run_slide to indicate whether or not the move
 		   succeeded.  If the move succeeded, and we're still
 		   sliding, we're done in here (since we've  had our
 		   chance to shoot in ai_checkattack, and have moved).

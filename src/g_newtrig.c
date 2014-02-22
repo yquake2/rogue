@@ -17,7 +17,7 @@ extern void TeleportEffect(vec3_t origin);
 
 /*
  * QUAKED info_teleport_destination (.5 .5 .5) (-16 -16 -24) (16 16 32)
- * 
+ *
  * Destination marker for a teleporter.
  */
 void
@@ -27,7 +27,7 @@ SP_info_teleport_destination(edict_t *self)
 
 /*
  * QUAKED trigger_teleport (.5 .5 .5) ? player_only silent ctf_only start_on
- * 
+ *
  * Any object touching this will be transported to the corresponding
  * info_teleport_destination entity. You must set the "target" field,
  * and create an object with a "targetname" field that matches.
@@ -46,12 +46,12 @@ trigger_teleport_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused 
 {
 	edict_t *dest;
 	int i;
- 
+
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (!(other->client))
 	{
 		return;
@@ -114,12 +114,12 @@ trigger_teleport_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused 
 
 void
 trigger_teleport_use(edict_t *self, edict_t *other /* unused */, edict_t *activator /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->delay)
 	{
 		self->delay = 0;
@@ -132,12 +132,12 @@ trigger_teleport_use(edict_t *self, edict_t *other /* unused */, edict_t *activa
 
 void
 SP_trigger_teleport(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->wait)
 	{
 		self->wait = 0.2;
@@ -171,7 +171,7 @@ SP_trigger_teleport(edict_t *self)
 
 /*
  * QUAKED trigger_disguise (.5 .5 .5) ? TOGGLE START_ON REMOVE
- * 
+ *
  * Anything passing through this trigger when it is active will
  * be marked as disguised.
  *
@@ -183,12 +183,12 @@ SP_trigger_teleport(edict_t *self)
 void
 trigger_disguise_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
 		csurface_t *surf /* unused */)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (other->client)
 	{
 		if (self->spawnflags & 4)
@@ -204,12 +204,12 @@ trigger_disguise_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused 
 
 void
 trigger_disguise_use(edict_t *self, edict_t *other /* unused */, edict_t *activator /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->solid == SOLID_NOT)
 	{
 		self->solid = SOLID_TRIGGER;
@@ -224,12 +224,12 @@ trigger_disguise_use(edict_t *self, edict_t *other /* unused */, edict_t *activa
 
 void
 SP_trigger_disguise(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->spawnflags & 2)
 	{
 		self->solid = SOLID_TRIGGER;

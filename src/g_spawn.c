@@ -7,10 +7,10 @@
  */
 
 #include "header/local.h"
- 
+
 #define LEG_WAIT_TIME 1
 #define MAX_LEGSFRAME 23
- 
+
 #define SPAWNGROW_LIFESPAN 0.3
 #define STEPSIZE 18
 
@@ -166,14 +166,14 @@ void SP_monster_kamikaze(edict_t *self);
 void SP_turret_invisible_brain(edict_t *self);
 void SP_xatrix_item(edict_t *self);
 void SP_misc_nuke_core(edict_t *self);
- 
+
 void ThrowMoreStuff(edict_t *self, vec3_t point);
 void ThrowSmallStuff(edict_t *self, vec3_t point);
 void ThrowWidowGibLoc(edict_t *self, char *gibname, int damage,
 		int type, vec3_t startpos, qboolean fade);
 void ThrowWidowGibSized(edict_t *self, char *gibname, int damage, int type,
 		vec3_t startpos, int hitsound, qboolean fade);
- 
+
 spawn_t spawns[] = {
 	{"item_health", SP_item_health},
 	{"item_health_small", SP_item_health_small},
@@ -341,12 +341,12 @@ ED_CallSpawn(edict_t *ent)
 	spawn_t *s;
 	gitem_t *item;
 	int i;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (!ent->classname)
 	{
 		gi.dprintf("ED_CallSpawn: NULL classname\n");
@@ -407,12 +407,12 @@ ED_NewString(const char *string)
 {
 	char *newb, *new_p;
 	int i, l;
-  
+
 	if (!string)
 	{
 		return NULL;
 	}
- 
+
 	l = strlen(string) + 1;
 
 	newb = gi.TagMalloc(l, TAG_LEVEL);
@@ -454,12 +454,12 @@ ED_ParseField(const char *key, const char *value, edict_t *ent)
 	byte *b;
 	float v;
 	vec3_t vec;
- 
+
 	if (!ent || !value || !key)
 	{
 		return;
 	}
- 
+
 	for (f = fields; f->name; f++)
 	{
 		if (!(f->flags & FFL_NOSPAWN) && !Q_strcasecmp(f->name, (char *)key))
@@ -519,12 +519,12 @@ ED_ParseEdict(char *data, edict_t *ent)
 	qboolean init;
 	char keyname[256];
 	const char *com_token;
- 
+
 	if (!ent || !data)
 	{
 		return NULL;
 	}
- 
+
 	init = false;
 	memset(&st, 0, sizeof(st));
 
@@ -832,7 +832,7 @@ SpawnEntities(const char *mapname, char *entities, const char *spawnpoint)
 			ent->spawnflags |= SPAWNFLAG_NOT_COOP;
 		}
 
-		/* remove things (except the world) from 
+		/* remove things (except the world) from
 		   different skill levels or deathmatch */
 		if (ent != g_edicts)
 		{
@@ -1073,12 +1073,12 @@ char *dm_statusbar =
  */
 void
 SP_worldspawn(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->movetype = MOVETYPE_PUSH;
 	ent->solid = SOLID_BSP;
 	ent->inuse = true; /* since the world doesn't use G_Spawn() */
@@ -1181,7 +1181,7 @@ SP_worldspawn(edict_t *ent)
 	gi.soundindex("*pain100_2.wav");
 
 	/* sexed models: THIS ORDER MUST MATCH THE DEFINES IN g_local.h
-	   you can add more, max 19 (pete change)these models are only 
+	   you can add more, max 19 (pete change)these models are only
 	   loaded in coop or deathmatch. not singleplayer. */
 	if (coop->value || deathmatch->value)
 	{
@@ -1281,7 +1281,7 @@ SP_worldspawn(edict_t *ent)
 }
 
 /*
- * Monster spawning code: 
+ * Monster spawning code:
  * Used by the carrier, the medic_commander, and the black widow
  *
  * The sequence to create a flying monster is:
@@ -1297,12 +1297,12 @@ edict_t *
 CreateMonster(vec3_t origin, vec3_t angles, char *classname)
 {
 	edict_t *newEnt;
- 
+
 	if (!classname)
 	{
 		return NULL;
 	}
- 
+
 	newEnt = G_Spawn();
 
 	VectorCopy(origin, newEnt->s.origin);
@@ -1320,12 +1320,12 @@ CreateMonster(vec3_t origin, vec3_t angles, char *classname)
 edict_t *
 CreateFlyMonster(vec3_t origin, vec3_t angles, vec3_t mins,
 		vec3_t maxs, char *classname)
-{  
+{
 	if (!classname)
 	{
 		return NULL;
 	}
- 
+
 	if (!mins || !maxs ||
 		VectorCompare(mins, vec3_origin) || VectorCompare(maxs, vec3_origin))
 	{
@@ -1346,12 +1346,12 @@ CreateGroundMonster(vec3_t origin, vec3_t angles, vec3_t entMins,
 {
 	edict_t *newEnt;
 	vec3_t mins, maxs;
-  
+
 	if (!classname)
 	{
 		return NULL;
 	}
- 
+
 	/* if they don't provide us a bounding box, figure it out */
 	if (!entMins || !entMaxs || VectorCompare(entMins,
 				vec3_origin) || VectorCompare(entMaxs, vec3_origin))
@@ -1572,12 +1572,12 @@ void
 DetermineBBox(char *classname, vec3_t mins, vec3_t maxs)
 {
 	edict_t *newEnt;
-  
+
 	if (!classname)
 	{
 		return;
 	}
- 
+
 	newEnt = G_Spawn();
 
 	VectorCopy(vec3_origin, newEnt->s.origin);
@@ -1598,12 +1598,12 @@ void
 spawngrow_think(edict_t *self)
 {
 	int i;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	for (i = 0; i < 2; i++)
 	{
 		self->s.angles[0] = rand() % 360;
@@ -1694,12 +1694,12 @@ widowlegs_think(edict_t *self)
 	vec3_t offset;
 	vec3_t point;
 	vec3_t f, r, u;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->s.frame == 17)
 	{
 		VectorSet(offset, 11.77, -7.24, 23.31);

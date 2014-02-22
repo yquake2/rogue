@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "parasite.h"
 
@@ -31,67 +31,67 @@ void parasite_refidget(edict_t *self);
 
 void
 parasite_launch(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_WEAPON, sound_launch, 1, ATTN_NORM, 0);
 }
 
 void
 parasite_reel_in(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_WEAPON, sound_reelin, 1, ATTN_NORM, 0);
 }
 
 void
 parasite_sight(edict_t *self, edict_t *other)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_WEAPON, sound_sight, 1, ATTN_NORM, 0);
 }
 
 void
 parasite_tap(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_WEAPON, sound_tap, 1, ATTN_IDLE, 0);
 }
 
 void
 parasite_scratch(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_WEAPON, sound_scratch, 1, ATTN_IDLE, 0);
 }
 
 void
 parasite_search(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_WEAPON, sound_search, 1, ATTN_IDLE, 0);
 }
 
@@ -145,34 +145,34 @@ mmove_t parasite_move_end_fidget = {
 
 void
 parasite_end_fidget(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &parasite_move_end_fidget;
 }
 
 void
 parasite_do_fidget(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &parasite_move_fidget;
 }
 
 void
 parasite_refidget(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() <= 0.8)
 	{
 		self->monsterinfo.currentmove = &parasite_move_fidget;
@@ -185,12 +185,12 @@ parasite_refidget(edict_t *self)
 
 void
 parasite_idle(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &parasite_move_start_fidget;
 }
 
@@ -223,12 +223,12 @@ mmove_t parasite_move_stand = {
 
 void
 parasite_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &parasite_move_stand;
 }
 
@@ -279,12 +279,12 @@ mmove_t parasite_move_stop_run = {
 
 void
 parasite_start_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
 		self->monsterinfo.currentmove = &parasite_move_stand;
@@ -297,12 +297,12 @@ parasite_start_run(edict_t *self)
 
 void
 parasite_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
 		self->monsterinfo.currentmove = &parasite_move_stand;
@@ -360,23 +360,23 @@ mmove_t parasite_move_stop_walk = {
 
 void
 parasite_start_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &parasite_move_start_walk;
 }
 
 void
 parasite_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &parasite_move_walk;
 }
 
@@ -403,12 +403,12 @@ mmove_t parasite_move_pain1 = {
 
 void
 parasite_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum = 1;
@@ -473,12 +473,12 @@ parasite_drain_attack(edict_t *self)
 	vec3_t offset, start, f, r, end, dir;
 	trace_t tr;
 	int damage;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, f, r, NULL);
 	VectorSet(offset, 24, 0, 6);
 	G_ProjectSource(self->s.origin, offset, f, r, start);
@@ -608,12 +608,12 @@ mmove_t parasite_move_break = {
 
 void
 parasite_attack(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &parasite_move_drain;
 }
 
@@ -621,12 +621,12 @@ void
 parasite_jump_down(edict_t *self)
 {
 	vec3_t forward, up;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_jump_start(self);
 
 	AngleVectors(self->s.angles, forward, NULL, up);
@@ -638,12 +638,12 @@ void
 parasite_jump_up(edict_t *self)
 {
 	vec3_t forward, up;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_jump_start(self);
 
 	AngleVectors(self->s.angles, forward, NULL, up);
@@ -653,12 +653,12 @@ parasite_jump_up(edict_t *self)
 
 void
 parasite_jump_wait_land(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->groundentity == NULL)
 	{
 		self->monsterinfo.nextframe = self->s.frame;
@@ -712,12 +712,12 @@ mmove_t parasite_move_jump_down = {
 
 void
 parasite_jump(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return;
@@ -735,12 +735,12 @@ parasite_jump(edict_t *self)
 
 qboolean
 parasite_blocked(edict_t *self, float dist)
-{  
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (blocked_checkshot(self, 0.25 + (0.05 * skill->value)))
 	{
 		return true;
@@ -766,12 +766,12 @@ parasite_checkattack(edict_t *self)
 	vec3_t f, r, offset, start, end;
 	trace_t tr;
 	qboolean retval;
-  
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	retval = M_CheckAttack(self);
 
 	if (!retval)
@@ -822,12 +822,12 @@ parasite_checkattack(edict_t *self)
 
 void
 parasite_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -16, -16, -24);
 	VectorSet(self->maxs, 16, 16, -8);
 	self->movetype = MOVETYPE_TOSS;
@@ -858,12 +858,12 @@ parasite_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /
 		int damage, vec3_t point /* unsued */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* check for gib */
 	if (self->health <= self->gib_health)
 	{
@@ -901,12 +901,12 @@ parasite_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /
  */
 void
 SP_monster_parasite(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

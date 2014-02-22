@@ -15,12 +15,12 @@ ClientTeam(edict_t *ent)
 	static char value[512];
 
 	value[0] = 0;
-   
+
 	if (!ent)
 	{
 		return value;
 	}
- 
+
 	if (!ent->client)
 	{
 		return value;
@@ -48,12 +48,12 @@ OnSameTeam(edict_t *ent1, edict_t *ent2)
 {
 	char ent1Team[512];
 	char ent2Team[512];
-  
+
 	if (!ent1 || !ent2)
 	{
 		return false;
 	}
- 
+
 	if (!((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS)))
 	{
 		return false;
@@ -76,12 +76,12 @@ SelectNextItem(edict_t *ent, int itflags)
 	gclient_t *cl;
 	int i, index;
 	gitem_t *it;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	cl = ent->client;
 
 	if (cl->chase_target)
@@ -125,12 +125,12 @@ SelectPrevItem(edict_t *ent, int itflags)
 	gclient_t *cl;
 	int i, index;
 	gitem_t *it;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	cl = ent->client;
 
 	if (cl->chase_target)
@@ -172,12 +172,12 @@ void
 ValidateSelectedItem(edict_t *ent)
 {
 	gclient_t *cl;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	cl = ent->client;
 
 	if (cl->pers.inventory[cl->pers.selected_item])
@@ -202,12 +202,12 @@ Cmd_Give_f(edict_t *ent)
 	int i;
 	qboolean give_all;
 	edict_t *it_ent;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if ((deathmatch->value || coop->value) && !sv_cheats->value)
 	{
 		gi.cprintf(ent, PRINT_HIGH,
@@ -426,12 +426,12 @@ void
 Cmd_God_f(edict_t *ent)
 {
 	char *msg;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if ((deathmatch->value || coop->value) && !sv_cheats->value)
 	{
 		gi.cprintf(ent, PRINT_HIGH,
@@ -460,12 +460,12 @@ void
 Cmd_Notarget_f(edict_t *ent)
 {
 	char *msg;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if ((deathmatch->value || coop->value) && !sv_cheats->value)
 	{
 		gi.cprintf(ent, PRINT_HIGH,
@@ -491,12 +491,12 @@ void
 Cmd_Noclip_f(edict_t *ent)
 {
 	char *msg;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if ((deathmatch->value || coop->value) && !sv_cheats->value)
 	{
 		gi.cprintf(ent, PRINT_HIGH,
@@ -527,12 +527,12 @@ Cmd_Use_f(edict_t *ent)
 	int index;
 	gitem_t *it;
 	char *s;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	s = gi.args();
 	it = FindItem(s);
 
@@ -568,12 +568,12 @@ Cmd_Drop_f(edict_t *ent)
 	int index;
 	gitem_t *it;
 	char *s;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	s = gi.args();
 	it = FindItem(s);
 
@@ -661,12 +661,12 @@ void
 Cmd_Inven_f(edict_t *ent)
 {
 	gclient_t *cl;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	cl = ent->client;
 
 	cl->showscores = false;
@@ -688,12 +688,12 @@ void
 Cmd_InvUse_f(edict_t *ent)
 {
 	gitem_t *it;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ValidateSelectedItem(ent);
 
 	if (ent->client->pers.selected_item == -1)
@@ -720,12 +720,12 @@ Cmd_WeapPrev_f(edict_t *ent)
 	int i, index;
 	gitem_t *it;
 	int selected_weapon;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	cl = ent->client;
 
 	if (!cl->pers.weapon)
@@ -775,12 +775,12 @@ Cmd_WeapNext_f(edict_t *ent)
 	int i, index;
 	gitem_t *it;
 	int selected_weapon;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	cl = ent->client;
 
 	if (!cl->pers.weapon)
@@ -829,12 +829,12 @@ Cmd_WeapLast_f(edict_t *ent)
 	gclient_t *cl;
 	int index;
 	gitem_t *it;
-   
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	cl = ent->client;
 
 	if (!cl->pers.weapon || !cl->pers.lastweapon)
@@ -868,12 +868,12 @@ void
 Cmd_InvDrop_f(edict_t *ent)
 {
 	gitem_t *it;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ValidateSelectedItem(ent);
 
 	if (ent->client->pers.selected_item == -1)
@@ -895,12 +895,12 @@ Cmd_InvDrop_f(edict_t *ent)
 
 void
 Cmd_Kill_f(edict_t *ent)
-{  
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if ((level.time - ent->client->respawn_time) < 5)
 	{
 		return;
@@ -927,12 +927,12 @@ Cmd_Kill_f(edict_t *ent)
 
 void
 Cmd_PutAway_f(edict_t *ent)
-{  
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->client->showscores = false;
 	ent->client->showhelp = false;
 	ent->client->showinventory = false;
@@ -942,12 +942,12 @@ int
 PlayerSort(void const *a, void const *b)
 {
 	int anum, bnum;
-  
+
 	if (!a || !b)
 	{
 		return 0;
 	}
- 
+
 	anum = *(int *)a;
 	bnum = *(int *)b;
 
@@ -975,12 +975,12 @@ Cmd_Players_f(edict_t *ent)
 	char small[64];
 	char large[1280];
 	int index[256];
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	count = 0;
 
 	for (i = 0; i < maxclients->value; i++)
@@ -1005,7 +1005,7 @@ Cmd_Players_f(edict_t *ent)
 				game.clients[index[i]].pers.netname);
 
 		if (strlen(small) + strlen(large) > sizeof(large) - 100)
-		{   
+		{
 			/* can't print all of them in one packet */
 			strcat(large, "...\n");
 			break;
@@ -1021,12 +1021,12 @@ void
 Cmd_Wave_f(edict_t *ent)
 {
 	int i;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	i = atoi(gi.argv(1));
 
 	/* can't wave when ducked */
@@ -1081,12 +1081,12 @@ Cmd_Say_f(edict_t *ent, qboolean team, qboolean arg0)
 	char *p;
 	char text[2048];
 	gclient_t *cl;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if ((gi.argc() < 2) && !arg0)
 	{
 		return;
@@ -1202,12 +1202,12 @@ Cmd_Ent_Count_f(edict_t *ent)
 {
 	int x;
 	edict_t *e;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	x = 0;
 
 	for (e = g_edicts; e < &g_edicts[globals.num_edicts]; e++)
@@ -1228,12 +1228,12 @@ Cmd_PlayerList_f(edict_t *ent)
 	char st[80];
 	char text[1400];
 	edict_t *e2;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	/* connect time, ping, score, name */
 	*text = 0;
 
@@ -1268,12 +1268,12 @@ void
 ClientCommand(edict_t *ent)
 {
 	char *cmd;
-  
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (!ent->client)
 	{
 		return; /* not fully in game yet */

@@ -50,16 +50,16 @@ typedef struct
 	unsigned mask;
 	unsigned compare;
 } ipfilter_t;
-  
+
 ipfilter_t ipfilters[MAX_IPFILTERS];
 int numipfilters;
- 
+
 void
 Svcmd_Test_f(void)
 {
 	gi.cprintf(NULL, PRINT_HIGH, "Svcmd_Test_f()\n");
 }
- 
+
 qboolean
 StringToFilter(char *s, ipfilter_t *f)
 {
@@ -123,12 +123,12 @@ SV_FilterPacket(char *from)
 	unsigned in;
 	byte m[4];
 	char *p;
-  
+
 	if (!from)
 	{
 		return false;
 	}
- 
+
 	i = 0;
 	p = from;
 

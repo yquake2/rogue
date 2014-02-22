@@ -11,21 +11,21 @@
 #define TRIGGER_NOT_PLAYER 0x02
 #define TRIGGER_TRIGGERED 0x04
 #define TRIGGER_TOGGLE 0x08
- 
+
 #define PUSH_ONCE 0x01
 #define PUSH_START_OFF 0x02
 #define PUSH_SILENT 0x04
 
 static int windsound;
- 
+
 void
 InitTrigger(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!VectorCompare(self->s.angles, vec3_origin))
 	{
 		G_SetMovedir(self->s.angles, self->movedir);
@@ -37,29 +37,29 @@ InitTrigger(edict_t *self)
 	self->svflags = SVF_NOCLIENT;
 }
 
-/* 
- * the wait time has passed, so set 
- * back up for another activation 
+/*
+ * the wait time has passed, so set
+ * back up for another activation
  */
 void
 multi_wait(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->nextthink = 0;
 }
 
 void
 multi_trigger(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (ent->nextthink)
 	{
 		return; /* already been triggered */
@@ -73,9 +73,9 @@ multi_trigger(edict_t *ent)
 		ent->nextthink = level.time + ent->wait;
 	}
 	else
-	{   
+	{
 		/* we can't just remove (self) here, because
-		   this is a touch function called while looping 
+		   this is a touch function called while looping
 		   through area links... */
 		ent->touch = NULL;
 		ent->nextthink = level.time + FRAMETIME;
@@ -85,12 +85,12 @@ multi_trigger(edict_t *ent)
 
 void
 Use_Multi(edict_t *ent, edict_t *other /* unused */, edict_t *activator)
-{ 
+{
 	if (!ent || !activator)
 	{
 		return;
 	}
- 
+
 	if (ent->spawnflags & TRIGGER_TOGGLE)
 	{
 		if (ent->solid == SOLID_TRIGGER)
@@ -113,12 +113,12 @@ Use_Multi(edict_t *ent, edict_t *other /* unused */, edict_t *activator)
 
 void
 Touch_Multi(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (other->client)
 	{
 		if (self->spawnflags & 2)
@@ -171,12 +171,12 @@ Touch_Multi(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurfac
  */
 void
 trigger_enable(edict_t *self, edict_t *other /* unused */, edict_t *activator /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->solid = SOLID_TRIGGER;
 	self->use = Use_Multi;
 	gi.linkentity(self);
@@ -184,12 +184,12 @@ trigger_enable(edict_t *self, edict_t *other /* unused */, edict_t *activator /*
 
 void
 SP_trigger_multiple(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (ent->sounds == 1)
 	{
 		ent->noise_index = gi.soundindex("misc/secret.wav");
@@ -234,7 +234,7 @@ SP_trigger_multiple(edict_t *ent)
 
 /*
  * QUAKED trigger_once (.5 .5 .5) ? x x TRIGGERED
- * 
+ *
  * Triggers once, then removes itself.
  * You must set the key "target" to the name of another object in the level that has a matching "targetname".
  *
@@ -251,12 +251,12 @@ SP_trigger_multiple(edict_t *ent)
 
 void
 SP_trigger_once(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	/* make old maps work because I messed up on flag assignments here */
 	if (ent->spawnflags & 1)
 	{
@@ -274,34 +274,34 @@ SP_trigger_once(edict_t *ent)
 
 /*
  * QUAKED trigger_relay (.5 .5 .5) (-8 -8 -8) (8 8 8)
- * 
+ *
  * This fixed size trigger cannot be touched, it can only be fired by other events.
  */
 void
 trigger_relay_use(edict_t *self, edict_t *other /* unused */, edict_t *activator)
-{  
+{
 	if (!self || !activator)
 	{
 		return;
 	}
- 
+
 	G_UseTargets(self, activator);
 }
 
 void
 SP_trigger_relay(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->use = trigger_relay_use;
 }
 
 /*
  * QUAKED trigger_key (.5 .5 .5) (-8 -8 -8) (8 8 8)
- * 
+ *
  * A relay trigger that only fires it's targets if player has the proper key.
  * Use "item" to specify the required key, for example "key_data_cd"
  */
@@ -309,12 +309,12 @@ void
 trigger_key_use(edict_t *self, edict_t *other /* unused */, edict_t *activator)
 {
 	int index;
-  
+
 	if (!self|| !activator)
 	{
 		return;
 	}
- 
+
 	if (!self->item)
 	{
 		return;
@@ -412,12 +412,12 @@ trigger_key_use(edict_t *self, edict_t *other /* unused */, edict_t *activator)
 
 void
 SP_trigger_key(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!st.item)
 	{
 		gi.dprintf("no key item for trigger_key at %s\n", vtos(self->s.origin));
@@ -448,24 +448,24 @@ SP_trigger_key(edict_t *self)
 
 /*
  * QUAKED trigger_counter (.5 .5 .5) ? nomessage
- * 
+ *
  * Acts as an intermediary for an action that takes multiple inputs.
  *
  * If nomessage is not set, t will print "1 more.. " etc when triggered
  * and "sequence complete" when finished.
  *
- * After the counter has been triggered "count" times (default 2), 
+ * After the counter has been triggered "count" times (default 2),
  * it will fire all of it's targets and remove itself.
  */
 
 void
 trigger_counter_use(edict_t *self, edict_t *other /* unused */, edict_t *activator)
-{  
+{
 	if (!self || !activator)
 	{
 		return;
 	}
- 
+
 	if (self->count == 0)
 	{
 		return;
@@ -496,12 +496,12 @@ trigger_counter_use(edict_t *self, edict_t *other /* unused */, edict_t *activat
 
 void
 SP_trigger_counter(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->wait = -1;
 
 	if (!self->count)
@@ -514,17 +514,17 @@ SP_trigger_counter(edict_t *self)
 
 /*
  * QUAKED trigger_always (.5 .5 .5) (-8 -8 -8) (8 8 8)
- * 
+ *
  * This trigger will always fire. It is activated by the world.
  */
 void
 SP_trigger_always(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	/* we must have some delay to make sure our use targets are present */
 	if (ent->delay < 0.2)
 	{
@@ -536,12 +536,12 @@ SP_trigger_always(edict_t *ent)
 
 void
 trigger_push_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (strcmp(other->classname, "grenade") == 0)
 	{
 		VectorScale(self->movedir, self->speed * 10, other->velocity);
@@ -572,12 +572,12 @@ trigger_push_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, 
 
 void
 trigger_push_use(edict_t *self, edict_t *other /* unused */, edict_t *activator /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->solid == SOLID_NOT)
 	{
 		self->solid = SOLID_TRIGGER;
@@ -602,12 +602,12 @@ trigger_push_use(edict_t *self, edict_t *other /* unused */, edict_t *activator 
  */
 void
 SP_trigger_push(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	InitTrigger(self);
 	windsound = gi.soundindex("misc/windfly.wav");
 	self->touch = trigger_push_touch;
@@ -640,7 +640,7 @@ SP_trigger_push(edict_t *self)
 
 /*
  * QUAKED trigger_hurt (.5 .5 .5) ? START_OFF TOGGLE SILENT NO_PROTECTION SLOW
- * 
+ *
  * Any entity that touches this will be hurt.
  *
  * It does dmg points of damage each server frame
@@ -654,12 +654,12 @@ SP_trigger_push(edict_t *self)
  */
 void
 hurt_use(edict_t *self, edict_t *other /* unused */, edict_t *activator /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->solid == SOLID_NOT)
 	{
 		self->solid = SOLID_TRIGGER;
@@ -681,12 +681,12 @@ void
 hurt_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
 {
 	int dflags;
-  
+
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (!other->takedamage)
 	{
 		return;
@@ -729,12 +729,12 @@ hurt_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface
 
 void
 SP_trigger_hurt(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	InitTrigger(self);
 
 	self->noise_index = gi.soundindex("world/electro.wav");
@@ -764,12 +764,12 @@ SP_trigger_hurt(edict_t *self)
 
 void
 trigger_gravity_use(edict_t *self, edict_t *other /* unused */, edict_t *activator /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->solid == SOLID_NOT)
 	{
 		self->solid = SOLID_TRIGGER;
@@ -786,12 +786,12 @@ trigger_gravity_use(edict_t *self, edict_t *other /* unused */, edict_t *activat
 
 void
 trigger_gravity_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	other->gravity = self->gravity;
 }
 
@@ -806,12 +806,12 @@ trigger_gravity_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused *
  */
 void
 SP_trigger_gravity(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (st.gravity == 0)
 	{
 		gi.dprintf("trigger_gravity without gravity set at %s\n", vtos(self->s.origin));
@@ -840,7 +840,7 @@ SP_trigger_gravity(edict_t *self)
 
 /*
  * QUAKED trigger_monsterjump (.5 .5 .5) ?
- * 
+ *
  * Walking monsters that touch this will jump in the direction of the trigger's angle
  * "speed" default to 200, the speed thrown forward
  * "height" default to 200, the speed thrown upwards
@@ -848,12 +848,12 @@ SP_trigger_gravity(edict_t *self)
 
 void
 trigger_monsterjump_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (other->flags & (FL_FLY | FL_SWIM))
 	{
 		return;
@@ -884,12 +884,12 @@ trigger_monsterjump_touch(edict_t *self, edict_t *other, cplane_t *plane /* unus
 
 void
 SP_trigger_monsterjump(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->speed)
 	{
 		self->speed = 200;

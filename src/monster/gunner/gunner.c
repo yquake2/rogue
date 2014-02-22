@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "gunner.h"
 
@@ -15,7 +15,7 @@ static int sound_idle;
 static int sound_open;
 static int sound_search;
 static int sound_sight;
- 
+
 qboolean visible(edict_t *self, edict_t *other);
 void GunnerGrenade(edict_t *self);
 void GunnerFire(edict_t *self);
@@ -23,37 +23,37 @@ void gunner_fire_chain(edict_t *self);
 void gunner_refire_chain(edict_t *self);
 
 void gunner_stand(edict_t *self);
- 
+
 void
 gunner_idlesound(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_idle, 1, ATTN_IDLE, 0);
 }
 
 void
 gunner_sight(edict_t *self, edict_t *other /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_sight, 1, ATTN_NORM, 0);
 }
 
 void
 gunner_search(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_search, 1, ATTN_NORM, 0);
 }
 
@@ -122,12 +122,12 @@ mmove_t gunner_move_fidget = {
 
 void
 gunner_fidget(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
 		return;
@@ -183,12 +183,12 @@ mmove_t gunner_move_stand = {
 
 void
 gunner_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &gunner_move_stand;
 }
 
@@ -217,12 +217,12 @@ mmove_t gunner_move_walk = {
 
 void
 gunner_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &gunner_move_walk;
 }
 
@@ -246,12 +246,12 @@ mmove_t gunner_move_run = {
 
 void
 gunner_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_done_dodge(self);
 
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
@@ -282,12 +282,12 @@ mmove_t gunner_move_runandshoot = {
 
 void
 gunner_runandshoot(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &gunner_move_runandshoot;
 }
 
@@ -354,12 +354,12 @@ mmove_t gunner_move_pain1 = {
 
 void
 gunner_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum = 1;
@@ -416,12 +416,12 @@ gunner_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 
 void
 gunner_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -16, -16, -24);
 	VectorSet(self->maxs, 16, 16, -8);
 	self->movetype = MOVETYPE_TOSS;
@@ -456,12 +456,12 @@ gunner_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* 
 		int damage, vec3_t point /* unused */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* check for gib */
 	if (self->health <= self->gib_health)
 	{
@@ -496,12 +496,12 @@ gunner_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* 
 
 void
 gunner_duck_down(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.aiflags |= AI_DUCKED;
 
 	if (skill->value >= 2)
@@ -544,12 +544,12 @@ mmove_t gunner_move_duck = {
 /* gunner dodge moved below so I know about attack sequences */
 void
 gunner_opengun(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_open, 1, ATTN_IDLE, 0);
 }
 
@@ -561,12 +561,12 @@ GunnerFire(edict_t *self)
 	vec3_t target;
 	vec3_t aim;
 	int flash_number;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy || !self->enemy->inuse)
 	{
 		return;
@@ -596,12 +596,12 @@ gunner_grenade_check(edict_t *self)
 	vec3_t forward, right;
 	trace_t tr;
 	vec3_t target, dir;
-  
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return false;
@@ -668,12 +668,12 @@ GunnerGrenade(edict_t *self)
 	float pitch = 0;
 	vec3_t target;
 	qboolean blindfire = false;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy || !self->enemy->inuse)
 	{
 		return;
@@ -814,12 +814,12 @@ void
 gunner_blind_check(edict_t *self)
 {
 	vec3_t aim;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_MANUAL_STEERING)
 	{
 		VectorSubtract(self->monsterinfo.blind_fire_target, self->s.origin,
@@ -853,7 +853,7 @@ mframe_t gunner_frames_attack_grenade[] = {
 };
 
 mmove_t gunner_move_attack_grenade = {
-	FRAME_attak101, 
+	FRAME_attak101,
 	FRAME_attak121,
    	gunner_frames_attack_grenade,
    	gunner_run
@@ -863,12 +863,12 @@ void
 gunner_attack(edict_t *self)
 {
 	float chance, r;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_done_dodge(self);
 
 	if (self->monsterinfo.attack_state == AS_BLIND)
@@ -939,23 +939,23 @@ gunner_attack(edict_t *self)
 
 void
 gunner_fire_chain(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &gunner_move_fire_chain;
 }
 
 void
 gunner_refire_chain(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->enemy->health > 0)
 	{
 		if (visible(self, self->enemy))
@@ -975,12 +975,12 @@ void
 gunner_jump_now(edict_t *self)
 {
 	vec3_t forward, up;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_jump_start(self);
 
 	AngleVectors(self->s.angles, forward, NULL, up);
@@ -992,12 +992,12 @@ void
 gunner_jump2_now(edict_t *self)
 {
 	vec3_t forward, up;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_jump_start(self);
 
 	AngleVectors(self->s.angles, forward, NULL, up);
@@ -1007,12 +1007,12 @@ gunner_jump2_now(edict_t *self)
 
 void
 gunner_jump_wait_land(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->groundentity == NULL)
 	{
 		self->monsterinfo.nextframe = self->s.frame;
@@ -1070,12 +1070,12 @@ mmove_t gunner_move_jump2 = {
 
 void
 gunner_jump(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return;
@@ -1095,12 +1095,12 @@ gunner_jump(edict_t *self)
 
 qboolean
 gunner_blocked(edict_t *self, float dist)
-{  
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (blocked_checkshot(self, 0.25 + (0.05 * skill->value)))
 	{
 		return true;
@@ -1123,12 +1123,12 @@ gunner_blocked(edict_t *self, float dist)
 /* new duck code */
 void
 gunner_duck(edict_t *self, float eta)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((self->monsterinfo.currentmove == &gunner_move_jump2) ||
 		(self->monsterinfo.currentmove == &gunner_move_jump))
 	{
@@ -1168,12 +1168,12 @@ gunner_duck(edict_t *self, float eta)
 
 void
 gunner_sidestep(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((self->monsterinfo.currentmove == &gunner_move_jump2) ||
 		(self->monsterinfo.currentmove == &gunner_move_jump))
 	{
@@ -1204,12 +1204,12 @@ gunner_sidestep(edict_t *self)
  */
 void
 SP_monster_gunner(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

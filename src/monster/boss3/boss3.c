@@ -3,12 +3,12 @@
 
 void
 Use_Boss3(edict_t *ent, edict_t *other /* unused */, edict_t *activator /* unused */)
-{  
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	gi.WriteByte(svc_temp_entity);
 	gi.WriteByte(TE_BOSSTPORT);
 	gi.WritePosition(ent->s.origin);
@@ -18,12 +18,12 @@ Use_Boss3(edict_t *ent, edict_t *other /* unused */, edict_t *activator /* unuse
 
 void
 Think_Boss3Stand(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (ent->s.frame == FRAME_stand260)
 	{
 		ent->s.frame = FRAME_stand201;
@@ -43,12 +43,12 @@ Think_Boss3Stand(edict_t *ent)
  */
 void
 SP_monster_boss3_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

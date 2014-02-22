@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "boss31.h"
 
@@ -22,7 +22,7 @@ void jorg_idle(edict_t *self);
 void jorg_step_left(edict_t *self);
 void jorg_step_right(edict_t *self);
 void jorg_death_hit(edict_t *self);
- 
+
 static int sound_pain1;
 static int sound_pain2;
 static int sound_pain3;
@@ -40,12 +40,12 @@ static int sound_death_hit;
 
 void
 jorg_search(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	float r;
 
 	r = random();
@@ -128,56 +128,56 @@ mmove_t jorg_move_stand = {
 
 void
 jorg_idle(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_idle, 1, ATTN_NORM, 0);
 }
 
 void
 jorg_death_hit(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_BODY, sound_death_hit, 1, ATTN_NORM, 0);
 }
 
 void
 jorg_step_left(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_BODY, sound_step_left, 1, ATTN_NORM, 0);
 }
 
 void
 jorg_step_right(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_BODY, sound_step_right, 1, ATTN_NORM, 0);
 }
 
 void
 jorg_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &jorg_move_stand;
 }
 
@@ -263,23 +263,23 @@ mmove_t jorg_move_end_walk = {
 
 void
 jorg_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &jorg_move_walk;
 }
 
 void
 jorg_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
 		self->monsterinfo.currentmove = &jorg_move_stand;
@@ -484,12 +484,12 @@ mmove_t jorg_move_end_attack1 = {
 
 void
 jorg_reattack1(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (visible(self, self->enemy))
 	{
 		if (random() < 0.9)
@@ -511,23 +511,23 @@ jorg_reattack1(edict_t *self)
 
 void
 jorg_attack1(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &jorg_move_attack1;
 }
 
 void
 jorg_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum = 1;
@@ -540,7 +540,7 @@ jorg_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 		return;
 	}
 
-	/* Lessen the chance of him going into his 
+	/* Lessen the chance of him going into his
 	   pain frames if he takes little damage */
 	if (damage <= 40)
 	{
@@ -611,12 +611,12 @@ jorgBFG(edict_t *self)
 	vec3_t start;
 	vec3_t dir;
 	vec3_t vec;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, forward, right, NULL);
 	G_ProjectSource(self->s.origin, monster_flash_offset[MZ2_JORG_BFG_1],
 			forward, right, start);
@@ -634,12 +634,12 @@ jorg_firebullet_right(edict_t *self)
 {
 	vec3_t forward, right, target;
 	vec3_t start;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, forward, right, NULL);
 	G_ProjectSource(self->s.origin, monster_flash_offset[MZ2_JORG_MACHINEGUN_R1],
 			forward, right, start);
@@ -658,12 +658,12 @@ jorg_firebullet_left(edict_t *self)
 {
 	vec3_t forward, right, target;
 	vec3_t start;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, forward, right, NULL);
 	G_ProjectSource(self->s.origin, monster_flash_offset[MZ2_JORG_MACHINEGUN_L1],
 			forward, right, start);
@@ -679,24 +679,24 @@ jorg_firebullet_left(edict_t *self)
 
 void
 jorg_firebullet(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	jorg_firebullet_left(self);
 	jorg_firebullet_right(self);
 }
 
 void
 jorg_attack(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() <= 0.75)
 	{
 		gi.sound(self, CHAN_VOICE, sound_attack1, 1, ATTN_NORM, 0);
@@ -718,12 +718,12 @@ jorg_dead(edict_t *self)
 void
 jorg_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
 		int damage /* unused */, vec3_t point /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_death, 1, ATTN_NORM, 0);
 	self->deadflag = DEAD_DEAD;
 	self->takedamage = DAMAGE_NO;
@@ -741,12 +741,12 @@ Jorg_CheckAttack(edict_t *self)
 	trace_t tr;
 	int enemy_range;
 	float enemy_yaw;
-  
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (self->enemy->health > 0)
 	{
 		/* see if any entities are in the way of the shot */

@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "gladiator.h"
 
@@ -21,45 +21,45 @@ static int sound_sight;
 
 void
 gladiator_idle(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_idle, 1, ATTN_IDLE, 0);
 }
 
 void
 gladiator_sight(edict_t *self, edict_t *other /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_sight, 1, ATTN_NORM, 0);
 }
 
 void
 gladiator_search(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_search, 1, ATTN_NORM, 0);
 }
 
 void
 gladiator_cleaver_swing(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_WEAPON, sound_cleaver_swing, 1, ATTN_NORM, 0);
 }
 
@@ -82,12 +82,12 @@ mmove_t gladiator_move_stand = {
 
 void
 gladiator_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &gladiator_move_stand;
 }
 
@@ -119,12 +119,12 @@ mmove_t gladiator_move_walk = {
 
 void
 gladiator_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &gladiator_move_walk;
 }
 
@@ -146,12 +146,12 @@ mmove_t gladiator_move_run = {
 
 void
 gladiator_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
 		self->monsterinfo.currentmove = &gladiator_move_stand;
@@ -166,12 +166,12 @@ void
 GaldiatorMelee(edict_t *self)
 {
 	vec3_t aim;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(aim, MELEE_DISTANCE, self->mins[0], -4);
 
 	if (fire_hit(self, aim, (20 + (rand() % 5)), 300))
@@ -213,12 +213,12 @@ mmove_t gladiator_move_attack_melee = {
 
 void
 gladiator_melee(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &gladiator_move_attack_melee;
 }
 
@@ -228,12 +228,12 @@ GladiatorGun(edict_t *self)
 	vec3_t start;
 	vec3_t dir;
 	vec3_t forward, right;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	AngleVectors(self->s.angles, forward, right, NULL);
 	G_ProjectSource(self->s.origin, monster_flash_offset[MZ2_GLADIATOR_RAILGUN_1],
 			forward, right, start);
@@ -269,12 +269,12 @@ gladiator_attack(edict_t *self)
 {
 	float range;
 	vec3_t v;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* a small safe zone */
 	VectorSubtract(self->s.origin, self->enemy->s.origin, v);
 	range = VectorLength(v);
@@ -326,12 +326,12 @@ mmove_t gladiator_move_pain_air = {
 
 void
 gladiator_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum = 1;
@@ -376,12 +376,12 @@ gladiator_pain(edict_t *self, edict_t *other /* unused */, float kick, int damag
 
 void
 gladiator_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -16, -16, -24);
 	VectorSet(self->maxs, 16, 16, -8);
 	self->movetype = MOVETYPE_TOSS;
@@ -427,12 +427,12 @@ gladiator_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker 
 		int damage, vec3_t point /* unused */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* check for gib */
 	if (self->health <= self->gib_health)
 	{
@@ -471,12 +471,12 @@ gladiator_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker 
  */
 void
 SP_monster_gladiator(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

@@ -37,12 +37,12 @@ void
 fd_secret_use(edict_t *self, edict_t *other /* unused */, edict_t *activator /* unused */)
 {
 	edict_t *ent;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->flags & FL_TEAMSLAVE)
 	{
 		return;
@@ -58,12 +58,12 @@ fd_secret_use(edict_t *self, edict_t *other /* unused */, edict_t *activator /* 
 void
 fd_secret_killed(edict_t *self, edict_t *inflictor, edict_t *attacker,
 		int damage, vec3_t point)
-{    
+{
 	if (!self || !inflictor || !attacker)
 	{
 		return;
 	}
- 
+
 	self->health = self->max_health;
 	self->takedamage = DAMAGE_NO;
 
@@ -80,41 +80,41 @@ fd_secret_killed(edict_t *self, edict_t *inflictor, edict_t *attacker,
 
 void
 fd_secret_move1(edict_t *self)
-{     
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->nextthink = level.time + 1.0;
 	self->think = fd_secret_move2;
 }
 
-/* 
+/*
  * Start moving sideways w/sound...
  */
 void
 fd_secret_move2(edict_t *self)
-{     
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	Move_Calc(self, self->moveinfo.end_origin, fd_secret_move3);
 }
 
-/* 
+/*
  * Wait here until time to go back...
  */
 void
 fd_secret_move3(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!(self->spawnflags & SEC_OPEN_ONCE))
 	{
 		self->nextthink = level.time + self->wait;
@@ -122,54 +122,54 @@ fd_secret_move3(edict_t *self)
 	}
 }
 
-/* 
- * Move backward... 
+/*
+ * Move backward...
  */
 void
 fd_secret_move4(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	Move_Calc(self, self->moveinfo.start_origin, fd_secret_move5);
 }
 
-/* 
+/*
  * Wait 1 second...
  */
 void
 fd_secret_move5(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->nextthink = level.time + 1.0;
 	self->think = fd_secret_move6;
 }
 
 void
 fd_secret_move6(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	Move_Calc(self, self->move_origin, fd_secret_done);
 }
 
 void
 fd_secret_done(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->targetname || self->spawnflags & SEC_YES_SHOOT)
 	{
 		self->health = 1;
@@ -180,12 +180,12 @@ fd_secret_done(edict_t *self)
 
 void
 secret_blocked(edict_t *self, edict_t *other)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (!(self->flags & FL_TEAMSLAVE))
 	{
 		T_Damage(other, self, self, vec3_origin, other->s.origin,
@@ -198,12 +198,12 @@ secret_blocked(edict_t *self, edict_t *other)
  */
 void
 secret_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (other->health <= 0)
 	{
 		return;
@@ -229,7 +229,7 @@ secret_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurfa
 
 /*
  * QUAKED func_door_secret2 (0 .5 .8) ? open_once 1st_left 1st_down no_shoot always_shoot slide_right slide_forward
- * 
+ *
  * Basic secret door. Slides back, then to the left. Angle determines direction.
  *
  * FLAGS:
@@ -250,12 +250,12 @@ SP_func_door_secret2(edict_t *ent)
 {
 	vec3_t forward, right, up;
 	float lrSize = 0, fbSize = 0;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->moveinfo.sound_start = gi.soundindex("doors/dr1_strt.wav");
 	ent->moveinfo.sound_middle = gi.soundindex("doors/dr1_mid.wav");
 	ent->moveinfo.sound_end = gi.soundindex("doors/dr1_end.wav");
@@ -347,12 +347,12 @@ SP_func_door_secret2(edict_t *ent)
 
 void
 force_wall_think(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->wait)
 	{
 		gi.WriteByte(svc_temp_entity);
@@ -370,12 +370,12 @@ force_wall_think(edict_t *self)
 void
 force_wall_use(edict_t *self, edict_t *other /* activator */,
 	   	edict_t *activator /* activator */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->wait)
 	{
 		self->wait = 1;
@@ -397,7 +397,7 @@ force_wall_use(edict_t *self, edict_t *other /* activator */,
 
 /*
  * QUAKED func_force_wall (1 0 1) ? start_on
- * 
+ *
  * A vertical particle force wall. Turns on and solid when triggered.
  * If someone is in the force wall when it turns on, they're telefragged.
  *
@@ -407,12 +407,12 @@ force_wall_use(edict_t *self, edict_t *other /* activator */,
  */
 void
 SP_func_force_wall(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	gi.setmodel(ent, ent->model);
 
 	ent->offset[0] = (ent->absmax[0] + ent->absmin[0]) / 2;

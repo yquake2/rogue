@@ -8,12 +8,12 @@
 #include "header/local.h"
 
 #define MAXCHOICES 8
- 
+
 vec3_t VEC_UP = {0, -1, 0};
 vec3_t MOVEDIR_UP = {0, 0, 1};
 vec3_t VEC_DOWN = {0, -2, 0};
 vec3_t MOVEDIR_DOWN = {0, 0, -1};
- 
+
 void
 G_ProjectSource(vec3_t point, vec3_t distance, vec3_t forward,
 		vec3_t right, vec3_t result)
@@ -41,7 +41,7 @@ G_ProjectSource2(vec3_t point, vec3_t distance, vec3_t forward,
  * the structure.
  *
  * Searches beginning at the edict after from, or the beginning
- * if NULL. 
+ * if NULL.
  *
  * NULL will be returned if the end of the list is reached.
  */
@@ -49,12 +49,12 @@ edict_t *
 G_Find(edict_t *from, int fieldofs, char *match)
 {
 	char *s;
-  
+
 	if (!match)
 	{
 		return NULL;
 	}
- 
+
 	if (!from)
 	{
 		from = g_edicts;
@@ -195,7 +195,7 @@ findradius2(edict_t *from, vec3_t org, float rad)
  * the matching string at fieldofs (use the FOFS() macro) in
  * the structure.
  *
- * Searches beginning at the edict after from, or the beginning 
+ * Searches beginning at the edict after from, or the beginning
  * if NULL.
  *
  * NULL will be returned if the end of the list is reached.
@@ -241,12 +241,12 @@ G_PickTarget(char *targetname)
 
 void
 Think_Delay(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	G_UseTargets(ent, ent->activator);
 	G_FreeEdict(ent);
 }
@@ -270,12 +270,12 @@ G_UseTargets(edict_t *ent, edict_t *activator)
 	edict_t *t;
 	edict_t *master;
 	qboolean done = false;
- 
+
 	if (!ent || !activator)
 	{
 		return;
 	}
- 
+
 	/* check for a delay */
 	if (ent->delay)
 	{
@@ -623,12 +623,12 @@ char *
 G_CopyString(char *in)
 {
 	char *out;
- 
+
 	if (!in)
 	{
 		return NULL;
 	}
- 
+
 	out = gi.TagMalloc(strlen(in) + 1, TAG_LEVEL);
 	strcpy(out, in);
 	return out;
@@ -636,12 +636,12 @@ G_CopyString(char *in)
 
 void
 G_InitEdict(edict_t *e)
-{ 
+{
 	if (!e)
 	{
 		return;
 	}
- 
+
 	if (e->nextthink)
 	{
 		e->nextthink = 0;
@@ -700,12 +700,12 @@ G_Spawn(void)
  */
 void
 G_FreeEdict(edict_t *ed)
-{ 
+{
 	if (!ed)
 	{
 		return;
 	}
- 
+
 	gi.unlinkentity(ed); /* unlink from world */
 
 	if ((ed - g_edicts) <= (maxclients->value + BODY_QUEUE_SIZE))
@@ -724,12 +724,12 @@ G_TouchTriggers(edict_t *ent)
 {
 	int i, num;
 	edict_t *touch[MAX_EDICTS], *hit;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	/* dead things don't activate triggers! */
 	if ((ent->client || (ent->svflags & SVF_MONSTER)) && (ent->health <= 0))
 	{
@@ -768,12 +768,12 @@ G_TouchSolids(edict_t *ent)
 {
 	int i, num;
 	edict_t *touch[MAX_EDICTS], *hit;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	num = gi.BoxEdicts(ent->absmin, ent->absmax, touch, MAX_EDICTS, AREA_SOLID);
 
 	/* be careful, it is possible to have an entity in this
@@ -807,12 +807,12 @@ qboolean
 KillBox(edict_t *ent)
 {
 	trace_t tr;
- 
+
 	if (!ent)
 	{
 		return false;
 	}
- 
+
 	while (1)
 	{
 		tr = gi.trace(ent->s.origin, ent->mins, ent->maxs,

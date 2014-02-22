@@ -57,12 +57,12 @@ P_DamageFeedback(edict_t *player)
 	static vec3_t power_color = {0.0, 1.0, 0.0};
 	static vec3_t acolor = {1.0, 1.0, 1.0};
 	static vec3_t bcolor = {1.0, 0.0, 0.0};
- 
+
 	if (!player)
 	{
 		return;
 	}
- 
+
 	client = player->client;
 
 	/* flash the backgrounds behind the status numbers */
@@ -250,12 +250,12 @@ SV_CalcViewOffset(edict_t *ent)
 	float ratio;
 	float delta;
 	vec3_t v;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 
 	/* base angles */
 	angles = ent->client->ps.kick_angles;
@@ -407,12 +407,12 @@ SV_CalcGunOffset(edict_t *ent)
 	int i;
 	float delta;
 	static gitem_t *heatbeam;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (!heatbeam)
 	{
 		heatbeam = FindItemByClassname("weapon_plasmabeam");
@@ -491,12 +491,12 @@ void
 SV_AddBlend(float r, float g, float b, float a, float *v_blend)
 {
 	float a2, a3;
- 
+
 	if (!v_blend)
 	{
 		return;
 	}
- 
+
 	if (a <= 0)
 	{
 		return;
@@ -517,12 +517,12 @@ SV_CalcBlend(edict_t *ent)
 	int contents;
 	vec3_t vieworg;
 	int remaining;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->client->ps.blend[0] = ent->client->ps.blend[1] = ent->client->ps.blend[2] = ent->client->ps.blend[3] = 0;
 
 	/* add for contents */
@@ -684,12 +684,12 @@ P_FallingDamage(edict_t *ent)
 	float delta;
 	int damage;
 	vec3_t dir;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (ent->s.modelindex != 255)
 	{
 		return; /* not in the player model */
@@ -853,13 +853,13 @@ P_WorldEffects(void)
 	if ((old_waterlevel == 3) && (waterlevel != 3))
 	{
 		if (current_player->air_finished < level.time)
-		{   
+		{
 			/* gasp for air */
 			gi.sound(current_player, CHAN_VOICE, gi.soundindex("player/gasp1.wav"), 1, ATTN_NORM, 0);
 			PlayerNoise(current_player, current_player->s.origin, PNOISE_SELF);
 		}
 		else if (current_player->air_finished < level.time + 11)
-		{   
+		{
 			/* just break surface */
 			gi.sound(current_player, CHAN_VOICE, gi.soundindex("player/gasp2.wav"), 1, ATTN_NORM, 0);
 		}
@@ -983,12 +983,12 @@ G_SetClientEffects(edict_t *ent)
 {
 	int pa_type;
 	int remaining;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->s.effects = 0;
 
 	/* player is always ir visible, even dead. */
@@ -1078,12 +1078,12 @@ G_SetClientEffects(edict_t *ent)
 
 void
 G_SetClientEvent(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (ent->s.event)
 	{
 		return;
@@ -1102,12 +1102,12 @@ void
 G_SetClientSound(edict_t *ent)
 {
 	char *weap;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (ent->client->pers.game_helpchanged != game.helpchanged)
 	{
 		ent->client->pers.game_helpchanged = game.helpchanged;
@@ -1157,12 +1157,12 @@ G_SetClientFrame(edict_t *ent)
 {
 	gclient_t *client;
 	qboolean duck, run;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (ent->s.modelindex != 255)
 	{
 		return; /* not in the player model */
@@ -1256,7 +1256,7 @@ newanim:
 		client->anim_end = FRAME_jump2;
 	}
 	else if (run)
-	{   
+	{
 		/* running */
 		if (duck)
 		{
@@ -1270,7 +1270,7 @@ newanim:
 		}
 	}
 	else
-	{   
+	{
 		/* standing */
 		if (duck)
 		{
@@ -1286,7 +1286,7 @@ newanim:
 }
 
 /*
- * Called for each player at the end of 
+ * Called for each player at the end of
  * the server frame and right after spawning
  */
 void
@@ -1294,12 +1294,12 @@ ClientEndServerFrame(edict_t *ent)
 {
 	float bobtime;
 	int i;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	current_player = ent;
 	current_client = ent->client;
 
@@ -1344,7 +1344,7 @@ ClientEndServerFrame(edict_t *ent)
 	ent->s.angles[ROLL] = 0;
 	ent->s.angles[ROLL] = SV_CalcRoll(ent->s.angles, ent->velocity) * 4;
 
-	/* calculate speed and cycle to be 
+	/* calculate speed and cycle to be
 	   used for all cyclic walking effects */
 	xyspeed = sqrt(
 			ent->velocity[0] * ent->velocity[0] + ent->velocity[1] *
@@ -1356,7 +1356,7 @@ ClientEndServerFrame(edict_t *ent)
 		current_client->bobtime = 0; /* start at beginning of cycle again */
 	}
 	else if (ent->groundentity)
-	{ 
+	{
 	  	/* so bobbing only cycles when on ground */
 		if (xyspeed > 210)
 		{

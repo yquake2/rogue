@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "mutant.h"
 
@@ -28,12 +28,12 @@ void
 mutant_step(edict_t *self)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	n = (rand() + 1) % 3;
 
 	if (n == 0)
@@ -52,34 +52,34 @@ mutant_step(edict_t *self)
 
 void
 mutant_sight(edict_t *self, edict_t *other /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_sight, 1, ATTN_NORM, 0);
 }
 
 void
 mutant_search(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_search, 1, ATTN_NORM, 0);
 }
 
 void
 mutant_swing(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_swing, 1, ATTN_NORM, 0);
 }
 
@@ -151,23 +151,23 @@ mmove_t mutant_move_stand = {
 
 void
 mutant_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &mutant_move_stand;
 }
 
 void
 mutant_idle_loop(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() < 0.75)
 	{
 		self->monsterinfo.nextframe = FRAME_stand155;
@@ -199,12 +199,12 @@ mmove_t mutant_move_idle = {
 
 void
 mutant_idle(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &mutant_move_idle;
 	gi.sound(self, CHAN_VOICE, sound_idle, 1, ATTN_IDLE, 0);
 }
@@ -233,12 +233,12 @@ mmove_t mutant_move_walk = {
 
 void
 mutant_walk_loop(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &mutant_move_walk;
 }
 
@@ -258,12 +258,12 @@ mmove_t mutant_move_start_walk = {
 
 void
 mutant_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &mutant_move_start_walk;
 }
 
@@ -285,12 +285,12 @@ mmove_t mutant_move_run = {
 
 void
 mutant_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
 		self->monsterinfo.currentmove = &mutant_move_stand;
@@ -305,12 +305,12 @@ void
 mutant_hit_left(edict_t *self)
 {
 	vec3_t aim;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(aim, MELEE_DISTANCE, self->mins[0], 8);
 
 	if (fire_hit(self, aim, (10 + (rand() % 5)), 100))
@@ -327,12 +327,12 @@ void
 mutant_hit_right(edict_t *self)
 {
 	vec3_t aim;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(aim, MELEE_DISTANCE, self->maxs[0], 8);
 
 	if (fire_hit(self, aim, (10 + (rand() % 5)), 100))
@@ -347,12 +347,12 @@ mutant_hit_right(edict_t *self)
 
 void
 mutant_check_refire(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy || !self->enemy->inuse || (self->enemy->health <= 0))
 	{
 		return;
@@ -383,24 +383,24 @@ mmove_t mutant_move_attack = {
 
 void
 mutant_melee(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &mutant_move_attack;
 }
 
 void
 mutant_jump_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
 		csurface_t *surf /* unused */)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (self->health <= 0)
 	{
 		self->touch = NULL;
@@ -442,12 +442,12 @@ void
 mutant_jump_takeoff(edict_t *self)
 {
 	vec3_t forward;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_sight, 1, ATTN_NORM, 0);
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	self->s.origin[2] += 1;
@@ -461,12 +461,12 @@ mutant_jump_takeoff(edict_t *self)
 
 void
 mutant_check_landing(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->groundentity)
 	{
 		gi.sound(self, CHAN_WEAPON, sound_thud, 1, ATTN_NORM, 0);
@@ -505,23 +505,23 @@ mmove_t mutant_move_jump = {
 
 void
 mutant_jump(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &mutant_move_jump;
 }
 
 qboolean
 mutant_check_melee(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (range(self, self->enemy) == RANGE_MELEE)
 	{
 		return true;
@@ -535,12 +535,12 @@ mutant_check_jump(edict_t *self)
 {
 	vec3_t v;
 	float distance;
-  
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (self->absmin[2] > (self->enemy->absmin[2] + 0.75 * self->enemy->size[2]))
 	{
 		return false;
@@ -574,12 +574,12 @@ mutant_check_jump(edict_t *self)
 
 qboolean
 mutant_checkattack(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (!self->enemy || (self->enemy->health <= 0))
 	{
 		return false;
@@ -656,12 +656,12 @@ void
 mutant_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 {
 	float r;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum = 1;
@@ -700,12 +700,12 @@ mutant_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 
 void
 mutant_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -16, -16, -24);
 	VectorSet(self->maxs, 16, 16, -8);
 	self->movetype = MOVETYPE_TOSS;
@@ -759,12 +759,12 @@ mutant_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* 
 		int damage, vec3_t point /* unused */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health <= self->gib_health)
 	{
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/udeath.wav"), 1, ATTN_NORM, 0);
@@ -809,12 +809,12 @@ mutant_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* 
  */
 void
 SP_monster_mutant(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

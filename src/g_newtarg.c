@@ -36,12 +36,12 @@ use_target_steam(edict_t *self, edict_t *other, edict_t *activator /* unused */)
 {
 	static int nextid;
 	vec3_t point;
- 
+
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (nextid > 20000)
 	{
 		nextid = nextid % 20000;
@@ -49,7 +49,7 @@ use_target_steam(edict_t *self, edict_t *other, edict_t *activator /* unused */)
 
 	nextid++;
 
-	/* automagically set wait from func_timer unless they set it 
+	/* automagically set wait from func_timer unless they set it
 	   already, or  default to 1000 if not called by a func_timer */
 	if (!self->wait)
 	{
@@ -103,12 +103,12 @@ void
 target_steam_start(edict_t *self)
 {
 	edict_t *ent;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->use = use_target_steam;
 
 	if (self->target)
@@ -178,12 +178,12 @@ target_anger_use(edict_t *self, edict_t *other /* unused */, edict_t *activator 
 {
 	edict_t *target;
 	edict_t *t;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	t = NULL;
 	target = G_Find(t, FOFS(targetname), self->killtarget);
 
@@ -228,7 +228,7 @@ target_anger_use(edict_t *self, edict_t *other /* unused */, edict_t *activator 
 
 /*
  * QUAKED target_anger (1 0 0) (-8 -8 -8) (8 8 8)
- * 
+ *
  * This trigger will cause an entity to be angry at another entity when a player touches it.
  * Target the entity you want to anger, and killtarget the entity you want it to be angry at.
  *
@@ -237,12 +237,12 @@ target_anger_use(edict_t *self, edict_t *other /* unused */, edict_t *activator 
  */
 void
 SP_target_anger(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->target)
 	{
 		gi.dprintf("target_anger without target!\n");
@@ -266,12 +266,12 @@ target_killplayers_use(edict_t *self, edict_t *other /* unused */, edict_t *acti
 {
 	int i;
 	edict_t *ent, *player;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* kill the players */
 	for (i = 0; i < game.maxclients; i++)
 	{
@@ -326,34 +326,34 @@ target_killplayers_use(edict_t *self, edict_t *other /* unused */, edict_t *acti
 
 /*
  * QUAKED target_killplayers (1 0 0) (-8 -8 -8) (8 8 8)
- * 
+ *
  * When triggered, this will kill all the players on the map.
  */
 void
 SP_target_killplayers(edict_t *self)
-{   
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->use = target_killplayers_use;
 	self->svflags = SVF_NOCLIENT;
 }
 
 /*
  * QUAKED target_blacklight (1 0 1) (-16 -16 -24) (16 16 24)
- * 
+ *
  * Pulsing black light with sphere in the center
  */
 void
 blacklight_think(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->s.angles[0] = rand() % 360;
 	self->s.angles[1] = rand() % 360;
 	self->s.angles[2] = rand() % 360;
@@ -362,14 +362,14 @@ blacklight_think(edict_t *self)
 
 void
 SP_target_blacklight(edict_t *ent)
-{  
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
-	{   
+	{
 		/* auto-remove for deathmatch */
 		G_FreeEdict(ent);
 		return;
@@ -388,17 +388,17 @@ SP_target_blacklight(edict_t *ent)
 
 /*
  * QUAKED target_orb (1 0 1) (-16 -16 -24) (16 16 24)
- * 
+ *
  * Translucent pulsing orb with speckles
  */
 void
 orb_think(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->s.angles[0] = rand() % 360;
 	self->s.angles[1] = rand() % 360;
 	self->s.angles[2] = rand() % 360;
@@ -407,14 +407,14 @@ orb_think(edict_t *self)
 
 void
 SP_target_orb(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
-	{   
+	{
 		/* auto-remove for deathmatch */
 		G_FreeEdict(ent);
 		return;

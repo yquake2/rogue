@@ -24,12 +24,12 @@ void hunter_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *su
 
 void
 sphere_think_explode(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->owner && self->owner->client &&
 		!(self->spawnflags & SPHERE_DOPPLEGANGER))
 	{
@@ -42,24 +42,24 @@ sphere_think_explode(edict_t *self)
 void
 sphere_explode(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
 		int damage /* unused */, vec3_t point /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	sphere_think_explode(self);
 }
 
 void
 sphere_if_idle_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
 		int damage /* unused */, vec3_t point /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy)
 	{
 		sphere_think_explode(self);
@@ -71,12 +71,12 @@ sphere_fly(edict_t *self)
 {
 	vec3_t dest;
 	vec3_t dir;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (level.time >= self->wait)
 	{
 		sphere_think_explode(self);
@@ -106,12 +106,12 @@ sphere_chase(edict_t *self, int stupidChase)
 	vec3_t dest;
 	vec3_t dir;
 	float dist;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((level.time >= self->wait) ||
 		(self->enemy && (self->enemy->health < 1)))
 	{
@@ -198,12 +198,12 @@ sphere_fire(edict_t *self, edict_t *enemy)
 {
 	vec3_t dest;
 	vec3_t dir;
-  
+
 	if (!self || !enemy)
 	{
 		return;
 	}
- 
+
 	if ((level.time >= self->wait) || !enemy)
 	{
 		sphere_think_explode(self);
@@ -226,12 +226,12 @@ sphere_fire(edict_t *self, edict_t *enemy)
 void
 sphere_touch(edict_t *self, edict_t *other, cplane_t *plane,
 		csurface_t *surf, int mod)
-{  
+{
 	if (!self || !other || !plane || !surf)
 	{
 		return;
 	}
- 
+
 	if (self->spawnflags & SPHERE_DOPPLEGANGER)
 	{
 		if (other == self->teammaster)
@@ -279,12 +279,12 @@ sphere_touch(edict_t *self, edict_t *other, cplane_t *plane,
 void
 vengeance_touch(edict_t *self, edict_t *other, cplane_t *plane,
 		csurface_t *surf)
-{ 
+{
 	if (!self || !other || !plane)
 	{
 		return;
 	}
- 
+
 	if (self->spawnflags & SPHERE_DOPPLEGANGER)
 	{
 		sphere_touch(self, other, plane, surf, MOD_DOPPLE_VENGEANCE);
@@ -299,12 +299,12 @@ void
 hunter_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	edict_t *owner;
- 
+
 	if (!self || !other || !plane || !surf)
 	{
 		return;
 	}
- 
+
 	/* don't blow up if you hit the world.... sheesh. */
 	if (other == world)
 	{
@@ -339,12 +339,12 @@ defender_shoot(edict_t *self, edict_t *enemy)
 {
 	vec3_t dir;
 	vec3_t start;
-  
+
 	if (!self || !enemy)
 	{
 		return;
 	}
- 
+
 	if (!(enemy->inuse) || (enemy->health <= 0))
 	{
 		return;
@@ -379,12 +379,12 @@ void
 body_gib(edict_t *self)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_BODY, gi.soundindex("misc/udeath.wav"), 1, ATTN_NORM, 0);
 
 	for (n = 0; n < 4; n++)
@@ -401,12 +401,12 @@ hunter_pain(edict_t *self, edict_t *other, float kick, int damage)
 	edict_t *owner;
 	float dist;
 	vec3_t dir;
-  
+
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (self->enemy)
 	{
 		return;
@@ -489,12 +489,12 @@ hunter_pain(edict_t *self, edict_t *other, float kick, int damage)
 
 void
 defender_pain(edict_t *self, edict_t *other, float kick, int damage)
-{  
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (other == self->owner)
 	{
 		return;
@@ -505,12 +505,12 @@ defender_pain(edict_t *self, edict_t *other, float kick, int damage)
 
 void
 vengeance_pain(edict_t *self, edict_t *other, float kick, int damage)
-{ 
+{
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	if (self->enemy)
 	{
 		return;
@@ -545,12 +545,12 @@ vengeance_pain(edict_t *self, edict_t *other, float kick, int damage)
 
 void
 defender_think(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->owner)
 	{
 		G_FreeEdict(self);
@@ -602,12 +602,12 @@ hunter_think(edict_t *self)
 {
 	edict_t *owner;
 	vec3_t dir, ang;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* if we've exited the level, just remove ourselves. */
 	if (level.intermissiontime)
 	{
@@ -678,12 +678,12 @@ hunter_think(edict_t *self)
 
 void
 vengeance_think(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* if we've exited the level, just remove ourselves. */
 	if (level.intermissiontime)
 	{
@@ -716,12 +716,12 @@ edict_t *
 Sphere_Spawn(edict_t *owner, int spawnflags)
 {
 	edict_t *sphere;
-  
+
 	if (!owner)
 	{
 		return NULL;
 	}
- 
+
 	sphere = G_Spawn();
 	VectorCopy(owner->s.origin, sphere->s.origin);
 	sphere->s.origin[2] = owner->absmax[2];
@@ -825,12 +825,12 @@ void
 Defender_Launch(edict_t *self)
 {
 	edict_t *sphere;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	sphere = Sphere_Spawn(self, SPHERE_DEFENDER);
 	Own_Sphere(self, sphere);
 }
@@ -839,12 +839,12 @@ void
 Hunter_Launch(edict_t *self)
 {
 	edict_t *sphere;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	sphere = Sphere_Spawn(self, SPHERE_HUNTER);
 	Own_Sphere(self, sphere);
 }
@@ -853,12 +853,12 @@ void
 Vengeance_Launch(edict_t *self)
 {
 	edict_t *sphere;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	sphere = Sphere_Spawn(self, SPHERE_VENGEANCE);
 	Own_Sphere(self, sphere);
 }

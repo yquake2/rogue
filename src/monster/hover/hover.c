@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "hover.h"
 
@@ -17,7 +17,7 @@ void hover_reattack(edict_t *self);
 void hover_fire_blaster(edict_t *self);
 void hover_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 		int damage, vec3_t point);
- 
+
 static int sound_pain1;
 static int sound_pain2;
 static int sound_death1;
@@ -37,12 +37,12 @@ static int daed_sound_search2;
 
 void
 hover_sight(edict_t *self, edict_t *other /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->mass < 225)
 	{
 		gi.sound(self, CHAN_VOICE, sound_sight, 1, ATTN_NORM, 0);
@@ -55,12 +55,12 @@ hover_sight(edict_t *self, edict_t *other /* unused */)
 
 void
 hover_search(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->mass < 225)
 	{
 		if (random() < 0.5)
@@ -393,12 +393,12 @@ mmove_t hover_move_end_attack2 = {
 
 void
 hover_reattack(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->enemy->health > 0)
 	{
 		if (visible(self, self->enemy))
@@ -434,12 +434,12 @@ hover_fire_blaster(edict_t *self)
 	vec3_t end;
 	vec3_t dir;
 	int effect;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy || !self->enemy->inuse)
 	{
 		return;
@@ -476,23 +476,23 @@ hover_fire_blaster(edict_t *self)
 
 void
 hover_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &hover_move_stand;
 }
 
 void
 hover_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
 		self->monsterinfo.currentmove = &hover_move_stand;
@@ -505,23 +505,23 @@ hover_run(edict_t *self)
 
 void
 hover_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &hover_move_walk;
 }
 
 void
 hover_start_attack(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &hover_move_start_attack;
 }
 
@@ -529,12 +529,12 @@ void
 hover_attack(edict_t *self)
 {
 	float chance;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!skill->value)
 	{
 		chance = 0;
@@ -568,12 +568,12 @@ hover_attack(edict_t *self)
 
 void
 hover_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum |= 1; /* support for skins 2 & 3. */
@@ -657,12 +657,12 @@ hover_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 
 void
 hover_deadthink(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->groundentity && (level.time < self->timestamp))
 	{
 		self->nextthink = level.time + FRAMETIME;
@@ -674,12 +674,12 @@ hover_deadthink(edict_t *self)
 
 void
 hover_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -16, -16, -24);
 	VectorSet(self->maxs, 16, 16, -8);
 	self->movetype = MOVETYPE_TOSS;
@@ -694,12 +694,12 @@ hover_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* u
 		int damage, vec3_t point /* unused */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->s.effects = 0;
 	self->monsterinfo.power_armor_type = POWER_ARMOR_NONE;
 
@@ -759,12 +759,12 @@ hover_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* u
 
 qboolean
 hover_blocked(edict_t *self, float dist)
-{  
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (blocked_checkshot(self, 0.25 + (0.05 * skill->value)))
 	{
 		return true;
@@ -774,7 +774,7 @@ hover_blocked(edict_t *self, float dist)
 }
 
 
-/* 
+/*
  * QUAKED monster_hover (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
  *
  * QUAKED monster_daedalus (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
@@ -782,12 +782,12 @@ hover_blocked(edict_t *self, float dist)
  */
 void
 SP_monster_hover(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

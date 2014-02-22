@@ -15,10 +15,10 @@
  * .owner		forward link
  * .aiment		backward link
  */
- 
+
 #define NEXT(n) (((n) + 1) & (TRAIL_LENGTH - 1))
 #define PREV(n) (((n) - 1) & (TRAIL_LENGTH - 1))
- 
+
 #define TRAIL_LENGTH 8
 
 edict_t *trail[TRAIL_LENGTH];
@@ -82,12 +82,12 @@ PlayerTrail_PickFirst(edict_t *self)
 {
 	int marker;
 	int n;
-  
+
 	if (!self)
 	{
 		return NULL;
 	}
- 
+
 	if (!trail_active)
 	{
 		return NULL;
@@ -123,12 +123,12 @@ PlayerTrail_PickNext(edict_t *self)
 {
 	int marker;
 	int n;
-  
+
 	if (!self)
 	{
 		return NULL;
 	}
- 
+
 	if (!trail_active)
 	{
 		return NULL;

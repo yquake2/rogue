@@ -7,7 +7,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "soldier.h"
 
@@ -30,34 +30,34 @@ void soldier_blind(edict_t *self);
 
 void
 soldier_start_charge(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.aiflags |= AI_CHARGING;
 }
 
 void
 soldier_stop_charge(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.aiflags &= ~AI_CHARGING;
 }
 
 void
 soldier_idle(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() > 0.8)
 	{
 		gi.sound(self, CHAN_VOICE, sound_idle, 1, ATTN_IDLE, 0);
@@ -66,12 +66,12 @@ soldier_idle(edict_t *self)
 
 void
 soldier_cock(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->s.frame == FRAME_stand322)
 	{
 		gi.sound(self, CHAN_WEAPON, sound_cock, 1, ATTN_IDLE, 0);
@@ -178,12 +178,12 @@ mmove_t soldier_move_stand3 = {
 
 void
 soldier_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((self->monsterinfo.currentmove == &soldier_move_stand3) ||
 		(random() < 0.8))
 	{
@@ -197,12 +197,12 @@ soldier_stand(edict_t *self)
 
 void
 soldier_walk1_random(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() > 0.1)
 	{
 		self->monsterinfo.nextframe = FRAME_walk101;
@@ -274,12 +274,12 @@ mmove_t soldier_move_walk2 = {
 
 void
 soldier_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() < 0.5)
 	{
 		self->monsterinfo.currentmove = &soldier_move_walk1;
@@ -304,12 +304,12 @@ mmove_t soldier_move_start_run = {
 
 void
 soldier_fire_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((self->s.skinnum <= 1) && (self->enemy) && visible(self, self->enemy))
 	{
 		soldier_fire(self, 0);
@@ -334,12 +334,12 @@ mmove_t soldier_move_run = {
 
 void
 soldier_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_done_dodge(self);
 
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
@@ -452,12 +452,12 @@ soldier_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 {
 	float r;
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum |= 1;
@@ -571,12 +571,12 @@ soldier_fire(edict_t *self, int in_flash_number)
 	float r, u;
 	int flash_index;
 	int flash_number;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	vec3_t aim_norm;
 	float angle;
 	trace_t tr;
@@ -702,23 +702,23 @@ soldier_fire(edict_t *self, int in_flash_number)
 
 void
 soldier_fire1(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	soldier_fire(self, 0);
 }
 
 void
 soldier_attack1_refire1(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_MANUAL_STEERING)
 	{
 		self->monsterinfo.aiflags &= ~AI_MANUAL_STEERING;
@@ -752,12 +752,12 @@ soldier_attack1_refire1(edict_t *self)
 
 void
 soldier_attack1_refire2(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return;
@@ -803,23 +803,23 @@ mmove_t soldier_move_attack1 = {
 
 void
 soldier_fire2(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	soldier_fire(self, 1);
 }
 
 void
 soldier_attack2_refire1(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return;
@@ -847,12 +847,12 @@ soldier_attack2_refire1(edict_t *self)
 
 void
 soldier_attack2_refire2(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return;
@@ -904,24 +904,24 @@ mmove_t soldier_move_attack2 = {
 
 void
 soldier_fire3(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_duck_down(self);
 	soldier_fire(self, 2);
 }
 
 void
 soldier_attack3_refire(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((level.time + 0.4) < self->monsterinfo.duck_wait_time)
 	{
 		self->monsterinfo.nextframe = FRAME_attak303;
@@ -949,12 +949,12 @@ mmove_t soldier_move_attack3 = {
 
 void
 soldier_fire4(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	soldier_fire(self, 3);
 }
 
@@ -976,23 +976,23 @@ mmove_t soldier_move_attack4 = {
 
 void
 soldier_fire8(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	soldier_fire(self, -7);
 }
 
 void
 soldier_attack6_refire(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* make sure dodge & charge bits are cleared */
 	monster_done_dodge(self);
 	soldier_stop_charge(self);
@@ -1046,12 +1046,12 @@ void
 soldier_attack(edict_t *self)
 {
 	float r, chance;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_done_dodge(self);
 
 	/* blindfire! */
@@ -1126,12 +1126,12 @@ soldier_attack(edict_t *self)
 
 void
 soldier_sight(edict_t *self, edict_t *other /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() < 0.5)
 	{
 		gi.sound(self, CHAN_VOICE, sound_sight1, 1, ATTN_NORM, 0);
@@ -1169,12 +1169,12 @@ mmove_t soldier_move_duck = {
 
 qboolean
 soldier_blocked(edict_t *self, float dist)
-{  
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	/* don't do anything if you're dodging */
 	if ((self->monsterinfo.aiflags & AI_DODGING) ||
 		(self->monsterinfo.aiflags & AI_DUCKED))
@@ -1197,34 +1197,34 @@ soldier_blocked(edict_t *self, float dist)
 
 void
 soldier_fire6(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	soldier_fire(self, 5);
 }
 
 void
 soldier_fire7(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	soldier_fire(self, 6);
 }
 
 void
 soldier_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -16, -16, -24);
 	VectorSet(self->maxs, 16, 16, -8);
 	self->movetype = MOVETYPE_TOSS;
@@ -1238,14 +1238,14 @@ soldier_dead2(edict_t *self)
 {
 	vec3_t tempmins, tempmaxs, temporg;
 	trace_t tr;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorCopy(self->s.origin, temporg);
-	/* this is because location traces done at the 
+	/* this is because location traces done at the
 	   floor are guaranteed to hit the floor (inside
 	   the sv_trace code it grows the bbox by 1 in
 	   all directions) */
@@ -1558,12 +1558,12 @@ soldier_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /*
 		int damage, vec3_t point /* unused */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* check for gib */
 	if (self->health <= self->gib_health)
 	{
@@ -1636,12 +1636,12 @@ soldier_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /*
 
 void
 soldier_sidestep(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->s.skinnum <= 3)
 	{
 		if (self->monsterinfo.currentmove != &soldier_move_attack6)
@@ -1662,12 +1662,12 @@ void
 soldier_duck(edict_t *self, float eta)
 {
 	float r;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* has to be done immediately otherwise he can get stuck */
 	monster_duck_down(self);
 
@@ -1741,23 +1741,23 @@ mmove_t soldier_move_blind = {
 
 void
 soldier_blind(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &soldier_move_blind;
 }
 
 void
 SP_monster_soldier_x(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->s.modelindex = gi.modelindex("models/monsters/soldier/tris.md2");
 	self->monsterinfo.scale = MODEL_SCALE;
 	VectorSet(self->mins, -16, -16, -24);
@@ -1807,12 +1807,12 @@ SP_monster_soldier_x(edict_t *self)
  */
 void
 SP_monster_soldier_light(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -1841,12 +1841,12 @@ SP_monster_soldier_light(edict_t *self)
  */
 void
 SP_monster_soldier(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -1871,12 +1871,12 @@ SP_monster_soldier(edict_t *self)
  */
 void
 SP_monster_soldier_ss(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

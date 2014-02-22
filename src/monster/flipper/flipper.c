@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "flipper.h"
 
@@ -34,12 +34,12 @@ mmove_t flipper_move_stand = {
 
 void
 flipper_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &flipper_move_stand;
 }
 
@@ -81,12 +81,12 @@ mmove_t flipper_move_run_loop = {
 
 void
 flipper_run_loop(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &flipper_move_run_loop;
 }
 
@@ -108,12 +108,12 @@ mmove_t flipper_move_run_start = {
 
 void
 flipper_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &flipper_move_run_start;
 }
 
@@ -154,12 +154,12 @@ mmove_t flipper_move_walk = {
 
 void
 flipper_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &flipper_move_walk;
 }
 
@@ -180,12 +180,12 @@ mmove_t flipper_move_start_run = {
 
 void
 flipper_start_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &flipper_move_start_run;
 }
 
@@ -223,24 +223,24 @@ void
 flipper_bite(edict_t *self)
 {
 	vec3_t aim;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(aim, MELEE_DISTANCE, 0, 0);
 	fire_hit(self, aim, 5, 0);
 }
 
 void
 flipper_preattack(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_WEAPON, sound_chomp, 1, ATTN_NORM, 0);
 }
 
@@ -276,12 +276,12 @@ mmove_t flipper_move_attack = {
 
 void
 flipper_melee(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &flipper_move_attack;
 }
 
@@ -289,12 +289,12 @@ void
 flipper_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum = 1;
@@ -328,12 +328,12 @@ flipper_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 
 void
 flipper_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -16, -16, -24);
 	VectorSet(self->maxs, 16, 16, -8);
 	self->movetype = MOVETYPE_TOSS;
@@ -415,12 +415,12 @@ mmove_t flipper_move_death = {
 
 void
 flipper_sight(edict_t *self, edict_t *other /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_sight, 1, ATTN_NORM, 0);
 }
 
@@ -429,12 +429,12 @@ flipper_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /*
 		int damage, vec3_t point /* unused */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* check for gib */
 	if (self->health <= self->gib_health)
 	{
@@ -472,12 +472,12 @@ flipper_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /*
  */
 void
 SP_monster_flipper(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

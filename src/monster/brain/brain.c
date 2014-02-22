@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "brain.h"
 
@@ -93,12 +93,12 @@ mmove_t brain_move_stand = {
 
 void
 brain_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &brain_move_stand;
 }
 
@@ -147,12 +147,12 @@ mmove_t brain_move_idle = {
 
 void
 brain_idle(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_AUTO, sound_idle3, 1, ATTN_IDLE, 0);
 	self->monsterinfo.currentmove = &brain_move_idle;
 }
@@ -181,12 +181,12 @@ mmove_t brain_move_walk1 = {
 
 void
 brain_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &brain_move_walk1;
 }
 
@@ -338,12 +338,12 @@ mmove_t brain_move_death1 = {
 /* MELEE */
 void
 brain_swing_right(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_BODY, sound_melee1, 1, ATTN_NORM, 0);
 }
 
@@ -351,12 +351,12 @@ void
 brain_hit_right(edict_t *self)
 {
 	vec3_t aim;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(aim, MELEE_DISTANCE, self->maxs[0], 8);
 
 	if (fire_hit(self, aim, (15 + (rand() % 5)), 40))
@@ -367,23 +367,23 @@ brain_hit_right(edict_t *self)
 
 void
 brain_swing_left(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_BODY, sound_melee2, 1, ATTN_NORM, 0);
 }
 
 void
 brain_hit_left(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	vec3_t aim;
 
 	VectorSet(aim, MELEE_DISTANCE, self->mins[0], 8);
@@ -424,12 +424,12 @@ mmove_t brain_move_attack1 = {
 
 void
 brain_chest_open(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->spawnflags &= ~65536;
 	self->monsterinfo.power_armor_type = POWER_ARMOR_NONE;
 	gi.sound(self, CHAN_BODY, sound_chest_open, 1, ATTN_NORM, 0);
@@ -439,12 +439,12 @@ void
 brain_tentacle_attack(edict_t *self)
 {
 	vec3_t aim;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(aim, MELEE_DISTANCE, 0, 8);
 
 	if (fire_hit(self, aim, (10 + (rand() % 5)), -600) && (skill->value > 0))
@@ -457,12 +457,12 @@ brain_tentacle_attack(edict_t *self)
 
 void
 brain_chest_closed(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.power_armor_type = POWER_ARMOR_SCREEN;
 
 	if (self->spawnflags & 65536)
@@ -501,12 +501,12 @@ mmove_t brain_move_attack2 = {
 
 void
 brain_melee(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() <= 0.5)
 	{
 		self->monsterinfo.currentmove = &brain_move_attack1;
@@ -541,12 +541,12 @@ mmove_t brain_move_run = {
 
 void
 brain_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.power_armor_type = POWER_ARMOR_SCREEN;
 
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
@@ -564,12 +564,12 @@ brain_pain(edict_t *self, edict_t *other /* unused */, float kick /* unused */,
 	   	int damage /* unused */)
 {
 	float r;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < (self->max_health / 2))
 	{
 		self->s.skinnum = 1;
@@ -614,12 +614,12 @@ brain_pain(edict_t *self, edict_t *other /* unused */, float kick /* unused */,
 
 void
 brain_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -16, -16, -24);
 	VectorSet(self->maxs, 16, 16, -8);
 	self->movetype = MOVETYPE_TOSS;
@@ -633,12 +633,12 @@ brain_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* u
 		int damage, vec3_t point /* unused */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->s.effects = 0;
 	self->monsterinfo.power_armor_type = POWER_ARMOR_NONE;
 
@@ -684,12 +684,12 @@ brain_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* u
 
 void
 brain_duck(edict_t *self, float eta)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* has to be done immediately otherwise he can get stuck */
 	monster_duck_down(self);
 
@@ -713,12 +713,12 @@ brain_duck(edict_t *self, float eta)
  */
 void
 SP_monster_brain(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

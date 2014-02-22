@@ -4,18 +4,18 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 
 #define DI_NODIR -1
 #define STEPSIZE 18
 
-/* this is used for communications out of 
+/* this is used for communications out of
  * sv_movestep to say what entity is blocking us */
 edict_t *new_bad;
 
 /*
- * Returns false if any part of the bottom of the 
+ * Returns false if any part of the bottom of the
  * entity is off an edge that is not a staircase.
  */
 int c_yes, c_no;
@@ -27,12 +27,12 @@ M_CheckBottom(edict_t *ent)
 	trace_t trace;
 	int x, y;
 	float mid, bottom;
- 
+
 	if (!ent)
 	{
 		return false;
 	}
- 
+
 	VectorAdd(ent->s.origin, ent->mins, mins);
 	VectorAdd(ent->s.origin, ent->maxs, maxs);
 
@@ -143,12 +143,12 @@ IsBadAhead(edict_t *self, edict_t *bad, vec3_t move)
 	vec3_t forward;
 	float dp_bad, dp_move;
 	vec3_t move_copy;
-  
+
 	if (!self || !bad)
 	{
-		return false; 
+		return false;
 	}
- 
+
 	VectorCopy(move, move_copy);
 
 	VectorSubtract(bad->s.origin, self->s.origin, dir);
@@ -190,12 +190,12 @@ SV_movestep(edict_t *ent, vec3_t move, qboolean relink)
 	int contents;
 	edict_t *current_bad = NULL;
 	float minheight;
- 
+
 	if (!ent)
 	{
 		return false;
 	}
- 
+
 	if (ent->health > 0)
 	{
 		current_bad = CheckForBadArea(ent);
@@ -251,7 +251,7 @@ SV_movestep(edict_t *ent, vec3_t move, qboolean relink)
 
 				if (ent->goalentity->client)
 				{
-					/* we want the carrier to stay a certain distance off the ground, 
+					/* we want the carrier to stay a certain distance off the ground,
 					   to help prevent him from shooting his fliers, who spawn in below him */
 					if (!strcmp(ent->classname, "monster_carrier"))
 					{
@@ -488,7 +488,7 @@ SV_movestep(edict_t *ent, vec3_t move, qboolean relink)
 	if (!M_CheckBottom(ent))
 	{
 		if (ent->flags & FL_PARTIALGROUND)
-		{   
+		{
 			/* entity had floor mostly pulled out from
 			    nderneath it and is trying to correct */
 			if (relink)
@@ -530,12 +530,12 @@ M_ChangeYaw(edict_t *ent)
 	float current;
 	float move;
 	float speed;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	current = anglemod(ent->s.angles[YAW]);
 	ideal = ent->ideal_yaw;
 
@@ -581,7 +581,7 @@ M_ChangeYaw(edict_t *ent)
 }
 
 /*
- * Turns to the movement direction, and 
+ * Turns to the movement direction, and
  * walks the current distance if facing it.
  */
 qboolean
@@ -589,12 +589,12 @@ SV_StepDirection(edict_t *ent, float yaw, float dist)
 {
 	vec3_t move, oldorigin;
 	float delta;
- 
+
 	if (!ent)
 	{
 		return false;
 	}
- 
+
 	if (!ent->inuse)
 	{
 		return true;
@@ -642,12 +642,12 @@ SV_StepDirection(edict_t *ent, float yaw, float dist)
 
 void
 SV_FixCheckBottom(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->flags |= FL_PARTIALGROUND;
 }
 
@@ -777,7 +777,7 @@ SV_NewChaseDir(edict_t *actor, edict_t *enemy, float dist)
 
 	actor->ideal_yaw = olddir; /* can't move */
 
-	/* if a bridge was pulled out from underneath a monster, 
+	/* if a bridge was pulled out from underneath a monster,
 	   it may not have a valid standing position at all */
 
 	if (!M_CheckBottom(actor))
@@ -790,12 +790,12 @@ qboolean
 SV_CloseEnough(edict_t *ent, edict_t *goal, float dist)
 {
 	int i;
- 
+
 	if (!ent || !goal)
 	{
-		return false; 
+		return false;
 	}
- 
+
 	for (i = 0; i < 3; i++)
 	{
 		if (goal->absmin[i] > ent->absmax[i] + dist)
@@ -816,12 +816,12 @@ void
 M_MoveToGoal(edict_t *ent, float dist)
 {
 	edict_t *goal;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	goal = ent->goalentity;
 
 	if (!ent->groundentity && !(ent->flags & (FL_FLY | FL_SWIM)))
@@ -857,12 +857,12 @@ M_walkmove(edict_t *ent, float yaw, float dist)
 {
 	vec3_t move;
 	qboolean retval;
- 
+
 	if (!ent)
 	{
 		return false;
 	}
- 
+
 	if (!ent->groundentity && !(ent->flags & (FL_FLY | FL_SWIM)))
 	{
 		return false;

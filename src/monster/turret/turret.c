@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "turret.h"
 
@@ -15,10 +15,10 @@
 #define SPAWN_WEAPONCHOICE 0x0078
 #define SPAWN_INSTANT_WEAPON 0x0050
 #define SPAWN_WALL_UNIT 0x0080
- 
+
 #define TURRET_BULLET_DAMAGE 4
 #define TURRET_HEAT_DAMAGE 4
- 
+
 extern qboolean FindTarget(edict_t *self);
 
 void turret_run(edict_t *self);
@@ -43,12 +43,12 @@ TurretAim(edict_t *self)
 	vec3_t ang;
 	float move, idealPitch, idealYaw, current, speed;
 	int orientation;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->enemy || (self->enemy == world))
 	{
 		if (!FindTarget(self))
@@ -360,12 +360,12 @@ mmove_t turret_move_stand = {
 
 void
 turret_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &turret_move_stand;
 }
 
@@ -390,12 +390,12 @@ mmove_t turret_move_ready_gun = {
 
 void
 turret_ready_gun(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &turret_move_ready_gun;
 }
 
@@ -409,16 +409,16 @@ mmove_t turret_move_seek = {
    	FRAME_run02,
    	turret_frames_seek,
    	NULL
-}; 
+};
 
 void
 turret_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->s.frame < FRAME_run01)
 	{
 		turret_ready_gun(self);
@@ -443,12 +443,12 @@ mmove_t turret_move_run = {
 
 void
 turret_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->s.frame < FRAME_run01)
 	{
 		turret_ready_gun(self);
@@ -467,12 +467,12 @@ TurretFire(edict_t *self)
 	float time, dist, chance;
 	trace_t trace;
 	int rocketSpeed = 0;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	TurretAim(self);
 
 	if (!self->enemy || !self->enemy->inuse)
@@ -589,12 +589,12 @@ TurretFireBlind(edict_t *self)
 	vec3_t start, end, dir;
 	float chance;
 	int rocketSpeed = 0;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	TurretAim(self);
 
 	if (!self->enemy || !self->enemy->inuse)
@@ -686,12 +686,12 @@ void
 turret_attack(edict_t *self)
 {
 	float r, chance;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->s.frame < FRAME_run01)
 	{
 		turret_ready_gun(self);
@@ -752,12 +752,12 @@ turret_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* 
 	vec3_t forward;
 	vec3_t start;
 	edict_t *base;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.WriteByte(svc_temp_entity);
 	gi.WriteByte(TE_PLAIN_EXPLOSION);
 	gi.WritePosition(self->s.origin);
@@ -800,12 +800,12 @@ turret_wall_spawn(edict_t *turret)
 {
 	edict_t *ent;
 	int angle;
-  
+
 	if (!turret)
 	{
 		return;
 	}
- 
+
 	ent = G_Spawn();
 	VectorCopy(turret->s.origin, ent->s.origin);
 	VectorCopy(turret->s.angles, ent->s.angles);
@@ -866,12 +866,12 @@ turret_wall_spawn(edict_t *turret)
 
 void
 turret_wake(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* the wall section will call this when it stops moving. */
 	if (self->flags & FL_TEAMSLAVE)
 	{
@@ -981,12 +981,12 @@ turret_checkattack(edict_t *self)
 	float chance, nexttime;
 	trace_t tr;
 	int enemy_range;
-  
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (self->enemy->health > 0)
 	{
 		/* see if any entities are in the way of the shot */
@@ -1110,12 +1110,12 @@ void
 SP_monster_turret(edict_t *self)
 {
 	int angle;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

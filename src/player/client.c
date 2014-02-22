@@ -16,17 +16,17 @@ void Touch_Item(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 
 /*
  * QUAKED info_player_start (1 0 0) (-16 -16 -24) (16 16 32)
- * 
+ *
  * The normal starting point for a level.
  */
 void
 SP_info_player_start(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!coop->value)
 	{
 		return;
@@ -35,17 +35,17 @@ SP_info_player_start(edict_t *self)
 
 /*
  * QUAKED info_player_deathmatch (1 0 1) (-16 -16 -24) (16 16 32)
- * 
+ *
  * potential spawning position for deathmatch games
  */
 void
 SP_info_player_deathmatch(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -61,12 +61,12 @@ SP_info_player_deathmatch(edict_t *self)
  */
 void
 SP_info_player_coop(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!coop->value)
 	{
 		G_FreeEdict(self);
@@ -76,18 +76,18 @@ SP_info_player_coop(edict_t *self)
 
 /*
  * QUAKED info_player_coop_lava (1 0 1) (-16 -16 -24) (16 16 32)
- * 
+ *
  * potential spawning position for coop games on rmine2 where lava level
  * needs to be checked
  */
 void
 SP_info_player_coop_lava(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!coop->value)
 	{
 		G_FreeEdict(self);
@@ -97,9 +97,9 @@ SP_info_player_coop_lava(edict_t *self)
 
 /*
  * QUAKED info_player_intermission (1 0 1) (-16 -16 -24) (16 16 32)
- * 
+ *
  * The deathmatch intermission point will be at one of these
- * Use 'angles' instead of 'angle', so you can set pitch or roll 
+ * Use 'angles' instead of 'angle', so you can set pitch or roll
  * as well as yaw. 'pitch yaw roll'
  */
 void
@@ -118,12 +118,12 @@ qboolean
 IsFemale(edict_t *ent)
 {
 	char *info;
- 
+
 	if (!ent)
 	{
 		return false;
 	}
- 
+
 	if (!ent->client)
 	{
 		return false;
@@ -143,12 +143,12 @@ qboolean
 IsNeutral(edict_t *ent)
 {
 	char *info;
- 
+
 	if (!ent)
 	{
 		return false;
 	}
- 
+
 	if (!ent->client)
 	{
 		return false;
@@ -172,12 +172,12 @@ ClientObituary(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker
 	char *message;
 	char *message2;
 	qboolean ff;
-  
+
 	if (!self || !attacker)
 	{
 		return;
 	}
- 
+
 	if (coop->value && attacker->client)
 	{
 		meansOfDeath |= MOD_FRIENDLY_FIRE;
@@ -522,12 +522,12 @@ TossClientWeapon(edict_t *self)
 	edict_t *drop;
 	qboolean quad;
 	float spread;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!deathmatch->value)
 	{
 		return;
@@ -588,12 +588,12 @@ void
 LookAtKiller(edict_t *self, edict_t *inflictor, edict_t *attacker)
 {
 	vec3_t dir;
-  
+
 	if (!self || !inflictor || !attacker)
 	{
 		return;
 	}
- 
+
 	if (attacker && (attacker != world) && (attacker != self))
 	{
 		VectorSubtract(attacker->s.origin, self->s.origin, dir);
@@ -631,12 +631,12 @@ player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 		int damage, vec3_t point)
 {
 	int n;
-  
+
 	if (!self || !inflictor || !attacker)
 	{
 		return;
 	}
- 
+
 	VectorClear(self->avelocity);
 
 	self->takedamage = DAMAGE_YES;
@@ -667,7 +667,7 @@ player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 			Cmd_Help_f(self); /* show scores */
 		}
 
-		/* clear inventory. this is kind of ugly, but it's 
+		/* clear inventory. this is kind of ugly, but it's
 		   how we want to handle keys in coop */
 		for (n = 0; n < game.num_items; n++)
 		{
@@ -753,7 +753,7 @@ player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 		self->takedamage = DAMAGE_NO;
 	}
 	else
-	{   
+	{
 		/* normal death */
 		if (!self->deadflag)
 		{
@@ -806,12 +806,12 @@ void
 InitClientPersistant(gclient_t *client)
 {
 	gitem_t *item;
-  
+
 	if (!client)
 	{
 		return;
 	}
- 
+
 	memset(&client->pers, 0, sizeof(client->pers));
 
 	item = FindItem("Blaster");
@@ -839,12 +839,12 @@ InitClientPersistant(gclient_t *client)
 
 void
 InitClientResp(gclient_t *client)
-{  
+{
 	if (!client)
 	{
 		return;
 	}
- 
+
 	memset(&client->resp, 0, sizeof(client->resp));
 	client->resp.enterframe = level.framenum;
 	client->resp.coop_respawn = client->pers;
@@ -884,12 +884,12 @@ SaveClientData(void)
 
 void
 FetchClientEntData(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->health = ent->client->pers.health;
 	ent->max_health = ent->client->pers.max_health;
 	ent->flags |= ent->client->pers.savedFlags;
@@ -911,12 +911,12 @@ PlayersRangeFromSpot(edict_t *spot)
 	vec3_t v;
 	int n;
 	float playerdistance;
-  
+
 	if (!spot)
 	{
 		return 0.0;
 	}
- 
+
 	bestplayerdistance = 9999999;
 
 	for (n = 1; n <= maxclients->value; n++)
@@ -1070,12 +1070,12 @@ SelectLavaCoopSpawnPoint(edict_t *ent)
 	vec3_t center;
 	int numPoints;
 	edict_t *highestlava;
- 
+
 	if (!ent)
 	{
 		return NULL;
 	}
- 
+
 	lavatop = -99999;
 	highestlava = NULL;
 
@@ -1169,12 +1169,12 @@ SelectCoopSpawnPoint(edict_t *ent)
 	int index;
 	edict_t *spot = NULL;
 	char *target;
- 
+
 	if (!ent)
 	{
 		return NULL;
 	}
- 
+
 	if (!Q_stricmp(level.mapname, "rmine2p") || !Q_stricmp(level.mapname, "rmine2"))
 	{
 		return SelectLavaCoopSpawnPoint(ent);
@@ -1208,7 +1208,7 @@ SelectCoopSpawnPoint(edict_t *ent)
 		}
 
 		if (Q_stricmp(game.spawnpoint, target) == 0)
-		{   
+		{
 			/* this is a coop spawn point for one of the clients here */
 			index--;
 
@@ -1238,7 +1238,7 @@ SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		spot = SelectDeathmatchSpawnPoint();
@@ -1272,7 +1272,7 @@ SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles)
 		if (!spot)
 		{
 			if (!game.spawnpoint[0])
-			{   
+			{
 				/* there wasn't a spawnpoint without a target, so use any */
 				spot = G_Find(spot, FOFS(classname), "info_player_start");
 			}
@@ -1349,12 +1349,12 @@ body_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* un
 		int damage, vec3_t point)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health < -40)
 	{
 		gi.sound(self, CHAN_BODY, gi.soundindex( "misc/udeath.wav"), 1, ATTN_NORM, 0);
@@ -1374,12 +1374,12 @@ void
 CopyToBodyQue(edict_t *ent)
 {
 	edict_t *body;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	/* grab a body que and cycle to the next one */
 	body = &g_edicts[(int)maxclients->value + level.body_que + 1];
 	level.body_que = (level.body_que + 1) % BODY_QUEUE_SIZE;
@@ -1408,12 +1408,12 @@ CopyToBodyQue(edict_t *ent)
 
 void
 respawn(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value || coop->value)
 	{
 		/* spectators don't leave bodies */
@@ -1450,12 +1450,12 @@ void
 spectator_respawn(edict_t *ent)
 {
 	int i, numspec;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	/* if the user wants to become a spectator, make sure
 	   he doesn't exceed max_spectators */
 	if (ent->client->pers.spectator)
@@ -1544,7 +1544,7 @@ spectator_respawn(edict_t *ent)
 /* ============================================================== */
 
 /*
- * Called when a player connects to a 
+ * Called when a player connects to a
  * server or respawns in a deathmatch.
  */
 void
@@ -1558,13 +1558,13 @@ PutClientInServer(edict_t *ent)
 	int i;
 	client_persistant_t saved;
 	client_respawn_t resp;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
-	/* find a spawn point. do it before setting health back 
+
+	/* find a spawn point. do it before setting health back
 	   up, so farthest ranging doesn't count this client */
 	if (gamerules && gamerules->value && DMGame.SelectSpawnPoint)
 	{
@@ -1733,7 +1733,7 @@ PutClientInServer(edict_t *ent)
 
 	gi.linkentity(ent);
 
-	/* my tribute to cash's level-specific hacks. I hope 
+	/* my tribute to cash's level-specific hacks. I hope
 	 *   live up to his trailblazing cheese. */
 	if (Q_stricmp(level.mapname, "rboss") == 0)
 	{
@@ -1761,12 +1761,12 @@ PutClientInServer(edict_t *ent)
  */
 void
 ClientBeginDeathmatch(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	G_InitEdict(ent);
 	InitClientResp(ent->client);
 
@@ -1805,12 +1805,12 @@ void
 ClientBegin(edict_t *ent)
 {
 	int i;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	ent->client = game.clients + (ent - g_edicts - 1);
 
 	if (deathmatch->value)
@@ -1876,12 +1876,12 @@ ClientUserinfoChanged(edict_t *ent, char *userinfo)
 {
 	char *s;
 	int playernum;
- 
+
 	if (!ent || !userinfo)
 	{
 		return;
 	}
- 
+
 	/* check for malformed or illegal info strings */
 	if (!Info_Validate(userinfo))
 	{
@@ -1957,12 +1957,12 @@ qboolean
 ClientConnect(edict_t *ent, char *userinfo)
 {
 	char *value;
- 
+
 	if (!ent || !userinfo)
 	{
 		return false;
 	}
- 
+
 	/* check to see if they are on the banned IP list */
 	value = Info_ValueForKey(userinfo, "ip");
 
@@ -2018,7 +2018,7 @@ ClientConnect(edict_t *ent, char *userinfo)
 	/* they can connect */
 	ent->client = game.clients + (ent - g_edicts - 1);
 
-	/* if there is already a body waiting for us (a loadgame), 
+	/* if there is already a body waiting for us (a loadgame),
 	   just take it, otherwise spawn one from scratch */
 	if (ent->inuse == false)
 	{
@@ -2051,12 +2051,12 @@ void
 ClientDisconnect(edict_t *ent)
 {
 	int playernum;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (!ent->client)
 	{
 		return;
@@ -2124,12 +2124,12 @@ unsigned
 CheckBlock(void *b, int c)
 {
 	int v, i;
- 
+
 	if (!b)
 	{
 		return 0;
 	}
- 
+
 	v = 0;
 
 	for (i = 0; i < c; i++)
@@ -2144,12 +2144,12 @@ void
 PrintPmove(pmove_t *pm)
 {
 	unsigned c1, c2;
- 
+
 	if (!pm)
 	{
 		return;
 	}
- 
+
 	c1 = CheckBlock(&pm->s, sizeof(pm->s));
 	c2 = CheckBlock(&pm->cmd, sizeof(pm->cmd));
 	Com_Printf("sv %3i:%i %i\n", pm->cmd.impulse, c1, c2);
@@ -2166,12 +2166,12 @@ ClientThink(edict_t *ent, usercmd_t *ucmd)
 	edict_t *other;
 	int i, j;
 	pmove_t pm;
- 
+
 	if (!ent || !ucmd)
 	{
 		return;
 	}
- 
+
 	level.current_entity = ent;
 	client = ent->client;
 
@@ -2335,7 +2335,7 @@ ClientThink(edict_t *ent, usercmd_t *ucmd)
 	client->buttons = ucmd->buttons;
 	client->latched_buttons |= client->buttons & ~client->oldbuttons;
 
-	/* save light level the player is 
+	/* save light level the player is
 	    tanding on for monster sighting AI */
 	ent->light_level = ucmd->lightlevel;
 
@@ -2400,7 +2400,7 @@ ClientThink(edict_t *ent, usercmd_t *ucmd)
 }
 
 /*
- * This will be called once for each server frame, 
+ * This will be called once for each server frame,
  * before running any other entities in the world.
  */
 void
@@ -2408,12 +2408,12 @@ ClientBeginServerFrame(edict_t *ent)
 {
 	gclient_t *client;
 	int buttonMask;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (level.intermissiontime)
 	{
 		return;
@@ -2478,19 +2478,19 @@ ClientBeginServerFrame(edict_t *ent)
 }
 
 /*
- * This is called to clean up the pain daemons that 
+ * This is called to clean up the pain daemons that
  * the disruptor attaches to clients to damage them.
  */
 void
 RemoveAttackingPainDaemons(edict_t *self)
 {
 	edict_t *tracker;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	tracker = G_Find(NULL, FOFS(classname), "pain daemon");
 
 	while (tracker)

@@ -12,7 +12,7 @@ static int sound_fist;
 static int sound_shake;
 static int sound_moan;
 static int sound_scream[8];
- 
+
 void insane_stand(edict_t *self);
 void insane_dead(edict_t *self);
 void insane_cross(edict_t *self);
@@ -21,7 +21,7 @@ void insane_run(edict_t *self);
 void insane_checkdown(edict_t *self);
 void insane_checkup(edict_t *self);
 void insane_onground(edict_t *self);
- 
+
 void
 insane_fist(edict_t *self)
 {
@@ -505,12 +505,12 @@ mmove_t insane_move_struggle_cross = {
 
 void
 insane_cross(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() < 0.8)
 	{
 		self->monsterinfo.currentmove = &insane_move_cross;
@@ -523,12 +523,12 @@ insane_cross(edict_t *self)
 
 void
 insane_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->spawnflags & 16) /* Hold Ground? */
 	{
 		if (self->s.frame == FRAME_cr_pain10)
@@ -555,12 +555,12 @@ insane_walk(edict_t *self)
 
 void
 insane_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->spawnflags & 16) /* Hold Ground? */
 	{
 		if (self->s.frame == FRAME_cr_pain10)
@@ -589,12 +589,12 @@ void
 insane_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 {
 	int l, r;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (level.time < self->pain_debounce_time)
 	{
 		return;
@@ -650,23 +650,23 @@ insane_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 
 void
 insane_onground(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &insane_move_down;
 }
 
 void
 insane_checkdown(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->spawnflags & 32) /* Always stand */
 	{
 		return;
@@ -687,12 +687,12 @@ insane_checkdown(edict_t *self)
 
 void
 insane_checkup(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* If Hold_Ground and Crawl are set */
 	if ((self->spawnflags & 4) && (self->spawnflags & 16))
 	{
@@ -707,12 +707,12 @@ insane_checkup(edict_t *self)
 
 void
 insane_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->spawnflags & 8) /* If crucified */
 	{
 		self->monsterinfo.currentmove = &insane_move_cross;
@@ -736,12 +736,12 @@ insane_stand(edict_t *self)
 
 void
 insane_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->spawnflags & 8)
 	{
 		self->flags |= FL_FLY;
@@ -763,12 +763,12 @@ insane_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* 
 		int damage, vec3_t point /* unused */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->health <= self->gib_health)
 	{
 		gi.sound(self, CHAN_VOICE, gi.soundindex(
@@ -824,12 +824,12 @@ insane_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* 
  */
 void
 SP_misc_insane(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);

@@ -1,4 +1,4 @@
-/* 
+/*
  * =======================================================================
  *
  * Rogue specific AI code
@@ -17,11 +17,11 @@
 #define MAX_HINT_CHAINS 100
 
 #define TESLA_DAMAGE_RADIUS 128
-  
+
 edict_t *hint_path_start[MAX_HINT_CHAINS];
 int hint_paths_present;
 int num_hint_paths;
- 
+
 qboolean face_wall(edict_t *self);
 qboolean monsterlost_checkhint2(edict_t *self);
 qboolean parasite_drain_attack_ok(vec3_t start, vec3_t end);
@@ -31,19 +31,19 @@ qboolean
 blocked_checkshot(edict_t *self, float shotChance)
 {
 	qboolean playerVisible;
-      
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return false;
 	}
 
-	/* blocked checkshot is only against players. this will 
-	   filter out player sounds and other shit they should 
+	/* blocked checkshot is only against players. this will
+	   filter out player sounds and other shit they should
 	   not be firing at. */
 	if (!(self->enemy->client))
 	{
@@ -130,12 +130,12 @@ blocked_checkplat(edict_t *self, float dist)
 	vec3_t pt1, pt2;
 	vec3_t forward;
 	edict_t *plat;
-      
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return false;
@@ -229,12 +229,12 @@ blocked_checkjump(edict_t *self, float dist, float maxDown, float maxUp)
 	trace_t trace;
 	vec3_t pt1, pt2;
 	vec3_t forward, up;
-      
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return false;
@@ -327,12 +327,12 @@ hintpath_findstart(edict_t *ent)
 	edict_t *e;
 	edict_t *last;
 	int field;
- 
+
 	if (!ent)
 	{
 		return false;
 	}
- 
+
 	if (ent->target) /* starting point */
 	{
 		last = world;
@@ -389,12 +389,12 @@ hintpath_other_end(edict_t *ent)
 	edict_t *e;
 	edict_t *last;
 	int field;
- 
+
 	if (!ent)
 	{
 		return false;
 	}
- 
+
 	if (ent->target) /* starting point */
 	{
 		last = world;
@@ -450,12 +450,12 @@ hintpath_go(edict_t *self, edict_t *point)
 {
 	vec3_t dir;
 	vec3_t angles;
- 
+
 	if (!self || !point)
 	{
 		return;
 	}
- 
+
 	VectorSubtract(point->s.origin, self->s.origin, dir);
 	vectoangles2(dir, angles);
 
@@ -472,12 +472,12 @@ hintpath_go(edict_t *self, edict_t *point)
 
 void
 hintpath_stop(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->goalentity = NULL;
 	self->movetarget = NULL;
 	self->monsterinfo.last_hint_time = level.time;
@@ -503,7 +503,7 @@ hintpath_stop(edict_t *self)
 
 	/* we need the pausetime otherwise the stand code
 	   will just revert to walking with no target and
-	   the monsters will wonder around aimlessly trying 
+	   the monsters will wonder around aimlessly trying
 	   to hunt the world entity */
 	self->monsterinfo.pausetime = level.time + 100000000;
 	self->monsterinfo.stand(self);
@@ -521,12 +521,12 @@ monsterlost_checkhint(edict_t *self)
 	float r;
 	int i;
 	qboolean hint_path_represented[MAX_HINT_CHAINS];
-  
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	/* if there are no hint paths on this map, exit immediately. */
 	if (!hint_paths_present)
 	{
@@ -608,7 +608,7 @@ monsterlost_checkhint(edict_t *self)
 				/* and clear it again */
 				checkpoint = NULL;
 
-				/* since we have yet to find a valid one (or else 
+				/* since we have yet to find a valid one (or else
 				   checkpoint would be set) move the start of
 				   monster_pathchain */
 				monster_pathchain = e;
@@ -638,7 +638,7 @@ monsterlost_checkhint(edict_t *self)
 				
 				checkpoint = NULL;
 				/* since we have yet to find a valid one (or else
-				   checkpoint would be set) move the start of 
+				   checkpoint would be set) move the start of
 				   monster_pathchain */
 				monster_pathchain = e;
 				continue;
@@ -653,7 +653,7 @@ monsterlost_checkhint(edict_t *self)
 
 	/* at this point, we have a list of all of the eligible
 	   hint nodes for the monster we now take them, figure out
-	   what hint chains they're on, and traverse down those 
+	   what hint chains they're on, and traverse down those
 	   chains, seeing whether any can see the player. first,
 	   we figure out which hint chains we have represented
 	   in monster_pathchain */
@@ -686,7 +686,7 @@ monsterlost_checkhint(edict_t *self)
 	count5 = 0;
 
 	/* now, build the target_pathchain which contains all of
-	   the hint_path nodes we need to check for validity 
+	   the hint_path nodes we need to check for validity
 	   (within range, visibility) */
 	target_pathchain = NULL;
 	checkpoint = NULL;
@@ -718,7 +718,7 @@ monsterlost_checkhint(edict_t *self)
 		}
 	}
 
-	/* target_pathchain is a list of all of the hint_path nodes 
+	/* target_pathchain is a list of all of the hint_path nodes
 	   we need to check for validity relative to the target */
 	e = target_pathchain;
 	checkpoint = NULL;
@@ -786,13 +786,13 @@ monsterlost_checkhint(edict_t *self)
 	/* at this point we should have:
 	    - monster_pathchain - a list of "monster valid" hint_path nodes linked
 							  together by monster_hint_chain
-	    - target_pathcain   - a list of "target valid" hint_path nodes linked 
+	    - target_pathcain   - a list of "target valid" hint_path nodes linked
 							  together by target_hint_chain. these are filtered
-							  such that only nodes which are on the same chain 
+							  such that only nodes which are on the same chain
 							  as "monster valid" nodes
-	 
+	
 	   Now, we figure out which "monster valid" node we want to use. To do this, we
-	   first off make sure we have some target nodes. If we don't, there are no 
+	   first off make sure we have some target nodes. If we don't, there are no
 	   valid hint_path nodes for us to take. If we have some, we filter all of our
 	   "monster valid" nodes by which ones have "target valid" nodes on them. Once
 	   this filter is finished, we select the closest "monster valid" node, and go to it. */
@@ -802,7 +802,7 @@ monsterlost_checkhint(edict_t *self)
 		return false;
 	}
 
-	/* reuse the hint_chain_represented array, this time 
+	/* reuse the hint_chain_represented array, this time
 	   to see which chains are represented by the target */
 	for (i = 0; i < num_hint_paths; i++)
 	{
@@ -824,7 +824,7 @@ monsterlost_checkhint(edict_t *self)
 	}
 
 	/* traverse the monster_pathchain - if the hint_node isn't represented
-	   in the "target valid" chain list, remove it. if it is on the list, 
+	   in the "target valid" chain list, remove it. if it is on the list,
 	   check it for range from the monster. If the range is the closest, keep it */
 	closest = NULL;
 	e = monster_pathchain;
@@ -856,7 +856,7 @@ monsterlost_checkhint(edict_t *self)
 
 	start = closest;
 
-	/* now we know which one is the closest to the monster.. 
+	/* now we know which one is the closest to the monster..
 	   this is the one the monster will go to. we need to
 	   finally determine what the DESTINATION node is for the
 	   monster. walk down the hint_chain, and find the closest one
@@ -900,12 +900,12 @@ hint_path_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
 	edict_t *e, *goal;
 	edict_t *next = NULL;
 	qboolean goalFound = false;
-     
+
 	if (!self || !other)
 	{
 		return;
 	}
- 
+
 	/* make sure we're the target of it's obsession */
 	if (other->movetarget == self)
 	{
@@ -936,8 +936,8 @@ hint_path_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
 					goalFound = true;
 				}
 
-				/* if we get to where the next link on the chain is this hint_path 
-				   and have found the goal on the way we're going upstream, so 
+				/* if we get to where the next link on the chain is this hint_path
+				   and have found the goal on the way we're going upstream, so
 				   remember who the previous link is */
 				if ((e->hint_chain == self) && goalFound)
 				{
@@ -972,7 +972,7 @@ hint_path_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
 
 /*
  * QUAKED hint_path (.5 .3 0) (-8 -8 -8) (8 8 8) END
- * 
+ *
  * Target: next hint path
  *
  * END - set this flag on the endpoints of each hintpath.
@@ -980,12 +980,12 @@ hint_path_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
  */
 void
 SP_hint_path(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -1113,12 +1113,12 @@ inback(edict_t *self, edict_t *other)
 	vec3_t vec;
 	float dot;
 	vec3_t forward;
- 
+
 	if (!self || !other)
 	{
 		return false;
 	}
- 
+
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
 	VectorNormalize(vec);
@@ -1136,12 +1136,12 @@ float
 realrange(edict_t *self, edict_t *other)
 {
 	vec3_t dir;
- 
+
 	if (!self || !other)
 	{
 		return 0;
 	}
- 
+
 	VectorSubtract(self->s.origin, other->s.origin, dir);
 
 	return VectorLength(dir);
@@ -1154,12 +1154,12 @@ face_wall(edict_t *self)
 	vec3_t forward;
 	vec3_t ang;
 	trace_t tr;
-  
+
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorMA(self->s.origin, 64, forward, pt);
 	tr = gi.trace(self->s.origin, vec3_origin, vec3_origin,
@@ -1192,12 +1192,12 @@ SpawnBadArea(vec3_t mins, vec3_t maxs, float lifespan, edict_t *owner)
 {
 	edict_t *badarea;
 	vec3_t origin;
-  
+
 	if (!owner)
 	{
 		return NULL;
 	}
- 
+
 	VectorAdd(mins, maxs, origin);
 	VectorScale(origin, 0.5, origin);
 
@@ -1234,12 +1234,12 @@ CheckForBadArea(edict_t *ent)
 	int i, num;
 	edict_t *touch[MAX_EDICTS], *hit;
 	vec3_t mins, maxs;
- 
+
 	if (!ent)
 	{
 		return NULL;
 	}
- 
+
 	VectorAdd(ent->s.origin, ent->mins, mins);
 	VectorAdd(ent->s.origin, ent->maxs, maxs);
 
@@ -1382,12 +1382,12 @@ below(edict_t *self, edict_t *other)
 	vec3_t vec;
 	float dot;
 	vec3_t down;
- 
+
 	if (!self || !other)
 	{
 		return false;
 	}
- 
+
 	VectorSubtract(other->s.origin, self->s.origin, vec);
 	VectorNormalize(vec);
 	VectorSet(down, 0, 0, -1);
@@ -1410,12 +1410,12 @@ drawbbox(edict_t *self)
 		{1, 4, 5},
 		{2, 4, 7}
 	};
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	int starts[4] = {0, 3, 5, 6};
 
 	vec3_t pt[8];
@@ -1486,13 +1486,13 @@ M_MonsterDodge(edict_t *self, edict_t *attacker, float eta, trace_t *tr)
 	float r = random();
 	float height;
 	qboolean ducker = false, dodger = false;
- 
+
 	if (!self || !attacker || !tr)
 	{
 		return;
 	}
- 
-	/* this needs to be here since this can be 
+
+	/* this needs to be here since this can be
 	   called after the monster has "died" */
 	if (self->health < 1)
 	{
@@ -1548,7 +1548,7 @@ M_MonsterDodge(edict_t *self, edict_t *attacker, float eta, trace_t *tr)
 
 	if (dodger)
 	{
-		/* if we're already dodging, just finish 
+		/* if we're already dodging, just finish
 		   the sequence, i.e. don't do anything else */
 		if (self->monsterinfo.aiflags & AI_DODGING)
 		{
@@ -1604,12 +1604,12 @@ M_MonsterDodge(edict_t *self, edict_t *attacker, float eta, trace_t *tr)
 
 void
 monster_duck_down(edict_t *self)
-{     
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.aiflags |= AI_DUCKED;
 	self->maxs[2] = self->monsterinfo.base_height - 32;
 	self->takedamage = DAMAGE_YES;
@@ -1624,12 +1624,12 @@ monster_duck_down(edict_t *self)
 
 void
 monster_duck_hold(edict_t *self)
-{     
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (level.time >= self->monsterinfo.duck_wait_time)
 	{
 		self->monsterinfo.aiflags &= ~AI_HOLD_FRAME;
@@ -1642,12 +1642,12 @@ monster_duck_hold(edict_t *self)
 
 void
 monster_duck_up(edict_t *self)
-{     
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.aiflags &= ~AI_DUCKED;
 	self->maxs[2] = self->monsterinfo.base_height;
 	self->takedamage = DAMAGE_AIM;
@@ -1657,12 +1657,12 @@ monster_duck_up(edict_t *self)
 
 qboolean
 has_valid_enemy(edict_t *self)
-{     
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (!self->enemy)
 	{
 		return false;
@@ -1729,12 +1729,12 @@ TargetTesla(edict_t *self, edict_t *tesla)
 
 edict_t *
 PickCoopTarget(edict_t *self)
-{     
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	/* no more than 4 players in coop, so.. */
 	edict_t *targets[4];
 	int num_targets = 0, targetID;
@@ -1821,23 +1821,23 @@ CountPlayers(void)
 
 void
 monster_jump_start(edict_t *self)
-{     
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->timestamp = level.time;
 }
 
 qboolean
 monster_jump_finished(edict_t *self)
-{     
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if ((level.time - self->timestamp) > 3)
 	{
 		return true;

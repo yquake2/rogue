@@ -7,21 +7,21 @@
  */
 
 #include "header/local.h"
- 
+
 #define NUKE_DELAY 4
 #define NUKE_TIME_TO_LIVE 6
 #define NUKE_RADIUS 512
 #define NUKE_DAMAGE 400
 #define NUKE_QUAKE_TIME 3
 #define NUKE_QUAKE_STRENGTH 100
- 
+
 #define PROX_TIME_TO_LIVE 45
 #define PROX_TIME_DELAY 0.5
 #define PROX_BOUND_SIZE 96
 #define PROX_DAMAGE_RADIUS 192
 #define PROX_HEALTH 20
 #define PROX_DAMAGE 90
- 
+
 #define TESLA_TIME_TO_LIVE 30
 #define TESLA_DAMAGE_RADIUS 128
 #define TESLA_DAMAGE 3
@@ -29,11 +29,11 @@
 #define TESLA_ACTIVATE_TIME 3
 #define TESLA_EXPLOSION_DAMAGE_MULT 50
 #define TESLA_EXPLOSION_RADIUS 200
- 
+
 #define TRACKER_DAMAGE_FLAGS (DAMAGE_NO_POWER_ARMOR | DAMAGE_ENERGY | DAMAGE_NO_KNOCKBACK)
 #define TRACKER_IMPACT_FLAGS (DAMAGE_NO_POWER_ARMOR | DAMAGE_ENERGY)
 #define TRACKER_DAMAGE_TIME 0.5
- 
+
 extern byte P_DamageModifier(edict_t *ent);
 extern void check_dodge(edict_t *self, vec3_t start, vec3_t dir, int speed);
 extern void hurt_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf);
@@ -45,12 +45,12 @@ void
 flechette_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	vec3_t dir;
- 
+
 	if (!self || !other || !plane || !surf)
 	{
 		return;
 	}
- 
+
 	if (other == self->owner)
 	{
 		return;
@@ -99,12 +99,12 @@ fire_flechette(edict_t *self, vec3_t start, vec3_t dir, int damage,
 		int speed, int kick)
 {
 	edict_t *flechette;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorNormalize(dir);
 
 	flechette = G_Spawn();
@@ -142,12 +142,12 @@ Prox_Explode(edict_t *ent)
 {
 	vec3_t origin;
 	edict_t *owner;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	/* free the trigger field */
 	if (ent->teamchain && (ent->teamchain->owner == ent))
 	{
@@ -192,12 +192,12 @@ Prox_Explode(edict_t *ent)
 void
 prox_die(edict_t *self, edict_t *inflictor, edict_t *attacker /* unused */,
 		int damage, vec3_t point)
-{ 
+{
 	if (!self || !inflictor)
 	{
 		return;
 	}
- 
+
 	if (strcmp(inflictor->classname, "prox"))
 	{
 		self->takedamage = DAMAGE_NO;
@@ -216,12 +216,12 @@ Prox_Field_Touch(edict_t *ent, edict_t *other, cplane_t *plane /* unused */,
 		csurface_t *surf /* unused */)
 {
 	edict_t *prox;
- 
+
 	if (!ent || !other)
 	{
 		return;
 	}
- 
+
 	if (!(other->svflags & SVF_MONSTER) && !other->client)
 	{
 		return;
@@ -254,12 +254,12 @@ Prox_Field_Touch(edict_t *ent, edict_t *other, cplane_t *plane /* unused */,
 
 void
 prox_seek(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (level.time > ent->wait)
 	{
 		Prox_Explode(ent);
@@ -282,12 +282,12 @@ void
 prox_open(edict_t *ent)
 {
 	edict_t *search;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	search = NULL;
 
 	if (ent->s.frame == 9) /* end of opening animation */
@@ -310,8 +310,8 @@ prox_open(edict_t *ent)
 				continue;
 			}
 
-			/* if it's a monster or player with health > 0 
-			   or it's a player start point and we can see it 
+			/* if it's a monster or player with health > 0
+			   or it's a player start point and we can see it
 			   blow up */
 			if (((((search->svflags & SVF_MONSTER) ||
 				   (search->client)) && (search->health > 0)) ||
@@ -378,12 +378,12 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 	int movetype = MOVETYPE_NONE;
 	int stick_ok = 0;
 	vec3_t land_point;
- 
+
 	if (!ent || !other || !plane || !surf)
 	{
 		return;
 	}
- 
+
 	/* must turn off owner so owner can shoot it and set it off
 	   moved to prox_open so owner can get away from it if fired
 	   at pointblank range into wall */
@@ -466,7 +466,7 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 
 		/* if we're here, we're going to stop on an entity */
 		if (stick_ok)
-		{ 
+		{
 			/* it's a happy entity */
 			VectorCopy(vec3_origin, ent->velocity);
 			VectorCopy(vec3_origin, ent->avelocity);
@@ -536,12 +536,12 @@ fire_prox(edict_t *self, vec3_t start, vec3_t aimdir, int damage_multiplier, int
 	edict_t *prox;
 	vec3_t dir;
 	vec3_t forward, right, up;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	vectoangles2(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
 
@@ -599,12 +599,12 @@ fire_player_melee(edict_t *self, vec3_t start, vec3_t aim, int reach,
 	vec3_t v;
 	vec3_t point;
 	trace_t tr;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	vectoangles2(aim, v);
 	AngleVectors(v, forward, right, up);
 	VectorNormalize(forward);
@@ -668,12 +668,12 @@ Nuke_Quake(edict_t *self)
 {
 	int i;
 	edict_t *e;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->last_move_time < level.time)
 	{
 		gi.positioned_sound(self->s.origin, self, CHAN_AUTO, self->noise_index,
@@ -716,12 +716,12 @@ Nuke_Quake(edict_t *self)
 
 void
 Nuke_Explode(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (ent->teammaster->client)
 	{
 		PlayerNoise(ent->teammaster, ent->s.origin, PNOISE_IMPACT);
@@ -760,12 +760,12 @@ Nuke_Explode(edict_t *ent)
 void
 nuke_die(edict_t *self, edict_t *inflictor /* unused */,
 		edict_t *attacker, int damage, vec3_t point)
-{ 
+{
 	if (!self || !attacker)
 	{
 		return;
 	}
- 
+
 	self->takedamage = DAMAGE_NO;
 
 	if ((attacker) && !(strcmp(attacker->classname, "nuke")))
@@ -782,12 +782,12 @@ Nuke_Think(edict_t *ent)
 {
 	float attenuation, default_atten = 1.8;
 	int damage_multiplier, muzzleflash;
- 
+
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	damage_multiplier = ent->dmg / NUKE_DAMAGE;
 
 	switch (damage_multiplier)
@@ -872,12 +872,12 @@ Nuke_Think(edict_t *ent)
 void
 nuke_bounce(edict_t *ent, edict_t *other /* unused */, cplane_t *plane /* unused */,
 	   	csurface_t *surf /* unused */)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (random() > 0.5)
 	{
 		gi.sound(ent, CHAN_VOICE, gi.soundindex("weapons/hgrenb1a.wav"), 1, ATTN_NORM, 0);
@@ -895,12 +895,12 @@ fire_nuke(edict_t *self, vec3_t start, vec3_t aimdir, int speed)
 	vec3_t dir;
 	vec3_t forward, right, up;
 	int damage_modifier;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	damage_modifier = (int)P_DamageModifier(self);
 
 	vectoangles2(aimdir, dir);
@@ -952,12 +952,12 @@ void
 tesla_remove(edict_t *self)
 {
 	edict_t *cur, *next;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->takedamage = DAMAGE_NO;
 
 	if (self->teamchain)
@@ -991,23 +991,23 @@ tesla_remove(edict_t *self)
 void
 tesla_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
 		int damage /* unused */, vec3_t point /* unused */)
-{ 
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	tesla_remove(self);
 }
 
 void
 tesla_blow(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->dmg = self->dmg * TESLA_EXPLOSION_DAMAGE_MULT;
 	self->dmg_radius = TESLA_EXPLOSION_RADIUS;
 	tesla_remove(self);
@@ -1025,12 +1025,12 @@ tesla_think_active(edict_t *self)
 	edict_t *touch[MAX_EDICTS], *hit;
 	vec3_t dir, start;
 	trace_t tr;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (level.time > self->air_finished)
 	{
 		tesla_remove(self);
@@ -1130,12 +1130,12 @@ tesla_activate(edict_t *self)
 {
 	edict_t *trigger;
 	edict_t *search;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (gi.pointcontents(self->s.origin) & (CONTENTS_SLIME | CONTENTS_LAVA | CONTENTS_WATER))
 	{
 		tesla_blow(self);
@@ -1193,12 +1193,12 @@ tesla_activate(edict_t *self)
 
 void
 tesla_think(edict_t *ent)
-{ 
+{
 	if (!ent)
 	{
 		return;
 	}
- 
+
 	if (gi.pointcontents(ent->s.origin) & (CONTENTS_SLIME | CONTENTS_LAVA))
 	{
 		tesla_remove(ent);
@@ -1252,12 +1252,12 @@ void
 tesla_lava(edict_t *ent, edict_t *other /* unused */, cplane_t *plane, csurface_t *surf /* unused */)
 {
 	vec3_t land_point;
- 
+
 	if (!ent || !plane)
 	{
 		return;
 	}
- 
+
 	if (plane->normal != 0)
 	{
 		VectorMA(ent->s.origin, -20.0, plane->normal, land_point);
@@ -1286,12 +1286,12 @@ fire_tesla(edict_t *self, vec3_t start, vec3_t aimdir,
 	edict_t *tesla;
 	vec3_t dir;
 	vec3_t forward, right, up;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	vectoangles2(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
 
@@ -1351,12 +1351,12 @@ fire_beams(edict_t *self, vec3_t start, vec3_t aimdir, vec3_t offset,
 	qboolean water = false, underwater = false;
 	int content_mask = MASK_SHOT | MASK_WATER;
 	vec3_t beam_endpt;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	vectoangles2(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
 
@@ -1476,12 +1476,12 @@ fire_beams(edict_t *self, vec3_t start, vec3_t aimdir, vec3_t offset,
 void
 fire_heat(edict_t *self, vec3_t start, vec3_t aimdir, vec3_t offset,
 		int damage, int kick, qboolean monster)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (monster)
 	{
 		fire_beams(self, start, aimdir, offset, damage, kick,
@@ -1502,12 +1502,12 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	int mod;
 	int damagestat;
- 
+
 	if (!self || !other || !plane || !surf)
 	{
 		return;
 	}
- 
+
 	if (other == self->owner)
 	{
 		return;
@@ -1598,12 +1598,12 @@ fire_blaster2(edict_t *self, vec3_t start, vec3_t dir, int damage,
 {
 	edict_t *bolt;
 	trace_t tr;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorNormalize(dir);
 
 	bolt = G_Spawn();
@@ -1653,12 +1653,12 @@ tracker_pain_daemon_think(edict_t *self)
 {
 	static vec3_t pain_normal = {0, 0, 1};
 	int hurt;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!self->inuse)
 	{
 		return;
@@ -1747,12 +1747,12 @@ void
 tracker_explode(edict_t *self, cplane_t *plane)
 {
 	vec3_t dir;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (!plane)
 	{
 		VectorClear(dir);
@@ -1774,12 +1774,12 @@ void
 tracker_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	float damagetime;
- 
+
 	if (!self || !other || !surf || !plane)
 	{
 		return;
 	}
- 
+
 	if (other == self->owner)
 	{
 		return;
@@ -1839,12 +1839,12 @@ tracker_fly(edict_t *self)
 	vec3_t dest;
 	vec3_t dir;
 	vec3_t center;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((!self->enemy) || (!self->enemy->inuse) || (self->enemy->health < 1))
 	{
 		tracker_explode(self, NULL);
@@ -1884,12 +1884,12 @@ fire_tracker(edict_t *self, vec3_t start, vec3_t dir, int damage,
 {
 	edict_t *bolt;
 	trace_t tr;
-  
+
 	if (!self || !enemy)
 	{
 		return;
 	}
- 
+
 	VectorNormalize(dir);
 
 	bolt = G_Spawn();

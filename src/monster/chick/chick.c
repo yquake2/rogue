@@ -4,7 +4,7 @@
  *
  * =======================================================================
  */
- 
+
 #include "../../header/local.h"
 #include "chick.h"
 
@@ -36,12 +36,12 @@ static int sound_search;
 
 void
 ChickMoan(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (random() < 0.5)
 	{
 		gi.sound(self, CHAN_VOICE, sound_idle1, 1, ATTN_IDLE, 0);
@@ -94,12 +94,12 @@ mmove_t chick_move_fidget = {
 
 void
 chick_fidget(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
 		return;
@@ -153,12 +153,12 @@ mmove_t chick_move_stand = {
 
 void
 chick_stand(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &chick_move_stand;
 }
 
@@ -224,23 +224,23 @@ mmove_t chick_move_walk = {
 
 void
 chick_walk(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &chick_move_walk;
 }
 
 void
 chick_run(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_done_dodge(self);
 
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
@@ -324,12 +324,12 @@ void
 chick_pain(edict_t *self, edict_t *other /* other */, float kick /* other */, int damage)
 {
 	float r;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_done_dodge(self);
 
 	if (self->health < (self->max_health / 2))
@@ -389,12 +389,12 @@ chick_pain(edict_t *self, edict_t *other /* other */, float kick /* other */, in
 
 void
 chick_dead(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(self->mins, -16, -16, 0);
 	VectorSet(self->maxs, 16, 16, 16);
 	self->movetype = MOVETYPE_TOSS;
@@ -463,12 +463,12 @@ chick_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* u
 		int damage, vec3_t point /* unused */)
 {
 	int n;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	/* check for gib */
 	if (self->health <= self->gib_health)
 	{
@@ -534,12 +534,12 @@ void
 ChickSlash(edict_t *self)
 {
 	vec3_t aim;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	VectorSet(aim, MELEE_DISTANCE, self->mins[0], 10);
 	gi.sound(self, CHAN_WEAPON, sound_melee_swing, 1, ATTN_NORM, 0);
 	fire_hit(self, aim, (10 + (rand() % 6)), 100);
@@ -557,12 +557,12 @@ ChickRocket(edict_t *self)
 	float dist;
 	vec3_t target;
 	qboolean blindfire = false;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_MANUAL_STEERING)
 	{
 		blindfire = true;
@@ -681,23 +681,23 @@ ChickRocket(edict_t *self)
 
 void
 Chick_PreAttack1(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_missile_prelaunch, 1, ATTN_NORM, 0);
 }
 
 void
 ChickReload(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_missile_reload, 1, ATTN_NORM, 0);
 }
 
@@ -765,12 +765,12 @@ mmove_t chick_move_end_attack1 = {
 
 void
 chick_rerocket(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->monsterinfo.aiflags & AI_MANUAL_STEERING)
 	{
 		self->monsterinfo.aiflags &= ~AI_MANUAL_STEERING;
@@ -798,12 +798,12 @@ chick_rerocket(edict_t *self)
 
 void
 chick_attack1(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &chick_move_attack1;
 }
 
@@ -842,12 +842,12 @@ mmove_t chick_move_end_slash = {
 
 void
 chick_reslash(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (self->enemy->health > 0)
 	{
 		if (range(self, self->enemy) == RANGE_MELEE)
@@ -870,12 +870,12 @@ chick_reslash(edict_t *self)
 
 void
 chick_slash(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &chick_move_slash;
 }
 
@@ -894,12 +894,12 @@ mmove_t chick_move_start_slash = {
 
 void
 chick_melee(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	self->monsterinfo.currentmove = &chick_move_start_slash;
 }
 
@@ -907,12 +907,12 @@ void
 chick_attack(edict_t *self)
 {
 	float r, chance;
-  
+
 	if (!self)
 	{
 		return;
 	}
- 
+
 	monster_done_dodge(self);
 
 	if (self->monsterinfo.attack_state == AS_BLIND)
@@ -960,23 +960,23 @@ chick_attack(edict_t *self)
 
 void
 chick_sight(edict_t *self, edict_t *other /* unused */)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	gi.sound(self, CHAN_VOICE, sound_sight, 1, ATTN_NORM, 0);
 }
 
 qboolean
 chick_blocked(edict_t *self, float dist)
-{  
+{
 	if (!self)
 	{
 		return false;
 	}
- 
+
 	if (blocked_checkshot(self, 0.25 + (0.05 * skill->value)))
 	{
 		return true;
@@ -992,12 +992,12 @@ chick_blocked(edict_t *self, float dist)
 
 void
 chick_duck(edict_t *self, float eta)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((self->monsterinfo.currentmove == &chick_move_start_attack1) ||
 		(self->monsterinfo.currentmove == &chick_move_attack1))
 	{
@@ -1029,12 +1029,12 @@ chick_duck(edict_t *self, float eta)
 
 void
 chick_sidestep(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if ((self->monsterinfo.currentmove == &chick_move_start_attack1) ||
 		(self->monsterinfo.currentmove == &chick_move_attack1))
 	{
@@ -1057,12 +1057,12 @@ chick_sidestep(edict_t *self)
  */
 void
 SP_monster_chick(edict_t *self)
-{  
+{
 	if (!self)
 	{
 		return;
 	}
- 
+
 	if (deathmatch->value)
 	{
 		G_FreeEdict(self);
