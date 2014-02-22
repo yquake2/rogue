@@ -179,7 +179,7 @@ BeginIntermission(edict_t *targ)
 }
 
 void
-DeathmatchScoreboardMessage(edict_t *ent, edict_t *killer)
+DeathmatchScoreboardMessage(edict_t *ent, edict_t *killer /* can be NULL */)
 {
 	char entry[1024];
 	char string[1400];
@@ -193,7 +193,7 @@ DeathmatchScoreboardMessage(edict_t *ent, edict_t *killer)
 	edict_t *cl_ent;
 	char *tag;
  
-	if (!ent || !killer)
+	if (!ent)
 	{
 		return;
 	}
@@ -307,54 +307,10 @@ DeathmatchScoreboardMessage(edict_t *ent, edict_t *killer)
 }
 
 /*
- * Draw instead of help message.
- */
-void
-DeathmatchScoreboard(edict_t *ent)
-{ 
-	if (!ent)
-	{
-		return;
-	}
- 
-	DeathmatchScoreboardMessage(ent, ent->enemy);
-	gi.unicast(ent, true);
-}
-
-/*
- * Display the scoreboard
- */
-void
-Cmd_Score_f(edict_t *ent)
-{ 
-	if (!ent)
-	{
-		return;
-	}
- 
-	ent->client->showinventory = false;
-	ent->client->showhelp = false;
-
-	if (!deathmatch->value && !coop->value)
-	{
-		return;
-	}
-
-	if (ent->client->showscores)
-	{
-		ent->client->showscores = false;
-		return;
-	}
-
-	ent->client->showscores = true;
-	DeathmatchScoreboard(ent);
-}
-
-/*
  * Draw help computer.
  */
 void
-HelpComputer(edict_t *ent)
+HelpComputerMessage(edict_t *ent)
 {
 	char string[1024];
 	char *sk;
@@ -399,34 +355,27 @@ HelpComputer(edict_t *ent)
 
 	gi.WriteByte(svc_layout);
 	gi.WriteString(string);
-	gi.unicast(ent, true);
 }
 
 /*
  * Display the current help message
  */
 void
-Cmd_Help_f(edict_t *ent)
+InventoryMessage(edict_t *ent)
 {
-	/* this is for backwards compatability */
-	if (deathmatch->value)
+	int i;
+
+	if (!ent)
 	{
-		Cmd_Score_f(ent);
 		return;
 	}
 
-	ent->client->showinventory = false;
-	ent->client->showscores = false;
+	gi.WriteByte(svc_inventory);
 
-	if (ent->client->showhelp && (ent->client->pers.game_helpchanged == game.helpchanged))
+	for (i = 0; i < MAX_ITEMS; i++)
 	{
-		ent->client->showhelp = false;
-		return;
+		gi.WriteShort(ent->client->pers.inventory[i]);
 	}
-
-	ent->client->showhelp = true;
-	ent->client->pers.helpchanged = 0;
-	HelpComputer(ent);
 }
 
 /* ======================================================================= */
