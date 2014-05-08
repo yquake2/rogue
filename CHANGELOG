@@ -1,4 +1,4 @@
-Ground Zero 1.07 to 2.00RC
+Ground Zero 1.07 to 2.00
 - Cleanup of the whole source, nearly every line
   was audited and touched.
 - Add sanity checks to all function.
