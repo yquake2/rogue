@@ -117,7 +117,7 @@ stalker_ok_to_transition(edict_t *self)
 		return false;
 	}
 
-	if (abs(end_height + margin - trace.endpos[2]) > 8)
+	if (fabsf(end_height + margin - trace.endpos[2]) > 8)
 	{
 		return false;
 	}
@@ -134,7 +134,7 @@ stalker_ok_to_transition(edict_t *self)
 		return false;
 	}
 
-	if (abs(end_height + margin - trace.endpos[2]) > 8)
+	if (fabsf(end_height + margin - trace.endpos[2]) > 8)
 	{
 		return false;
 	}
@@ -150,7 +150,7 @@ stalker_ok_to_transition(edict_t *self)
 		return false;
 	}
 
-	if (abs(end_height + margin - trace.endpos[2]) > 8)
+	if (fabsf(end_height + margin - trace.endpos[2]) > 8)
 	{
 		return false;
 	}
@@ -166,7 +166,7 @@ stalker_ok_to_transition(edict_t *self)
 		return false;
 	}
 
-	if (abs(end_height + margin - trace.endpos[2]) > 8)
+	if (fabsf(end_height + margin - trace.endpos[2]) > 8)
 	{
 		return false;
 	}
@@ -972,7 +972,7 @@ stalker_do_pounce(edict_t *self, vec3_t dest)
 	/* make sure we're pointing in that direction 15deg margin of error. */
 	vectoangles2(dist, jumpAngles);
 
-	if (abs(jumpAngles[YAW] - self->s.angles[YAW]) > 45)
+	if (fabsf(jumpAngles[YAW] - self->s.angles[YAW]) > 45)
 	{
 		return false; /* not facing the player... */
 	}
