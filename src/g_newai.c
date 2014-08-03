@@ -330,7 +330,7 @@ hintpath_findstart(edict_t *ent)
 
 	if (!ent)
 	{
-		return false;
+		return NULL;
 	}
 
 	if (ent->target) /* starting point */
@@ -392,7 +392,7 @@ hintpath_other_end(edict_t *ent)
 
 	if (!ent)
 	{
-		return false;
+		return NULL;
 	}
 
 	if (ent->target) /* starting point */
@@ -1732,7 +1732,7 @@ PickCoopTarget(edict_t *self)
 {
 	if (!self)
 	{
-		return false;
+		return NULL;
 	}
 
 	/* no more than 4 players in coop, so.. */
