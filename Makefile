@@ -33,6 +33,8 @@ endif
 ifeq ($(OSTYPE), Windows)
 # At this time only i386 is supported on Windows
 ARCH := i386
+# seems like mingw doesn't set CC by default
+CC := gcc
 else
 # Some platforms call it "amd64" and some "x86_64"
 ARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/amd64/x86_64/)
@@ -66,10 +68,10 @@ endif
 # -MMD to generate header dependencies.
 ifeq ($(OSTYPE), Darwin)
 CFLAGS := -O2 -fno-strict-aliasing -fomit-frame-pointer \
-		  -Wall -pipe -g -arch i386 -arch x86_64 
+		  -Wall -pipe -g -fwrapv -arch i386 -arch x86_64
 else
 CFLAGS := -O2 -fno-strict-aliasing -fomit-frame-pointer \
-		  -Wall -pipe -g -MMD
+		  -Wall -pipe -g -MMD -fwrapv
 endif
 
 # ----------
