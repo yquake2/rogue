@@ -238,8 +238,8 @@ InitGame(void)
 	/* items */
 	InitItems ();
 
-	Com_sprintf (game.helpmessage1, sizeof(game.helpmessage1), "");
-	Com_sprintf (game.helpmessage2, sizeof(game.helpmessage2), "");
+	game.helpmessage1[0] = 0;
+	game.helpmessage2[0] = 0;
 
 	/* initialize all entities for this game */
 	game.maxentities = maxentities->value;
@@ -449,10 +449,10 @@ WriteField1(FILE *f, field_t *field, byte *base)
 				{
 					gi.error ("WriteField1: function not in list, can't save game");
 				}
-				
+
 				len = strlen(func->funcStr)+1;
 			}
-			
+
 			*(int *)p = len;
 			break;
 		case F_MMOVE:
@@ -464,7 +464,7 @@ WriteField1(FILE *f, field_t *field, byte *base)
 			else
 			{
 				mmove = GetMmoveByAddress (*(mmove_t **)p);
-				
+
 				if (!mmove)
 				{
 					gi.error ("WriteField1: mmove not in list, can't save game");
@@ -472,7 +472,7 @@ WriteField1(FILE *f, field_t *field, byte *base)
 
 				len = strlen(mmove->mmoveStr)+1;
 			}
-			
+
 			*(int *)p = len;
 			break;
 		default:
@@ -507,23 +507,23 @@ WriteField2(FILE *f, field_t *field, byte *base)
 
 			break;
 		case F_FUNCTION:
-			
+
 			if (*(byte **)p)
 			{
 				func = GetFunctionByAddress (*(byte **)p);
-				
+
 				if (!func)
 				{
 					gi.error ("WriteField2: function not in list, can't save game");
 				}
-				
+
 				len = strlen(func->funcStr)+1;
 				fwrite (func->funcStr, len, 1, f);
 			}
 
 			break;
 		case F_MMOVE:
-			
+
 			if (*(byte **)p)
 			{
 				mmove = GetMmoveByAddress (*(mmove_t **)p);
@@ -641,7 +641,7 @@ ReadField(FILE *f, field_t *field, byte *base)
 				if (len > sizeof(funcStr))
 				{
 					gi.error ("ReadField: function name is longer than buffer (%i chars)",
-							sizeof(funcStr));
+							  (int)sizeof(funcStr));
 				}
 
 				fread (funcStr, len, 1, f);
@@ -665,11 +665,11 @@ ReadField(FILE *f, field_t *field, byte *base)
 				if (len > sizeof(funcStr))
 				{
 					gi.error ("ReadField: mmove name is longer than buffer (%i chars)",
-						   	sizeof(funcStr));
+							  (int)sizeof(funcStr));
 				}
 
 				fread (funcStr, len, 1, f);
-				
+
 				if ( !(*(mmove_t **)p = FindMmoveByName (funcStr)) )
 				{
 					gi.error ("ReadField: mmove %s not found in table, can't load game", funcStr);
