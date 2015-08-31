@@ -100,7 +100,7 @@ typedef struct
 
 	/* config strings hold all the index strings, the lightstyles,
 	   and misc data like the sky definition and cdtrack.
-	   All of the current configstrings are sent to clients when 
+	   All of the current configstrings are sent to clients when
 	   they connect, and changes are sent to all connected clients. */
 	void (*configstring)(int num, char *string);
 	void (*error)(char *fmt, ...);
@@ -196,7 +196,7 @@ typedef struct
 
 	void (*RunFrame)(void);
 
-	/* ServerCommand will be called when an "sv <command>" command 
+	/* ServerCommand will be called when an "sv <command>" command
 	   is issued on the server console. The game can issue gi.argc()
 	   gi.argv() commands to get the rest of the parameters */
 	void (*ServerCommand)(void);
@@ -211,7 +211,5 @@ typedef struct
 	int num_edicts;             /* current number, <= max_edicts */
 	int max_edicts;
 } game_export_t;
-
-game_export_t *GetGameApi(game_import_t *import);
 
 #endif /* ROGUE_GAME_H */
