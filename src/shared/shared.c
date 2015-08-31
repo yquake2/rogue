@@ -303,9 +303,6 @@ anglemod(float a)
 	return a;
 }
 
-int i;
-vec3_t corners[2];
-
 /*
  * This is the slow, general version
  */
@@ -1228,7 +1225,7 @@ Info_RemoveKey(char *s, char *key)
 
 		if (!strcmp(key, pkey))
 		{
-			strcpy(start, s); /* remove this part */
+			memmove(start, s, strlen(s) + 1); /* remove this part */
 			return;
 		}
 
