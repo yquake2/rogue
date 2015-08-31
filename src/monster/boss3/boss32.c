@@ -742,7 +742,9 @@ makron_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 				gi.sound(self, CHAN_VOICE, sound_pain6, 1, ATTN_NONE, 0);
 				self->monsterinfo.currentmove = &makron_move_pain6;
 			}
-			else
+		}
+		else
+		{
 			if (random() <= 0.35)
 			{
 				gi.sound(self, CHAN_VOICE, sound_pain6, 1, ATTN_NONE, 0);
