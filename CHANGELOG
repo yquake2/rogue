@@ -1,3 +1,7 @@
+Ground Zero 2.01 to 2.02
+- Added CMake as an optional build system.
+- Fix bug with high velocities in vents in 32bit builds.
+
 Ground Zero 2.00 to 2.01
 - Coop bugfixes
 
