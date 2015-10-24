@@ -305,7 +305,7 @@ typedef struct
 	qboolean autosaved;
 } game_locals_t;
 
-/* this structure is cleared as each map is entered 
+/* this structure is cleared as each map is entered
    it is read/written to the level.sav file for savegames */
 typedef struct
 {
@@ -476,7 +476,7 @@ typedef struct
 	int monster_slots;
 	int monster_used;
 	edict_t *commander;
-	
+
 	/* powerup timers, used by widow, our friend */
 	float quad_framenum;
 	float invincible_framenum;
@@ -500,6 +500,9 @@ extern int snd_fry;
 extern int jacket_armor_index;
 extern int combat_armor_index;
 extern int body_armor_index;
+
+extern int gibsthisframe;
+extern int lastgibframe;
 
 /* means of death */
 #define MOD_UNKNOWN 0
@@ -1037,7 +1040,7 @@ typedef struct
 	qboolean spectator;             /* client is a spectator */
 } client_respawn_t;
 
-/* this structure is cleared on each 
+/* this structure is cleared on each
    PutClientInServer(), except for 'client->pers' */
 struct gclient_s
 {
@@ -1134,7 +1137,7 @@ struct edict_s
 {
 	entity_state_t s;
 	struct gclient_s *client;       /* NULL if not a player the server expects the first part
-	                                   of gclient_s to be a player_state_t but the rest of it is 
+	                                   of gclient_s to be a player_state_t but the rest of it is
 									   opaque */
 
 	qboolean inuse;
