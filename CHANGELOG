@@ -1,3 +1,8 @@
+Ground Zero 2.02 to 2.03
+- Make gibs and debris SOLID_BBOX so they move on entities.
+- Switch from an arch whitelist to an "all archs are supported"
+  approach.
+
 Ground Zero 2.01 to 2.02
 - Added CMake as an optional build system.
 - Fix bug with high velocities in vents in 32bit builds.
