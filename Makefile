@@ -227,6 +227,10 @@ ifeq ($(OSTYPE), Windows)
 release/game.dll : $(ROGUE_OBJS)
 	@echo "===> LD $@"
 	${Q}$(CC) $(LDFLAGS) -o $@ $(ROGUE_OBJS)
+else ifeq ($(OSTYPE), Darwin)
+release/game.dylib : $(ROGUE_OBJS)
+	@echo "===> LD $@"
+	${Q}$(CC) $(LDFLAGS) -o $@ $(ROGUE_OBJS)
 else
 release/game.so : $(ROGUE_OBJS)
 	@echo "===> LD $@"
