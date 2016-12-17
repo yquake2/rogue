@@ -821,7 +821,7 @@ SP_trigger_gravity(edict_t *self)
 
 	InitTrigger(self);
 
-	self->gravity = atof(st.gravity);
+	self->gravity = strtof(st.gravity, (char **)NULL);
 
 	if (self->spawnflags & 1) /* TOGGLE */
 	{
