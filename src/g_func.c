@@ -157,7 +157,7 @@ Move_Begin(edict_t *ent)
 void
 Move_Calc(edict_t *ent, vec3_t dest, void (*func)(edict_t *))
 {
-	if (!ent)
+	if (!ent || !func)
 	{
 		return;
 	}
@@ -303,7 +303,7 @@ AngleMove_Begin(edict_t *ent)
 void
 AngleMove_Calc(edict_t *ent, void (*func)(edict_t *))
 {
-	if (!ent)
+	if (!ent || !func)
 	{
 		return;
 	}
