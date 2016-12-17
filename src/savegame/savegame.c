@@ -774,10 +774,10 @@ WriteGame(const char *filename, qboolean autosave)
 	memset(str_os, 0, sizeof(str_os));
 	memset(str_arch, 0, sizeof(str_arch));
 
-	strncpy(str_ver, SAVEGAMEVER, sizeof(str_ver));
-	strncpy(str_game, GAMEVERSION, sizeof(str_game));
-	strncpy(str_os, OSTYPE, sizeof(str_os));
-    strncpy(str_arch, ARCH, sizeof(str_arch));
+	strncpy(str_ver, SAVEGAMEVER, sizeof(str_ver) - 1);
+	strncpy(str_game, GAMEVERSION, sizeof(str_game) - 1);
+	strncpy(str_os, OSTYPE, sizeof(str_os) - 1);
+    strncpy(str_arch, ARCH, sizeof(str_arch) - 1);
 
 	fwrite(str_ver, sizeof(str_ver), 1, f);
 	fwrite(str_game, sizeof(str_game), 1, f);
