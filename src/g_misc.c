@@ -257,6 +257,7 @@ ThrowHead(edict_t *self, char *gibname, int damage, int type)
 	self->flags |= FL_NO_KNOCKBACK;
 	self->svflags &= ~SVF_MONSTER;
 	self->takedamage = DAMAGE_YES;
+	self->targetname = NULL;
 	self->die = gib_die;
 
 	if (type == GIB_ORGANIC)
