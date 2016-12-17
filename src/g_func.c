@@ -3032,6 +3032,11 @@ SP_func_water(edict_t *self)
 void
 train_blocked(edict_t *self, edict_t *other)
 {
+	if (!self || !other)
+	{
+		return;
+	}
+
 	if (!(other->svflags & SVF_MONSTER) && (!other->client))
 	{
 		/* give it a chance to go away on it's own terms (like gibs) */
@@ -3316,7 +3321,7 @@ void
 train_use(edict_t *self, edict_t *other /* unused */,
 	   	edict_t *activator)
 {
-	if (!self || !other)
+	if (!self || !activator)
 	{
 		return;
 	}
