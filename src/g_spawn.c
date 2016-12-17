@@ -520,7 +520,7 @@ ED_ParseEdict(char *data, edict_t *ent)
 	char keyname[256];
 	const char *com_token;
 
-	if (!ent || !data)
+	if (!ent)
 	{
 		return NULL;
 	}
