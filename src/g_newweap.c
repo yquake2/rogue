@@ -393,11 +393,6 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 		return;
 	}
 
-	if (plane == NULL)
-	{
-		return;
-	}
-
 	VectorMA(ent->s.origin, -10.0, plane->normal, land_point);
 
 	if (gi.pointcontents(land_point) & (CONTENTS_SLIME | CONTENTS_LAVA))
@@ -425,12 +420,6 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 		vec3_t out;
 		float backoff, change;
 		int i;
-
-		if (!plane->normal) /* this happens if you hit a point object, maybe other cases */
-		{
-			Prox_Explode(ent);
-			return;
-		}
 
 		if ((other->movetype == MOVETYPE_PUSH) && (plane->normal[2] > 0.7))
 		{
