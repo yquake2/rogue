@@ -511,11 +511,6 @@ SV_PushEntity(edict_t *ent, vec3_t push)
 	vec3_t end;
 	int mask;
 
-	if (!ent)
-	{
-		return trace;
-	}
-
 	VectorCopy(ent->s.origin, start);
 	VectorAdd(start, push, end);
 
