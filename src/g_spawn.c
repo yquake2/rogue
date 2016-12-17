@@ -350,6 +350,7 @@ ED_CallSpawn(edict_t *ent)
 	if (!ent->classname)
 	{
 		gi.dprintf("ED_CallSpawn: NULL classname\n");
+		G_FreeEdict(ent);
 		return;
 	}
 
