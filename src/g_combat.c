@@ -133,6 +133,14 @@ Killed(edict_t *targ, edict_t *inflictor, edict_t *attacker,
 		targ->health = -999;
 	}
 
+	/* Reset AI flag for being ducked. This fixes a corner case
+	   were the monster is ressurected by a medic and get's stuck
+	   in the next frame for mmove_t not matching the AI state. */
+	if (targ->monsterinfo.aiflags & AI_DUCKED)
+	{
+		targ->monsterinfo.aiflags &= ~AI_DUCKED;
+	}
+
 	if (targ->monsterinfo.aiflags & AI_MEDIC)
 	{
 		if (targ->enemy)
