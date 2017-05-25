@@ -1,3 +1,10 @@
+Ground Zero 2.03 to 2.04
+- Fix a lot of potential crashes. (reported by Maarakate)
+- Fix monsters running in place.
+- Fix monsters not recognizing the player under some
+  circumstances.
+- Fix monsters getting stuck when resurrected by a medic.
+
 Ground Zero 2.02 to 2.03
 - Make gibs and debris SOLID_BBOX so they move on entities.
 - Switch from an arch whitelist to an "all archs are supported"
