@@ -81,6 +81,8 @@ CFLAGS += -DOSTYPE=\"$(OSTYPE)\" -DARCH=\"$(ARCH)\"
 # Base LDFLAGS.
 ifeq ($(OSTYPE), Darwin)
 LDFLAGS := -shared -arch i386 -arch x86_64 
+else ifeq ($(OSTYPE), Windows)
+LDFLAGS := -shared -static-libgcc
 else
 LDFLAGS := -shared
 endif
