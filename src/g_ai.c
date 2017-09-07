@@ -1046,8 +1046,11 @@ ai_run_melee(edict_t *self)
 
 	if (FacingIdeal(self))
 	{
-		self->monsterinfo.melee(self);
-		self->monsterinfo.attack_state = AS_STRAIGHT;
+		if (self->monsterinfo.melee)
+		{
+			self->monsterinfo.melee(self);
+			self->monsterinfo.attack_state = AS_STRAIGHT;
+		}
 	}
 }
 
@@ -1072,12 +1075,14 @@ ai_run_missile(edict_t *self)
 
 	if (FacingIdeal(self))
 	{
-		self->monsterinfo.attack(self);
-
-		if ((self->monsterinfo.attack_state == AS_MISSILE) ||
-			(self->monsterinfo.attack_state == AS_BLIND))
+		if (self->monsterinfo.attack)
 		{
-			self->monsterinfo.attack_state = AS_STRAIGHT;
+			self->monsterinfo.attack(self);
+
+			if ((self->monsterinfo.attack_state == AS_MISSILE) ||
+			    (self->monsterinfo.attack_state == AS_BLIND)) {
+				self->monsterinfo.attack_state = AS_STRAIGHT;
+			}
 		}
 	}
 }
@@ -1115,7 +1120,7 @@ ai_run_slide(edict_t *self, float distance)
 	}
 
 	/* clamp maximum sideways move for non flyers to make them look less jerky */
-	if (!self->flags & FL_FLY)
+	if (!(self->flags & FL_FLY))
 	{
 		distance = min(distance, 0.8);
 	}
