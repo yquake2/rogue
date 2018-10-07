@@ -105,6 +105,10 @@ typedef enum
 	AMMO_PROX
 } ammo_t;
 
+/* Maximum debris / gibs per frame */
+#define MAX_GIBS 20
+#define MAX_DEBRIS 20
+
 /* deadflag */
 #define DEAD_NO 0
 #define DEAD_DYING 1
@@ -501,8 +505,8 @@ extern int jacket_armor_index;
 extern int combat_armor_index;
 extern int body_armor_index;
 
+extern int debristhisframe;
 extern int gibsthisframe;
-extern int lastgibframe;
 
 /* means of death */
 #define MOD_UNKNOWN 0
