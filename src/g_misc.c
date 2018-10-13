@@ -8,8 +8,8 @@
 
 #include "header/local.h"
 
+int debristhisframe;
 int gibsthisframe;
-int lastgibframe;
 
 extern void M_WorldEffects(edict_t *ent);
 
