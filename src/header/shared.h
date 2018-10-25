@@ -184,6 +184,8 @@ void Com_sprintf(char *dest, int size, char *fmt, ...);
 void Com_PageInMemory(byte *buffer, int size);
 
 char *strlwr ( char *s );
+int Q_strlcpy(char *dst, const char *src, int size);
+int Q_strlcat(char *dst, const char *src, int size);
 
 /* ============================================= */
 
