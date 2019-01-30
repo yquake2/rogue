@@ -817,7 +817,7 @@ parasite_checkattack(edict_t *self)
 		return true;
 	}
 
-	return false;
+	return true;
 }
 
 void
