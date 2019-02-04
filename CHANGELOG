@@ -1,3 +1,8 @@
+Ground Zero 2.04 to 2.05
+- Fix the parasite not attacking the player in some situations.
+- Small bugfixes and better support the the current version of the
+  Windows build environment.
+
 Ground Zero 2.03 to 2.04
 - Fix a lot of potential crashes. (reported by Maarakate)
 - Fix monsters running in place.
