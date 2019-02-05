@@ -736,7 +736,7 @@ ReadClient(FILE *f, gclient_t *client, short save_ver)
 		}
 	}
 
-	if (save_ver < 3)
+	if (save_ver < 4)
 	{
 		InitClientResp(client);
 	}
@@ -818,7 +818,7 @@ ReadGame(const char *filename)
 	char str_game[32];
 	char str_os[32];
 	char str_arch[32];
-	short save_ver;
+	short save_ver = 0;
 
 	gi.FreeTags(TAG_GAME);
 
