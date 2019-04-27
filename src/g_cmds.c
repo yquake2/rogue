@@ -229,7 +229,8 @@ Cmd_Give_f(edict_t *ent)
 	{
 		if (gi.argc() == 3)
 		{
-			ent->health = atoi(gi.argv(2));
+	  		ent->health = atoi(gi.argv(2));
+		    ent->health = ent->health < 1 ? 1 : ent->health; 
 		}
 		else
 		{
