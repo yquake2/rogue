@@ -1737,7 +1737,7 @@ medic_checkattack(edict_t *self)
 		}
 	}
 
-	if (self->enemy->client &&
+	if (self->enemy && self->enemy->client &&
 		!visible(self, self->enemy) && (self->monsterinfo.monster_slots > 2))
 	{
 		self->monsterinfo.attack_state = AS_BLIND;
