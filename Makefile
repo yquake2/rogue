@@ -155,6 +155,16 @@ build/%.o: %.c
 	@echo "===> CC $<"
 	${Q}mkdir -p $(@D)
 	${Q}$(CC) -c $(CFLAGS) -o $@ $<
+ifeq ($(OSTYPE), Darwin)
+rogue:
+	@echo "===> Building game.dylib"
+	${Q}mkdir -p release
+	$(MAKE) release/game.dylib
+
+build/%.o: %.c
+	@echo "===> CC $<"
+	${Q}mkdir -p $(@D)
+	${Q}$(CC) -c $(CFLAGS) -o $@ $<
 else
 rogue:
 	@echo "===> Building game.so"
