@@ -470,7 +470,7 @@ parasite_drain_attack_ok(vec3_t start, vec3_t end)
 void
 parasite_drain_attack(edict_t *self)
 {
-	vec3_t offset, start, f, r, end, dir;
+	vec3_t offset, start, origStart, f, r, end, dir;
 	trace_t tr;
 	int damage;
 
@@ -484,6 +484,19 @@ parasite_drain_attack(edict_t *self)
 	G_ProjectSource(self->s.origin, offset, f, r, start);
 
 	VectorCopy(self->enemy->s.origin, end);
+	VectorSubtract(end, start, dir);
+
+	{
+		// will use the original startPoint for the actual effect etc,
+		// the modified start is just for the traces
+		VectorCopy(start, origStart);
+		vec3_t dir2; // need normalized dir for offset
+		VectorCopy(dir, dir2);
+		VectorNormalize(dir2);
+		// start = start - 8*dir => move start back a bit
+		// so trace doesn't start in wall in case parasite is too close to wall
+		VectorMA(start, -8.0f, dir2, start);
+	}
 
 	if (!parasite_drain_attack_ok(start, end))
 	{
@@ -527,11 +540,10 @@ parasite_drain_attack(edict_t *self)
 	gi.WriteByte(svc_temp_entity);
 	gi.WriteByte(TE_PARASITE_ATTACK);
 	gi.WriteShort(self - g_edicts);
-	gi.WritePosition(start);
+	gi.WritePosition(origStart);
 	gi.WritePosition(end);
 	gi.multicast(self->s.origin, MULTICAST_PVS);
 
-	VectorSubtract(start, end, dir);
 	T_Damage(self->enemy, self, self, dir, self->enemy->s.origin, vec3_origin,
 			damage, 0, DAMAGE_NO_KNOCKBACK, MOD_UNKNOWN);
 }
