@@ -111,7 +111,7 @@ LDFLAGS := -shared -arch i386 -arch x86_64
 else ifeq ($(OSTYPE), Windows)
 LDFLAGS := -shared -static-libgcc
 else
-LDFLAGS := -shared
+LDFLAGS := -shared -lm
 endif
 
 # ----------
