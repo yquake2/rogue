@@ -1937,8 +1937,10 @@ SpawnItem(edict_t *ent, gitem_t *item)
 		return;
 	}
 
-	if ((!strcmp(ent->classname, "ammo_disruptor")) ||
-		(!strcmp(ent->classname, "weapon_disintegrator")))
+	/* Disruptor: Disabled if g_disruptor == 0 */
+	if ((!strcmp(ent->classname, "ammo_disruptor") ||
+			!strcmp(ent->classname, "weapon_disintegrator")) &&
+			!g_disruptor->value)
 	{
 		G_FreeEdict(ent);
 		return;

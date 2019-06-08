@@ -617,6 +617,8 @@ extern cvar_t *huntercam;
 extern cvar_t *strong_mines;
 extern cvar_t *randomrespawn;
 
+extern cvar_t *g_disruptor;
+
 /* this is for the count of monsters */
 #define ENT_SLOTS_LEFT \
 	(ent->monsterinfo.monster_slots - \

@@ -241,6 +241,9 @@ InitGame(void)
 	/* dm map list */
 	sv_maplist = gi.cvar ("sv_maplist", "", 0);
 
+	/* disruptor availability */
+	g_disruptor = gi.cvar ("g_disruptor", "", 0);
+
 	/* items */
 	InitItems ();
 
