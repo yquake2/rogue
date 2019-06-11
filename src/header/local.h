@@ -102,7 +102,8 @@ typedef enum
 
 	AMMO_FLECHETTES,
 	AMMO_TESLA,
-	AMMO_PROX
+	AMMO_PROX,
+	AMMO_DISRUPTOR
 } ammo_t;
 
 /* Maximum debris / gibs per frame */
@@ -616,6 +617,8 @@ extern cvar_t *gamerules;
 extern cvar_t *huntercam;
 extern cvar_t *strong_mines;
 extern cvar_t *randomrespawn;
+
+extern cvar_t *g_disruptor;
 
 /* this is for the count of monsters */
 #define ENT_SLOTS_LEFT \

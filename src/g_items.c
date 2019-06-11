@@ -339,6 +339,14 @@ Pickup_Bandolier(edict_t *ent, edict_t *other)
 		other->client->pers.max_flechettes = 250;
 	}
 
+	if (g_disruptor->value)
+	{
+		if (other->client->pers.max_rounds < 150)
+		{
+			other->client->pers.max_rounds = 150;
+		}
+	}
+
 	item = FindItem("Bullets");
 
 	if (item)
@@ -421,6 +429,14 @@ Pickup_Pack(edict_t *ent, edict_t *other)
 	if (other->client->pers.max_flechettes < 200)
 	{
 		other->client->pers.max_flechettes = 200;
+	}
+
+	if (g_disruptor->value)
+	{
+		if (other->client->pers.max_rounds < 200)
+		{
+			other->client->pers.max_rounds = 200;
+		}
 	}
 
 	item = FindItem("Bullets");
@@ -525,6 +541,21 @@ Pickup_Pack(edict_t *ent, edict_t *other)
 		{
 			other->client->pers.inventory[index] =
 				other->client->pers.max_flechettes;
+		}
+	}
+
+	item = FindItem("Rounds");
+
+	if (item)
+	{
+		index = ITEM_INDEX(item);
+		other->client->pers.inventory[index] += item->quantity;
+
+		if (other->client->pers.inventory[index] >
+				other->client->pers.max_rounds)
+		{
+			other->client->pers.inventory[index] =
+				other->client->pers.max_rounds;
 		}
 	}
 
@@ -1017,8 +1048,10 @@ Add_Ammo(edict_t *ent, gitem_t *item, int count)
 		return false;
 	}
 
+
 	if (item->tag == AMMO_BULLETS)
 	{
+		printf("1\n");
 		max = ent->client->pers.max_bullets;
 	}
 	else if (item->tag == AMMO_SHELLS)
@@ -1052,6 +1085,11 @@ Add_Ammo(edict_t *ent, gitem_t *item, int count)
 	else if (item->tag == AMMO_TESLA)
 	{
 		max = ent->client->pers.max_tesla;
+	}
+	else if (item->tag == AMMO_DISRUPTOR)
+	{
+		printf("2\n");
+		max = ent->client->pers.max_rounds;
 	}
 	else
 	{
@@ -1937,11 +1975,14 @@ SpawnItem(edict_t *ent, gitem_t *item)
 		return;
 	}
 
-	if ((!strcmp(ent->classname, "ammo_disruptor")) ||
-		(!strcmp(ent->classname, "weapon_disintegrator")))
+	if (!g_disruptor->value)
 	{
-		G_FreeEdict(ent);
-		return;
+		if ((!strcmp(ent->classname, "ammo_disruptor")) ||
+				(!strcmp(ent->classname, "weapon_disintegrator")))
+		{
+			G_FreeEdict(ent);
+			return;
+		}
 	}
 
 	if (ent->spawnflags > 1)
@@ -2578,7 +2619,7 @@ gitem_t itemlist[] = {
 		0,
 		1,
 		"Rounds",
-		IT_NOT_GIVEABLE,
+		IT_WEAPON,
 		WEAP_DISRUPTOR,
 		NULL,
 		1,
@@ -2797,10 +2838,10 @@ gitem_t itemlist[] = {
 		3,
 		15,
 		NULL,
-		IT_NOT_GIVEABLE,
+		IT_AMMO,
 		0,
 		NULL,
-		0,
+		AMMO_DISRUPTOR
 	},
 
 	/* QUAKED item_quad (.3 .3 1) (-16 -16 -16) (16 16 16) TRIGGER_SPAWN */

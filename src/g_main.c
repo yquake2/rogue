@@ -67,6 +67,8 @@ cvar_t *huntercam;
 cvar_t *strong_mines;
 cvar_t *randomrespawn;
 
+cvar_t *g_disruptor;
+
 void SpawnEntities(char *mapname, char *entities, char *spawnpoint);
 void ClientThink(edict_t *ent, usercmd_t *cmd);
 qboolean ClientConnect(edict_t *ent, char *userinfo);
