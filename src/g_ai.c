@@ -1375,7 +1375,7 @@ ai_run(edict_t *self, float dist)
 	qboolean gotcha = false;
 	edict_t *realEnemy;
 
-	if (!self || !self->enemy || !self->enemy->inuse)
+	if (!self)
 	{
 		return;
 	}
