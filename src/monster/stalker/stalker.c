@@ -1473,6 +1473,7 @@ SP_monster_stalker(edict_t *self)
 	self->health = 250;
 	self->gib_health = -50;
 	self->mass = 250;
+	self->viewheight = 15;
 
 	self->pain = stalker_pain;
 	self->die = stalker_die;
