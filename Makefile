@@ -29,6 +29,11 @@ ifneq (,$(findstring MINGW,$(OSTYPE)))
 OSTYPE := Windows
 endif
 
+# On Windows / MinGW $(CC) is undefined by default.
+ifeq ($(OSTYPE),Windows)
+CC := gcc
+endif
+
 # Detect the architecture
 ifeq ($(OSTYPE), Windows)
 ifdef PROCESSOR_ARCHITEW6432
@@ -78,7 +83,7 @@ ifeq ($(OSTYPE), Darwin)
 CFLAGS := -O2 -fno-strict-aliasing -fomit-frame-pointer \
 		  -Wall -pipe -g -fwrapv -arch i386 -arch x86_64
 else
-CFLAGS := -O2 -fno-strict-aliasing -fomit-frame-pointer \
+CFLAGS := -std=gnu99 -O2 -fno-strict-aliasing -fomit-frame-pointer \
 		  -Wall -pipe -g -MMD -fwrapv
 endif
 
