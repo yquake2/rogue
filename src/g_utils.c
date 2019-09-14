@@ -269,7 +269,6 @@ G_UseTargets(edict_t *ent, edict_t *activator)
 {
 	edict_t *t;
 	edict_t *master;
-	qboolean done = false;
 
 	if (!ent || !activator)
 	{
@@ -322,20 +321,17 @@ G_UseTargets(edict_t *ent, edict_t *activator)
 			/* if this entity is part of a train, cleanly remove it */
 			if (t->flags & FL_TEAMSLAVE)
 			{
-				if (t->teammaster)
+				master = t->teammaster;
+
+				while (master)
 				{
-					master = t->teammaster;
-
-					while (!done)
+					if (master->teamchain == t)
 					{
-						if (master->teamchain == t)
-						{
-							master->teamchain = t->teamchain;
-							done = true;
-						}
-
-						master = master->teamchain;
+						master->teamchain = t->teamchain;
+						break;
 					}
+
+					master = master->teamchain;
 				}
 			}
 
