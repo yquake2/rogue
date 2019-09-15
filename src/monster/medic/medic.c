@@ -1203,7 +1203,7 @@ medic_hook_retract(edict_t *self)
 	}
 	else
 	{
-		gi.sound(self, CHAN_WEAPON, sound_hook_retract, 1, ATTN_NORM, 0);
+		gi.sound(self, CHAN_WEAPON, commander_sound_hook_retract, 1, ATTN_NORM, 0);
 	}
 
 	self->monsterinfo.aiflags &= ~AI_MEDIC;
