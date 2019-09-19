@@ -2334,7 +2334,9 @@ weapon_etf_rifle_fire(edict_t *ent)
 	ent->client->ps.gunframe++;
 
 	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	{
 		ent->client->pers.inventory[ent->client->ammo_index] -= ent->client->pers.weapon->quantity;
+	}
 
 	ent->client->anim_priority = ANIM_ATTACK;
 
