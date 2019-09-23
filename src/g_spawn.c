@@ -846,7 +846,7 @@ SpawnEntities(const char *mapname, char *entities, const char *spawnpoint)
 					continue;
 				}
 			}
-			else if (coop->value)
+			else if (coop->value && !coop_baseq2->value)
 			{
 				if (ent->spawnflags & SPAWNFLAG_NOT_COOP)
 				{
