@@ -2268,7 +2268,7 @@ weapon_etf_rifle_fire(edict_t *ent)
 {
 	vec3_t forward, right, up;
 	vec3_t start, tempPt;
-	int damage;
+	int damage = 10;
 	int kick = 3;
 	int i;
 	vec3_t offset;
@@ -2276,15 +2276,6 @@ weapon_etf_rifle_fire(edict_t *ent)
 	if (!ent)
 	{
 		return;
-	}
-
-	if (deathmatch->value)
-	{
-		damage = 10;
-	}
-	else
-	{
-		damage = 10;
 	}
 
 	if (ent->client->pers.inventory[ent->client->ammo_index] < ent->client->pers.weapon->quantity)
@@ -2341,7 +2332,11 @@ weapon_etf_rifle_fire(edict_t *ent)
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
 	ent->client->ps.gunframe++;
-	ent->client->pers.inventory[ent->client->ammo_index] -= ent->client->pers.weapon->quantity;
+
+	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	{
+		ent->client->pers.inventory[ent->client->ammo_index] -= ent->client->pers.weapon->quantity;
+	}
 
 	ent->client->anim_priority = ANIM_ATTACK;
 
@@ -2403,18 +2398,11 @@ Heatbeam_Fire(edict_t *ent)
 	if (deathmatch->value)
 	{
 		damage = HEATBEAM_DM_DMG;
+		kick = 75;	/* really knock 'em around in deathmatch */
 	}
 	else
 	{
 		damage = HEATBEAM_SP_DMG;
-	}
-
-	if (deathmatch->value)  /* really knock 'em around in deathmatch */
-	{
-		kick = 75;
-	}
-	else
-	{
 		kick = 30;
 	}
 
