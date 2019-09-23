@@ -584,7 +584,7 @@ Pickup_Nuke(edict_t *ent, edict_t *other)
 		return false;
 	}
 
-	if ((coop->value) && (ent->item->flags & IT_STAY_COOP) && (quantity > 0))
+	if ((coop->value) && (ent->item->flags & IT_STAY_COOP))
 	{
 		return false;
 	}
@@ -1209,15 +1209,15 @@ Drop_Ammo(edict_t *ent, gitem_t *item)
 void
 MegaHealth_think(edict_t *self)
 {
+	if (!self)
+	{
+		return;
+	}
+
 	if (self->owner->health > self->owner->max_health)
 	{
 		self->nextthink = level.time + 1;
 		self->owner->health -= 1;
-		return;
-	}
-
-	if (!self)
-	{
 		return;
 	}
 
