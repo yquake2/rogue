@@ -425,17 +425,12 @@ infront(edict_t *self, edict_t *other)
 	float dot;
 	vec3_t forward;
 
-	if ((self == NULL) || (other == NULL))
+	if (!self || !other)
 	{
 		return false;
 	}
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
-
-	if ((self == NULL) || (other == NULL))
-	{
-		return false;
-	}
 
 	VectorSubtract(other->s.origin, self->s.origin, vec);
 	VectorNormalize(vec);
@@ -942,10 +937,6 @@ M_CheckAttack(edict_t *self)
 	{
 		chance = 0.4;
 	}
-	else if (enemy_range == RANGE_MELEE)
-	{
-		chance = 0.2;
-	}
 	else if (enemy_range == RANGE_NEAR)
 	{
 		chance = 0.1;
@@ -994,7 +985,7 @@ M_CheckAttack(edict_t *self)
 		}
 
 		/* if enemy is tesla, never strafe */
-		if ((self->enemy) && (self->enemy->classname) &&
+		if ((self->enemy->classname) &&
 			(!strcmp(self->enemy->classname, "tesla")))
 		{
 			strafe_chance = 0;
@@ -1225,7 +1216,7 @@ ai_checkattack(edict_t *self, float dist)
 	}
 	else if (self->monsterinfo.aiflags & AI_MEDIC)
 	{
-		if (!(self->enemy->inuse) || (self->enemy->health > 0))
+		if (self->enemy->health > 0)
 		{
 			hesDeadJim = true;
 		}
@@ -1441,25 +1432,13 @@ ai_run(edict_t *self, float dist)
 			return;
 		}
 
-		if (coop && coop->value)
+		if (visible(self, realEnemy))
 		{
-			/* if we're in coop, check my real enemy first..
-			   if I SEE him, set gotcha to true */
-			if (self->enemy && visible(self, realEnemy))
-			{
-				gotcha = true;
-			}
-			else /* otherwise, let FindTarget bump us out of hint paths, if appropriate */
-			{
-				FindTarget(self);
-			}
+			gotcha = true;
 		}
-		else
+		else if (coop->value)
 		{
-			if (self->enemy && visible(self, realEnemy))
-			{
-				gotcha = true;
-			}
+			FindTarget(self);
 		}
 
 		/* if we see the player, stop following hintpaths. */
@@ -1749,8 +1728,5 @@ ai_run(edict_t *self, float dist)
 
 	G_FreeEdict(tempgoal);
 
-	if (self)
-	{
-		self->goalentity = save;
-	}
+	self->goalentity = save;
 }
