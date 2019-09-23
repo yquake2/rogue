@@ -1059,11 +1059,13 @@ walkmonster_start_go(edict_t *self)
 		self->viewheight = 25;
 	}
 
-	monster_start_go(self);
-
 	if (self->spawnflags & 2)
 	{
 		monster_triggered_start(self);
+	}
+	else
+	{
+		monster_start_go(self);
 	}
 }
 
@@ -1102,11 +1104,13 @@ flymonster_start_go(edict_t *self)
 		self->viewheight = 25;
 	}
 
-	monster_start_go(self);
-
 	if (self->spawnflags & 2)
 	{
 		monster_triggered_start(self);
+	}
+	else
+	{
+		monster_start_go(self);
 	}
 }
 
@@ -1141,11 +1145,13 @@ swimmonster_start_go(edict_t *self)
 		self->viewheight = 10;
 	}
 
-	monster_start_go(self);
-
 	if (self->spawnflags & 2)
 	{
 		monster_triggered_start(self);
+	}
+	else
+	{
+		monster_start_go(self);
 	}
 }
 
@@ -1180,8 +1186,7 @@ stationarymonster_triggered_spawn(edict_t *self)
 	self->air_finished = level.time + 12;
 	gi.linkentity(self);
 
-	self->spawnflags &= ~2;
-	stationarymonster_start_go(self);
+	monster_start_go(self);
 
 	if (self->enemy && !(self->spawnflags & 1) &&
 		!(self->enemy->flags & FL_NOTARGET))
@@ -1250,11 +1255,13 @@ stationarymonster_start_go(edict_t *self)
 		self->yaw_speed = 20;
 	}
 
-	monster_start_go(self);
-
 	if (self->spawnflags & 2)
 	{
 		stationarymonster_triggered_start(self);
+	}
+	else
+	{
+		monster_start_go(self);
 	}
 }
 
