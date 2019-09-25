@@ -537,7 +537,7 @@ Weapon_Generic(edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST, int F
 {
 	int n;
 
-	if (!ent || !pause_frames || !fire)
+	if (!ent || !fire)
 	{
 		return;
 	}
@@ -1711,16 +1711,8 @@ weapon_shotgun_fire(edict_t *ent)
 		kick *= damage_multiplier;
 	}
 
-	if (deathmatch->value)
-	{
-		fire_shotgun(ent, start, forward, damage, kick, 500, 500,
-				DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
-	}
-	else
-	{
-		fire_shotgun(ent, start, forward, damage, kick, 500, 500,
-				DEFAULT_SHOTGUN_COUNT, MOD_SHOTGUN);
-	}
+	fire_shotgun(ent, start, forward, damage, kick, 500, 500,
+		DEFAULT_SHOTGUN_COUNT, MOD_SHOTGUN);
 
 	/* send muzzle flash */
 	gi.WriteByte(svc_muzzleflash);
