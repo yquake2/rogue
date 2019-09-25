@@ -526,7 +526,7 @@ TurretFire(edict_t *self)
 		VectorCopy(self->enemy->s.origin, end);
 
 		/* aim for the head. */
-		if ((self->enemy) && (self->enemy->client))
+		if (self->enemy->client)
 		{
 			end[2] += self->enemy->viewheight;
 		}

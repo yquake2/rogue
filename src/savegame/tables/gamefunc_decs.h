@@ -206,7 +206,6 @@ extern void WidowExplosion1 ( edict_t * self ) ;
 extern void WidowExplode ( edict_t * self ) ;
 extern void ThrowMoreStuff ( edict_t * self , vec3_t point ) ;
 extern void ThrowSmallStuff ( edict_t * self , vec3_t point ) ;
-extern void BloodFountain ( edict_t * self , int number , vec3_t startpos , int damage ) ;
 extern void ThrowWidowGibReal ( edict_t * self , char * gibname , int damage , int type , vec3_t startpos , qboolean sized , int hitsound , qboolean fade ) ;
 extern void ThrowWidowGibSized ( edict_t * self , char * gibname , int damage , int type , vec3_t startpos , int hitsound , qboolean fade ) ;
 extern void ThrowWidowGibLoc ( edict_t * self , char * gibname , int damage , int type , vec3_t startpos , qboolean fade ) ;

@@ -206,7 +206,6 @@
 {"WidowExplode", (byte *)WidowExplode},
 {"ThrowMoreStuff", (byte *)ThrowMoreStuff},
 {"ThrowSmallStuff", (byte *)ThrowSmallStuff},
-{"BloodFountain", (byte *)BloodFountain},
 {"ThrowWidowGibReal", (byte *)ThrowWidowGibReal},
 {"ThrowWidowGibSized", (byte *)ThrowWidowGibSized},
 {"ThrowWidowGibLoc", (byte *)ThrowWidowGibLoc},
