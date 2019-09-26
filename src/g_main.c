@@ -22,6 +22,7 @@ edict_t *g_edicts;
 
 cvar_t *deathmatch;
 cvar_t *coop;
+cvar_t *coop_baseq2;	/* treat spawnflags according to baseq2 rules */
 cvar_t *dmflags;
 cvar_t *skill;
 cvar_t *fraglimit;
