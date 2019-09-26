@@ -805,6 +805,17 @@ makron_torso_think(edict_t *self)
 		return;
 	}
 
+	if (self->owner && (self->owner->monsterinfo.aiflags & AI_RESURRECTING))
+	{
+		self->s.effects |= EF_COLOR_SHELL;
+		self->s.renderfx |= RF_SHELL_RED;
+	}
+	else
+	{
+		self->s.effects &= ~EF_COLOR_SHELL;
+		self->s.renderfx &= ~RF_SHELL_RED;
+	}
+
 	if (++self->s.frame >= FRAME_death320)
 	{
 		self->s.frame = FRAME_death301;
