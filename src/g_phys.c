@@ -1205,6 +1205,7 @@ G_RunEntity(edict_t *ent)
 {
 	trace_t trace;
 	vec3_t previous_origin;
+	qboolean saved_origin;
 
 	if (!ent)
 	{
@@ -1214,6 +1215,11 @@ G_RunEntity(edict_t *ent)
 	if (ent->movetype == MOVETYPE_STEP)
 	{
 		VectorCopy(ent->s.origin, previous_origin);
+		saved_origin = true;
+	}
+	else
+	{
+		saved_origin = false;
 	}
 
 	if (ent->prethink)
@@ -1249,7 +1255,7 @@ G_RunEntity(edict_t *ent)
 			gi.error("SV_Physics: bad movetype %i", (int)ent->movetype);
 	}
 
-	if (ent->movetype == MOVETYPE_STEP)
+	if (saved_origin)
 	{
 		/* if we moved, check and fix origin if needed */
 		if (!VectorCompare(ent->s.origin, previous_origin))
