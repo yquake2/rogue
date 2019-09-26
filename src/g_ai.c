@@ -1158,7 +1158,7 @@ ai_checkattack(edict_t *self, float dist)
 	qboolean hesDeadJim;
 	qboolean retval;
 
-	if (!self || !self->enemy || !self->enemy->inuse)
+	if (!self)
 	{
 		enemy_vis = false;
 
