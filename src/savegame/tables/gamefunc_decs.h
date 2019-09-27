@@ -587,6 +587,7 @@ extern void gunner_search ( edict_t * self ) ;
 extern void gunner_sight ( edict_t * self , edict_t * other ) ;
 extern void gunner_idlesound ( edict_t * self ) ;
 extern void SP_monster_gladiator ( edict_t * self ) ;
+qboolean gladiator_blocked ( edict_t *self , float dist ) ;
 extern void gladiator_die ( edict_t * self , edict_t * inflictor , edict_t * attacker , int damage , vec3_t point ) ;
 extern void gladiator_dead ( edict_t * self ) ;
 extern void gladiator_pain ( edict_t * self , edict_t * other , float kick , int damage ) ;
