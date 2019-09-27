@@ -330,6 +330,7 @@
 {"tank_thud", (byte *)tank_thud},
 {"tank_footstep", (byte *)tank_footstep},
 {"tank_sight", (byte *)tank_sight},
+{"tank_blocked", (byte *)tank_blocked},
 {"SP_monster_supertank", (byte *)SP_monster_supertank},
 {"supertank_blocked", (byte *)supertank_blocked},
 {"supertank_die", (byte *)supertank_die},
