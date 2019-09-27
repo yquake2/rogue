@@ -346,6 +346,8 @@ extern mmove_t boss2_move_run ;
 extern mmove_t boss2_move_walk ;
 extern mmove_t boss2_move_fidget ;
 extern mmove_t boss2_move_stand ;
+extern mmove_t berserk_move_jump2 ;
+extern mmove_t berserk_move_jump ;
 extern mmove_t berserk_move_death2 ;
 extern mmove_t berserk_move_death1 ;
 extern mmove_t berserk_move_pain2 ;

@@ -793,6 +793,8 @@ extern void boss2_firebullet_right ( edict_t * self ) ;
 extern void Boss2Rocket ( edict_t * self ) ;
 extern void boss2_search ( edict_t * self ) ;
 extern void SP_monster_berserk ( edict_t * self ) ;
+extern void berserk_sidestep ( edict_t * self ) ;
+extern qboolean berserk_blocked ( edict_t * self , float dist ) ;
 extern void berserk_die ( edict_t * self , edict_t * inflictor , edict_t * attacker , int damage , vec3_t point ) ;
 extern void berserk_dead ( edict_t * self ) ;
 extern void berserk_pain ( edict_t * self , edict_t * other , float kick , int damage ) ;
