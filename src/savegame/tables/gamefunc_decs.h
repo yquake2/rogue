@@ -330,6 +330,7 @@ extern void tank_windup ( edict_t * self ) ;
 extern void tank_thud ( edict_t * self ) ;
 extern void tank_footstep ( edict_t * self ) ;
 extern void tank_sight ( edict_t * self , edict_t * other ) ;
+extern qboolean tank_blocked( edict_t *self, float dist );
 extern void SP_monster_supertank ( edict_t * self ) ;
 extern qboolean supertank_blocked ( edict_t * self , float dist ) ;
 extern void supertank_die ( edict_t * self , edict_t * inflictor , edict_t * attacker , int damage , vec3_t point ) ;
