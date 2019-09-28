@@ -443,6 +443,7 @@
 {"parasite_reel_in", (byte *)parasite_reel_in},
 {"parasite_launch", (byte *)parasite_launch},
 {"SP_monster_mutant", (byte *)SP_monster_mutant},
+{"mutant_blocked", (byte *)mutant_blocked},
 {"mutant_die", (byte *)mutant_die},
 {"mutant_dead", (byte *)mutant_dead},
 {"mutant_pain", (byte *)mutant_pain},

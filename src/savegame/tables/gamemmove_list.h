@@ -133,6 +133,8 @@
 {"parasite_move_end_fidget", &parasite_move_end_fidget},
 {"parasite_move_fidget", &parasite_move_fidget},
 {"parasite_move_start_fidget", &parasite_move_start_fidget},
+{"mutant_move_jump_down", &mutant_move_jump_down},
+{"mutant_move_jump_up", &mutant_move_jump_up},
 {"mutant_move_death2", &mutant_move_death2},
 {"mutant_move_death1", &mutant_move_death1},
 {"mutant_move_pain3", &mutant_move_pain3},

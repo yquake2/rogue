@@ -443,6 +443,7 @@ extern void parasite_sight ( edict_t * self , edict_t * other ) ;
 extern void parasite_reel_in ( edict_t * self ) ;
 extern void parasite_launch ( edict_t * self ) ;
 extern void SP_monster_mutant ( edict_t * self ) ;
+extern qboolean mutant_blocked ( edict_t * self , float dist ) ;
 extern void mutant_die ( edict_t * self , edict_t * inflictor , edict_t * attacker , int damage , vec3_t point ) ;
 extern void mutant_dead ( edict_t * self ) ;
 extern void mutant_pain ( edict_t * self , edict_t * other , float kick , int damage ) ;
