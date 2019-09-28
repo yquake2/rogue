@@ -587,6 +587,7 @@
 {"gunner_sight", (byte *)gunner_sight},
 {"gunner_idlesound", (byte *)gunner_idlesound},
 {"SP_monster_gladiator", (byte *)SP_monster_gladiator},
+{"gladiator_blocked", (byte *)gladiator_blocked},
 {"gladiator_die", (byte *)gladiator_die},
 {"gladiator_dead", (byte *)gladiator_dead},
 {"gladiator_pain", (byte *)gladiator_pain},
