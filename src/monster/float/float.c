@@ -54,7 +54,7 @@ floater_fire_blaster(edict_t *self)
 	vec3_t dir;
 	int effect;
 
-	if (!self)
+	if (!self || !self->enemy || !self->enemy->inuse)
 	{
 		return;
 	}
@@ -283,6 +283,31 @@ mmove_t floater_move_attack1 = {
    	FRAME_attak114,
    	floater_frames_attack1,
    	floater_run
+};
+
+/* circle strafe frames */
+mframe_t floater_frames_attack1a[] = {
+	{ai_charge, 10, NULL},			// Blaster attack
+	{ai_charge, 10, NULL},
+	{ai_charge, 10, NULL},
+	{ai_charge, 10, floater_fire_blaster},			// BOOM (0, -25.8, 32.5)	-- LOOP Starts
+	{ai_charge, 10, floater_fire_blaster},
+	{ai_charge, 10, floater_fire_blaster},
+	{ai_charge, 10, floater_fire_blaster},
+	{ai_charge, 10, floater_fire_blaster},
+	{ai_charge, 10, floater_fire_blaster},
+	{ai_charge, 10, floater_fire_blaster},
+	{ai_charge, 10, NULL},
+	{ai_charge, 10, NULL},
+	{ai_charge, 10, NULL},
+	{ai_charge, 10, NULL}			//							-- LOOP Ends
+};
+
+mmove_t floater_move_attack1a = {
+	FRAME_attak101,
+	FRAME_attak114,
+	floater_frames_attack1a,
+	floater_run
 };
 
 mframe_t floater_frames_attack2[] = {
@@ -640,7 +665,7 @@ floater_zap(edict_t *self)
 	gi.WriteByte(1); /* sparks */
 	gi.multicast(origin, MULTICAST_PVS);
 
-	if (range(self, self->enemy) && infront(self, self->enemy) &&
+	if (range(self, self->enemy) == RANGE_MELEE && infront(self, self->enemy) &&
 			visible(self, self->enemy))
 	{
 		T_Damage(self->enemy, self, self, dir, self->enemy->s.origin,
@@ -651,12 +676,41 @@ floater_zap(edict_t *self)
 void
 floater_attack(edict_t *self)
 {
+	float chance;
+
 	if (!self)
 	{
 		return;
 	}
 
-	self->monsterinfo.currentmove = &floater_move_attack1;
+	// 0% chance of circle in easy
+	// 50% chance in normal
+	// 75% chance in hard
+	// 86.67% chance in nightmare
+	if (!skill->value)
+	{
+		chance = 0;
+	}
+	else
+	{
+		chance = 1.0 - (0.5/(float)(skill->value));
+	}
+
+	if (random() > chance)
+	{
+		self->monsterinfo.attack_state = AS_STRAIGHT;
+		self->monsterinfo.currentmove = &floater_move_attack1;
+	}
+	else // circle strafe
+	{
+		if (random () <= 0.5) // switch directions
+		{
+			self->monsterinfo.lefty = 1 - self->monsterinfo.lefty;
+		}
+
+		self->monsterinfo.attack_state = AS_SLIDING;
+		self->monsterinfo.currentmove = &floater_move_attack1a;
+	}
 }
 
 void
@@ -747,6 +801,22 @@ floater_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /*
 	BecomeExplosion1(self);
 }
 
+qboolean
+floater_blocked(edict_t *self, float dist)
+{
+	if (!self)
+	{
+		return false;
+	}
+
+	if (blocked_checkshot(self, 0.25 + (0.05 * skill->value)))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 /*
  * QUAKED monster_floater (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
  */
@@ -796,6 +866,7 @@ SP_monster_floater(edict_t *self)
 	self->monsterinfo.melee = floater_melee;
 	self->monsterinfo.sight = floater_sight;
 	self->monsterinfo.idle = floater_idle;
+	self->monsterinfo.blocked = floater_blocked;
 
 	gi.linkentity(self);
 
