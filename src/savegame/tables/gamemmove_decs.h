@@ -133,6 +133,8 @@ extern mmove_t parasite_move_stand ;
 extern mmove_t parasite_move_end_fidget ;
 extern mmove_t parasite_move_fidget ;
 extern mmove_t parasite_move_start_fidget ;
+extern mmove_t mutant_move_jump_down ;
+extern mmove_t mutant_move_jump_up ;
 extern mmove_t mutant_move_death2 ;
 extern mmove_t mutant_move_death1 ;
 extern mmove_t mutant_move_pain3 ;
