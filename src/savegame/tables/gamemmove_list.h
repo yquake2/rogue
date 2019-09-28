@@ -346,6 +346,8 @@
 {"boss2_move_walk", &boss2_move_walk},
 {"boss2_move_fidget", &boss2_move_fidget},
 {"boss2_move_stand", &boss2_move_stand},
+{"berserk_move_jump2", &berserk_move_jump2},
+{"berserk_move_jump", &berserk_move_jump},
 {"berserk_move_death2", &berserk_move_death2},
 {"berserk_move_death1", &berserk_move_death1},
 {"berserk_move_pain2", &berserk_move_pain2},

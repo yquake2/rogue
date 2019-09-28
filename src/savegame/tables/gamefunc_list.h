@@ -794,6 +794,8 @@
 {"Boss2Rocket", (byte *)Boss2Rocket},
 {"boss2_search", (byte *)boss2_search},
 {"SP_monster_berserk", (byte *)SP_monster_berserk},
+{"berserk_sidestep", (byte *)berserk_sidestep},
+{"berserk_blocked", (byte *)berserk_blocked},
 {"berserk_die", (byte *)berserk_die},
 {"berserk_dead", (byte *)berserk_dead},
 {"berserk_pain", (byte *)berserk_pain},
