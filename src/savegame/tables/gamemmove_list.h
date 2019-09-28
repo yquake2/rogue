@@ -252,6 +252,7 @@
 {"floater_move_death", &floater_move_death},
 {"floater_move_attack3", &floater_move_attack3},
 {"floater_move_attack2", &floater_move_attack2},
+{"floater_move_attack1a", &floater_move_attack1a},
 {"floater_move_attack1", &floater_move_attack1},
 {"floater_move_activate", &floater_move_activate},
 {"floater_move_stand2", &floater_move_stand2},

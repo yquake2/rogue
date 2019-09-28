@@ -252,6 +252,7 @@ extern mmove_t floater_move_pain1 ;
 extern mmove_t floater_move_death ;
 extern mmove_t floater_move_attack3 ;
 extern mmove_t floater_move_attack2 ;
+extern mmove_t floater_move_attack1a ;
 extern mmove_t floater_move_attack1 ;
 extern mmove_t floater_move_activate ;
 extern mmove_t floater_move_stand2 ;

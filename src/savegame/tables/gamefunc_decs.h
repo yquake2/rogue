@@ -630,6 +630,7 @@ extern void flyer_pop_blades ( edict_t * self ) ;
 extern void flyer_idle ( edict_t * self ) ;
 extern void flyer_sight ( edict_t * self , edict_t * other ) ;
 extern void SP_monster_floater ( edict_t * self ) ;
+extern qboolean floater_blocked ( edict_t * self , float dist ) ;
 extern void floater_die ( edict_t * self , edict_t * inflictor , edict_t * attacker , int damage , vec3_t point ) ;
 extern void floater_dead ( edict_t * self ) ;
 extern void floater_pain ( edict_t * self , edict_t * other , float kick , int damage ) ;

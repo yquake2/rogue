@@ -630,6 +630,7 @@
 {"flyer_idle", (byte *)flyer_idle},
 {"flyer_sight", (byte *)flyer_sight},
 {"SP_monster_floater", (byte *)SP_monster_floater},
+{"floater_blocked", (byte *)floater_blocked},
 {"floater_die", (byte *)floater_die},
 {"floater_dead", (byte *)floater_dead},
 {"floater_pain", (byte *)floater_pain},
