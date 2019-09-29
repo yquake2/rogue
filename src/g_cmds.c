@@ -1515,7 +1515,7 @@ cycle_weapon(edict_t *ent)
 	{
 		weap = FindItemByClassname(gi.argv(i));
 
-		if (weap && (weap->flags & IT_WEAPON) && weap->use)
+		if (weap && weap != cl->pers.weapon && (weap->flags & IT_WEAPON) && weap->use)
 		{
 			if (cl->pers.inventory[ITEM_INDEX(weap)] > 0)
 			{
