@@ -111,7 +111,6 @@
 {"Weapon_GrenadeLauncher", (byte *)Weapon_GrenadeLauncher},
 {"weapon_grenadelauncher_fire", (byte *)weapon_grenadelauncher_fire},
 {"Weapon_Tesla", (byte *)Weapon_Tesla},
-{"Weapon_Prox", (byte *)Weapon_Prox},
 {"Weapon_Grenade", (byte *)Weapon_Grenade},
 {"Throw_Generic", (byte *)Throw_Generic},
 {"weapon_grenade_fire", (byte *)weapon_grenade_fire},
