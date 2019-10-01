@@ -1477,8 +1477,9 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	int mod;
 	int damagestat;
+	vec3_t normal;
 
-	if (!self || !other || !plane)
+	if (!self || !other)
 	{
 		return;
 	}
@@ -1497,6 +1498,15 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 	if (self->owner && self->owner->client)
 	{
 		PlayerNoise(self->owner, self->s.origin, PNOISE_IMPACT);
+	}
+
+	if (plane)
+	{
+		VectorCopy(plane->normal, normal);
+	}
+	else
+	{
+		VectorCopy(vec3_origin, normal);
 	}
 
 	if (other->takedamage)
@@ -1521,8 +1531,9 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 						self->dmg_radius, 0);
 			}
 
-			T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal,
+			T_Damage(other, self, self->owner, self->velocity, self->s.origin, normal,
 					self->dmg, 1, DAMAGE_ENERGY, mod);
+
 			self->owner->takedamage = damagestat;
 		}
 		else
@@ -1534,7 +1545,7 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 			}
 
 			T_Damage(other, self, self->owner, self->velocity, self->s.origin,
-					plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod);
+					normal, self->dmg, 1, DAMAGE_ENERGY, mod);
 		}
 	}
 	else
@@ -1549,7 +1560,7 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 		gi.WriteByte(svc_temp_entity);
 		gi.WriteByte(TE_BLASTER2);
 		gi.WritePosition(self->s.origin);
-		gi.WriteDir(plane->normal);
+		gi.WriteDir(normal);
 		gi.multicast(self->s.origin, MULTICAST_PVS);
 	}
 
