@@ -45,8 +45,9 @@ void
 flechette_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	vec3_t dir;
+	vec3_t normal;
 
-	if (!self || !other || !plane)
+	if (!self || !other)
 	{
 		return;
 	}
@@ -67,15 +68,17 @@ flechette_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf
 		PlayerNoise(self->owner, self->s.origin, PNOISE_IMPACT);
 	}
 
+	get_normal_vector(plane, normal);
+
 	if (other->takedamage)
 	{
 		T_Damage(other, self, self->owner, self->velocity, self->s.origin,
-				plane->normal, self->dmg, self->dmg_radius, DAMAGE_NO_REG_ARMOR,
+				normal, self->dmg, self->dmg_radius, DAMAGE_NO_REG_ARMOR,
 				MOD_ETF_RIFLE);
 	}
 	else
 	{
-		VectorScale(plane->normal, 256, dir);
+		VectorScale(normal, 256, dir);
 
 		gi.WriteByte(svc_temp_entity);
 		gi.WriteByte(TE_FLECHETTE);
@@ -367,12 +370,13 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	edict_t *field;
 	vec3_t dir;
+	vec3_t normal;
 	vec3_t forward, right, up;
 	int movetype = MOVETYPE_NONE;
 	int stick_ok = 0;
 	vec3_t land_point;
 
-	if (!ent || !other || !plane)
+	if (!ent || !other)
 	{
 		return;
 	}
@@ -386,7 +390,9 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 		return;
 	}
 
-	VectorMA(ent->s.origin, -10.0, plane->normal, land_point);
+	get_normal_vector(plane, normal);
+
+	VectorMA(ent->s.origin, -10.0, normal, land_point);
 
 	if (gi.pointcontents(land_point) & (CONTENTS_SLIME | CONTENTS_LAVA))
 	{
@@ -413,7 +419,7 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 		float backoff, change;
 		int i;
 
-		if ((other->movetype == MOVETYPE_PUSH) && (plane->normal[2] > 0.7))
+		if ((other->movetype == MOVETYPE_PUSH) && (normal[2] > 0.7))
 		{
 			stick_ok = 1;
 		}
@@ -422,11 +428,11 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 			stick_ok = 0;
 		}
 
-		backoff = DotProduct(ent->velocity, plane->normal) * 1.5;
+		backoff = DotProduct(ent->velocity, normal) * 1.5;
 
 		for (i = 0; i < 3; i++)
 		{
-			change = plane->normal[i] * backoff;
+			change = normal[i] * backoff;
 			out[i] = ent->velocity[i] - change;
 
 			if ((out[i] > -STOP_EPSILON) && (out[i] < STOP_EPSILON))
@@ -451,7 +457,7 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 		}
 		else /* no-stick.  teflon time */
 		{
-			if (plane->normal[2] > 0.7)
+			if (normal[2] > 0.7)
 			{
 				Prox_Explode(ent);
 				return;
@@ -465,7 +471,7 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 		return;
 	}
 
-	vectoangles2(plane->normal, dir);
+	vectoangles2(normal, dir);
 	AngleVectors(dir, forward, right, up);
 
 	if (gi.pointcontents(ent->s.origin) & (CONTENTS_LAVA | CONTENTS_SLIME))
@@ -1230,13 +1236,16 @@ void
 tesla_lava(edict_t *ent, edict_t *other /* unused */, cplane_t *plane, csurface_t *surf /* unused */)
 {
 	vec3_t land_point;
+	vec3_t normal;
 
-	if (!ent || !plane)
+	if (!ent)
 	{
 		return;
 	}
 
-	VectorMA(ent->s.origin, -20.0, plane->normal, land_point);
+	get_normal_vector(plane, normal);
+
+	VectorMA(ent->s.origin, -20.0, normal, land_point);
 
 	if (gi.pointcontents(land_point) & (CONTENTS_SLIME | CONTENTS_LAVA))
 	{
@@ -1500,14 +1509,7 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 		PlayerNoise(self->owner, self->s.origin, PNOISE_IMPACT);
 	}
 
-	if (plane)
-	{
-		VectorCopy(plane->normal, normal);
-	}
-	else
-	{
-		VectorCopy(vec3_origin, normal);
-	}
+	get_normal_vector(plane, normal);
 
 	if (other->takedamage)
 	{
@@ -1719,22 +1721,11 @@ tracker_pain_daemon_spawn(edict_t *owner, edict_t *enemy, int damage)
 }
 
 void
-tracker_explode(edict_t *self, cplane_t *plane)
+tracker_explode(edict_t *self)
 {
-	vec3_t dir;
-
 	if (!self)
 	{
 		return;
-	}
-
-	if (!plane)
-	{
-		VectorClear(dir);
-	}
-	else
-	{
-		VectorScale(plane->normal, 256, dir);
 	}
 
 	gi.WriteByte(svc_temp_entity);
@@ -1749,6 +1740,7 @@ void
 tracker_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	float damagetime;
+	vec3_t normal;
 
 	if (!self || !other || !plane)
 	{
@@ -1773,12 +1765,14 @@ tracker_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 
 	if (other->takedamage)
 	{
+		get_normal_vector(plane, normal);
+
 		if ((other->svflags & SVF_MONSTER) || other->client)
 		{
 			if (other->health > 0) /* knockback only for living creatures */
 			{
 				T_Damage(other, self, self->owner, self->velocity, self->s.origin,
-						plane->normal, 0, (self->dmg * 3), TRACKER_IMPACT_FLAGS,
+						normal, 0, (self->dmg * 3), TRACKER_IMPACT_FLAGS,
 						MOD_TRACKER);
 
 				if (!(other->flags & (FL_FLY | FL_SWIM)))
@@ -1793,18 +1787,18 @@ tracker_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 			}
 			else /* lots of damage (almost autogib) for dead bodies */
 			{
-				T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal,
+				T_Damage(other, self, self->owner, self->velocity, self->s.origin, normal,
 						self->dmg * 4, (self->dmg * 3), TRACKER_IMPACT_FLAGS, MOD_TRACKER);
 			}
 		}
 		else /* full damage in one shot for inanimate objects */
 		{
-			T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal,
+			T_Damage(other, self, self->owner, self->velocity, self->s.origin, normal,
 					self->dmg, (self->dmg * 3), TRACKER_IMPACT_FLAGS, MOD_TRACKER);
 		}
 	}
 
-	tracker_explode(self, plane);
+	tracker_explode(self);
 }
 
 void
@@ -1821,7 +1815,7 @@ tracker_fly(edict_t *self)
 
 	if ((!self->enemy) || (!self->enemy->inuse) || (self->enemy->health < 1))
 	{
-		tracker_explode(self, NULL);
+		tracker_explode(self);
 		return;
 	}
 

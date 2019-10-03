@@ -346,8 +346,9 @@ void
 blaster_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	int mod;
+	vec3_t normal;
 
-	if (!self || !other || !plane)
+	if (!self || !other)
 	{
 		return;
 	}
@@ -368,6 +369,8 @@ blaster_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 		PlayerNoise(self->owner, self->s.origin, PNOISE_IMPACT);
 	}
 
+	get_normal_vector(plane, normal);
+
 	if (other->takedamage)
 	{
 		if (self->spawnflags & 1)
@@ -379,7 +382,7 @@ blaster_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 			mod = MOD_BLASTER;
 		}
 
-		T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal,
+		T_Damage(other, self, self->owner, self->velocity, self->s.origin, normal,
 				self->dmg, 1, DAMAGE_ENERGY, mod);
 	}
 	else
@@ -387,7 +390,7 @@ blaster_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 		gi.WriteByte(svc_temp_entity);
 		gi.WriteByte(TE_BLASTER);
 		gi.WritePosition(self->s.origin);
-		gi.WriteDir(plane->normal);
+		gi.WriteDir(normal);
 		gi.multicast(self->s.origin, MULTICAST_PVS);
 	}
 
@@ -685,9 +688,10 @@ void
 rocket_touch(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	vec3_t origin;
+	vec3_t normal;
 	int n;
 
-	if (!ent || !other || !plane)
+	if (!ent || !other)
 	{
 		return;
 	}
@@ -713,7 +717,9 @@ rocket_touch(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 
 	if (other->takedamage)
 	{
-		T_Damage(other, ent, ent->owner, ent->velocity, ent->s.origin, plane->normal,
+		get_normal_vector(plane, normal);
+
+		T_Damage(other, ent, ent->owner, ent->velocity, ent->s.origin, normal,
 				ent->dmg, 0, 0, MOD_ROCKET);
 	}
 	else
@@ -938,7 +944,9 @@ bfg_explode(edict_t *self)
 void
 bfg_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
-	if (!self || !other || !plane)
+	vec3_t normal;
+
+	if (!self || !other)
 	{
 		return;
 	}
@@ -962,8 +970,10 @@ bfg_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 	/* core explosion - prevents firing it into the wall/floor */
 	if (other->takedamage)
 	{
+		get_normal_vector(plane, normal);
+
 		T_Damage(other, self, self->owner, self->velocity, self->s.origin,
-				plane->normal, 200, 0, 0, MOD_BFG_BLAST);
+				normal, 200, 0, 0, MOD_BFG_BLAST);
 	}
 
 	T_RadiusDamage(self, self->owner, 200, other, 100, MOD_BFG_BLAST);

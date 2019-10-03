@@ -221,7 +221,9 @@ void
 sphere_touch(edict_t *self, edict_t *other, cplane_t *plane,
 		csurface_t *surf, int mod)
 {
-	if (!self || !other || !plane)
+	vec3_t normal;
+
+	if (!self || !other)
 	{
 		return;
 	}
@@ -259,8 +261,10 @@ sphere_touch(edict_t *self, edict_t *other, cplane_t *plane,
 
 	if (other->takedamage)
 	{
+		get_normal_vector(plane, normal);
+
 		T_Damage(other, self, self->owner, self->velocity, self->s.origin,
-				plane->normal, 10000, 1, DAMAGE_DESTROY_ARMOR, mod);
+				normal, 10000, 1, DAMAGE_DESTROY_ARMOR, mod);
 	}
 	else
 	{
@@ -274,7 +278,7 @@ void
 vengeance_touch(edict_t *self, edict_t *other, cplane_t *plane,
 		csurface_t *surf)
 {
-	if (!self || !other || !plane)
+	if (!self || !other)
 	{
 		return;
 	}
@@ -294,7 +298,7 @@ hunter_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	edict_t *owner;
 
-	if (!self || !other || !plane || !surf)
+	if (!self || !other)
 	{
 		return;
 	}
