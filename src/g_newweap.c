@@ -1742,7 +1742,7 @@ tracker_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 	float damagetime;
 	vec3_t normal;
 
-	if (!self || !other || !plane)
+	if (!self || !other)
 	{
 		return;
 	}
