@@ -111,7 +111,6 @@ extern void Weapon_ProxLauncher ( edict_t * ent ) ;
 extern void Weapon_GrenadeLauncher ( edict_t * ent ) ;
 extern void weapon_grenadelauncher_fire ( edict_t * ent ) ;
 extern void Weapon_Tesla ( edict_t * ent ) ;
-extern void Weapon_Prox ( edict_t * ent ) ;
 extern void Weapon_Grenade ( edict_t * ent ) ;
 extern void Throw_Generic ( edict_t * ent , int FRAME_FIRE_LAST , int FRAME_IDLE_LAST , int FRAME_THROW_SOUND , int FRAME_THROW_HOLD , int FRAME_THROW_FIRE , int * pause_frames , int EXPLODE , void ( * fire ) ( edict_t * ent , qboolean held ) ) ;
 extern void weapon_grenade_fire ( edict_t * ent , qboolean held ) ;

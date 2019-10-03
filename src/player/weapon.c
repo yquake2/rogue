@@ -738,6 +738,15 @@ weapon_grenade_fire(edict_t *ent, qboolean held)
 	if (is_quad)
 	{
 		damage *= damage_multiplier;
+
+		if (damage_multiplier >= 4)
+		{
+			gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage3.wav"), 1, ATTN_NORM, 0);
+		}
+		else if (damage_multiplier == 2)
+		{
+			gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/ddamage3.wav"), 1, ATTN_NORM, 0);
+		}
 	}
 
 	AngleVectors(ent->client->v_angle, forward, right, up);
@@ -768,11 +777,8 @@ weapon_grenade_fire(edict_t *ent, qboolean held)
 			fire_grenade2(ent, start, forward, damage, speed,
 				timer, radius, held);
 			break;
-		case AMMO_TESLA:
-			fire_tesla(ent, start, forward, damage_multiplier, speed);
-			break;
 		default:
-			fire_prox(ent, start, forward, damage_multiplier, speed);
+			fire_tesla(ent, start, forward, damage_multiplier, speed);
 			break;
 	}
 
@@ -966,19 +972,6 @@ Weapon_Grenade(edict_t *ent)
 
 	Throw_Generic(ent, 15, 48, 5, 11, 12, pause_frames,
 			GRENADE_TIMER, weapon_grenade_fire);
-}
-
-void
-Weapon_Prox(edict_t *ent)
-{
-	static int pause_frames[] = {22, 29, 0};
-
-	if (!ent)
-	{
-		return;
-	}
-
-	Throw_Generic(ent, 7, 27, 99, 2, 4, pause_frames, 0, weapon_grenade_fire);
 }
 
 void
