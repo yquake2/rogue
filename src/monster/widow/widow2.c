@@ -1713,42 +1713,6 @@ ThrowWidowGibReal(edict_t *self, char *gibname, int damage, int type,
 }
 
 void
-BloodFountain(edict_t *self, int number, vec3_t startpos, int damage)
-{
-	int n;
-	vec3_t vd;
-	vec3_t origin, size, velocity;
-
-	if (!self)
-	{
-		return;
-	}
-
-	return;
-
-	for (n = 0; n < number; n++)
-	{
-		if (startpos)
-		{
-			VectorCopy(startpos, origin);
-		}
-		else
-		{
-			VectorScale(self->size, 0.5, size);
-			VectorAdd(self->absmin, size, origin);
-			origin[0] = origin[0] + crandom() * size[0];
-			origin[1] = origin[1] + crandom() * size[1];
-			origin[2] = origin[2] + crandom() * size[2];
-		}
-
-		WidowVelocityForDamage(damage, vd);
-		VectorMA(self->velocity, 1.0, vd, velocity);
-		velocity[0] *= 2;
-		velocity[1] *= 2;
-	}
-}
-
-void
 ThrowSmallStuff(edict_t *self, vec3_t point)
 {
 	int n;

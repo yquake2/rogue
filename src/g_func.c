@@ -603,7 +603,7 @@ plat_blocked(edict_t *self, edict_t *other)
 				vec3_origin, 100000, 1, 0, MOD_CRUSH);
 
 		/* if it's still there, nuke it */
-		if (other)
+		if (other->inuse)
 		{
 			/* Hack for entity without it's origin near the model */
 			VectorMA(other->absmin, 0.5, other->size, other->s.origin);
@@ -715,7 +715,6 @@ plat_spawn_inside_trigger(edict_t *ent)
 
 	tmin[0] = ent->mins[0] + 25;
 	tmin[1] = ent->mins[1] + 25;
-	tmin[2] = ent->mins[2];
 
 	tmax[0] = ent->maxs[0] - 25;
 	tmax[1] = ent->maxs[1] - 25;
@@ -1201,7 +1200,7 @@ plat2_blocked(edict_t *self, edict_t *other)
 				vec3_origin, 100000, 1, 0, MOD_CRUSH);
 
 		/* if it's still there, nuke it */
-		if (other && other->inuse)
+		if (other->inuse)
 		{
 			BecomeExplosion1(other);
 		}
@@ -1631,10 +1630,7 @@ SP_func_rotating(edict_t *ent)
 
 	ent->use = rotating_use;
 
-	if (ent->dmg)
-	{
-		ent->blocked = rotating_blocked;
-	}
+	ent->blocked = rotating_blocked;
 
 	if (ent->spawnflags & 1)
 	{
@@ -2449,7 +2445,7 @@ door_blocked(edict_t *self, edict_t *other)
 				vec3_origin, 100000, 1, 0, MOD_CRUSH);
 
 		/* if it's still there, nuke it */
-		if (other)
+		if (other->inuse)
 		{
 			/* Hack for entitiy without their origin near the model */
 			VectorMA(other->absmin, 0.5, other->size, other->s.origin);
@@ -2891,7 +2887,7 @@ smart_water_blocked(edict_t *self, edict_t *other)
 				vec3_origin, 100000, 1, 0, MOD_LAVA);
 
 		/* if it's still there, nuke it */
-		if (other && other->inuse)
+		if (other->inuse)
 		{
 			BecomeExplosion1(other);
 		}
@@ -2944,10 +2940,6 @@ SP_func_water(edict_t *self)
 			break;
 
 		case 1: /* water */
-			self->moveinfo.sound_start = gi.soundindex("world/mov_watr.wav");
-			self->moveinfo.sound_end = gi.soundindex("world/stp_watr.wav");
-			break;
-
 		case 2: /* lava */
 			self->moveinfo.sound_start = gi.soundindex("world/mov_watr.wav");
 			self->moveinfo.sound_end = gi.soundindex("world/stp_watr.wav");
@@ -3044,7 +3036,7 @@ train_blocked(edict_t *self, edict_t *other)
 				vec3_origin, 100000, 1, 0, MOD_CRUSH);
 
 		/* if it's still there, nuke it */
-		if (other)
+		if (other->inuse)
 		{
 			/* Hack for entity without an origin near the model */
 			VectorMA(other->absmin, 0.5, other->size, other->s.origin);
@@ -3785,7 +3777,7 @@ door_secret_blocked(edict_t *self, edict_t *other)
 				vec3_origin, 100000, 1, 0, MOD_CRUSH);
 
 		/* if it's still there, nuke it */
-		if (other)
+		if (other->inuse)
 		{
 			/* Hack for entities without their origin near the model */
 			VectorMA(other->absmin, 0.5, other->size, other->s.origin);

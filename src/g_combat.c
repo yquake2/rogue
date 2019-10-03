@@ -475,7 +475,7 @@ M_ReactToDamage(edict_t *targ, edict_t *attacker, edict_t *inflictor)
 	   and can't see who you should be mad at (attacker)
 	   attack the tesla also, target the tesla if it's
 	   a "new" tesla */
-	if ((inflictor) && (!strcmp(inflictor->classname, "tesla")))
+	if (!strcmp(inflictor->classname, "tesla"))
 	{
 		new_tesla = MarkTeslaArea(targ, inflictor);
 
@@ -515,7 +515,7 @@ M_ReactToDamage(edict_t *targ, edict_t *attacker, edict_t *inflictor)
 		{
 			percentHealth = (float)(targ->health) / (float)(targ->max_health);
 
-			if (targ->enemy->inuse && (percentHealth > 0.33))
+			if (percentHealth > 0.33)
 			{
 				return;
 			}
@@ -607,7 +607,7 @@ M_ReactToDamage(edict_t *targ, edict_t *attacker, edict_t *inflictor)
 		}
 	}
 	/* otherwise get mad at whoever they are mad at (help our buddy) unless it is us! */
-	else if (attacker->enemy && (attacker->enemy != targ))
+	else if (attacker->enemy)
 	{
 		if (targ->enemy && targ->enemy->client)
 		{

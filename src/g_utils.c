@@ -285,11 +285,6 @@ G_UseTargets(edict_t *ent, edict_t *activator)
 		t->think = Think_Delay;
 		t->activator = activator;
 
-		if (!activator)
-		{
-			gi.dprintf("Think_Delay with no activator\n");
-		}
-
 		t->message = ent->message;
 		t->target = ent->target;
 		t->killtarget = ent->killtarget;

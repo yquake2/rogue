@@ -172,10 +172,7 @@ sphere_chase(edict_t *self, int stupidChase)
 			}
 
 			/* if moving, hunter sphere uses active sound */
-			if (!stupidChase)
-			{
-				self->s.sound = gi.soundindex("spheres/h_active.wav");
-			}
+			self->s.sound = gi.soundindex("spheres/h_active.wav");
 		}
 		else
 		{
@@ -183,10 +180,7 @@ sphere_chase(edict_t *self, int stupidChase)
 			vectoangles2(dir, self->s.angles);
 
 			/* if not moving, hunter sphere uses lurk sound */
-			if (!stupidChase)
-			{
-				self->s.sound = gi.soundindex("spheres/h_lurk.wav");
-			}
+			self->s.sound = gi.soundindex("spheres/h_lurk.wav");
 
 			VectorClear(self->velocity);
 		}
@@ -199,7 +193,7 @@ sphere_fire(edict_t *self, edict_t *enemy)
 	vec3_t dest;
 	vec3_t dir;
 
-	if (!self || !enemy)
+	if (!self)
 	{
 		return;
 	}
@@ -227,7 +221,7 @@ void
 sphere_touch(edict_t *self, edict_t *other, cplane_t *plane,
 		csurface_t *surf, int mod)
 {
-	if (!self || !other || !plane || !surf)
+	if (!self || !other || !plane)
 	{
 		return;
 	}
@@ -452,7 +446,7 @@ hunter_pain(edict_t *self, edict_t *other, float kick, int damage)
 		VectorSubtract(other->s.origin, self->s.origin, dir);
 		dist = VectorLength(dir);
 
-		if (owner && (dist >= 192))
+		if (dist >= 192)
 		{
 			/* detach owner from body and send him flying */
 			owner->movetype = MOVETYPE_FLYMISSILE;

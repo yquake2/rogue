@@ -330,11 +330,6 @@ InfantryMachineGun(edict_t *self)
 		return;
 	}
 
-	if (!self->enemy || !self->enemy->inuse)
-	{
-		return;
-	}
-
 	/* new attack start frame */
 	if (self->s.frame == FRAME_attak104)
 	{
@@ -343,7 +338,7 @@ InfantryMachineGun(edict_t *self)
 		G_ProjectSource(self->s.origin, monster_flash_offset[flash_number],
 				forward, right, start);
 
-		if (self->enemy)
+		if (self->enemy && self->enemy->inuse)
 		{
 			VectorMA(self->enemy->s.origin, -0.2, self->enemy->velocity, target);
 			target[2] += self->enemy->viewheight;

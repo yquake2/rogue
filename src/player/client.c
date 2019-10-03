@@ -325,7 +325,7 @@ ClientObituary(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker
 
 		self->enemy = attacker;
 
-		if (attacker && attacker->client)
+		if (attacker->client)
 		{
 			switch (mod)
 			{
@@ -589,7 +589,7 @@ LookAtKiller(edict_t *self, edict_t *inflictor, edict_t *attacker)
 {
 	vec3_t dir;
 
-	if (!self || !inflictor || !attacker)
+	if (!self)
 	{
 		return;
 	}
@@ -832,7 +832,6 @@ InitClientPersistant(gclient_t *client)
 
 	client->pers.max_prox = 50;
 	client->pers.max_tesla = 50;
-	client->pers.max_flechettes = 200;
 	client->pers.max_flechettes = 200;
 	client->pers.max_rounds = 100;
 

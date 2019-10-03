@@ -46,7 +46,7 @@ flechette_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf
 {
 	vec3_t dir;
 
-	if (!self || !other || !plane || !surf)
+	if (!self || !other || !plane)
 	{
 		return;
 	}
@@ -75,14 +75,7 @@ flechette_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf
 	}
 	else
 	{
-		if (!plane)
-		{
-			VectorClear(dir);
-		}
-		else
-		{
-			VectorScale(plane->normal, 256, dir);
-		}
+		VectorScale(plane->normal, 256, dir);
 
 		gi.WriteByte(svc_temp_entity);
 		gi.WriteByte(TE_FLECHETTE);
@@ -124,7 +117,7 @@ fire_flechette(edict_t *self, vec3_t start, vec3_t dir, int damage,
 
 	flechette->owner = self;
 	flechette->touch = flechette_touch;
-	flechette->nextthink = level.time + 8000 / speed;
+	flechette->nextthink = level.time + (8000.0f / (float)speed);
 	flechette->think = G_FreeEdict;
 	flechette->dmg = damage;
 	flechette->dmg_radius = kick;
@@ -379,7 +372,7 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 	int stick_ok = 0;
 	vec3_t land_point;
 
-	if (!ent || !other || !plane || !surf)
+	if (!ent || !other || !plane)
 	{
 		return;
 	}
@@ -401,8 +394,7 @@ prox_land(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 		return;
 	}
 
-	if ((other->svflags & SVF_MONSTER) || other->client ||
-		(other->svflags & SVF_DAMAGEABLE))
+	if ((other->svflags & (SVF_MONSTER|SVF_DAMAGEABLE)) || other->client)
 	{
 		if (other != ent->teammaster)
 		{
@@ -747,7 +739,7 @@ void
 nuke_die(edict_t *self, edict_t *inflictor /* unused */,
 		edict_t *attacker, int damage, vec3_t point)
 {
-	if (!self || !attacker)
+	if (!self)
 	{
 		return;
 	}
@@ -1485,8 +1477,9 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	int mod;
 	int damagestat;
+	vec3_t normal;
 
-	if (!self || !other || !plane || !surf)
+	if (!self || !other)
 	{
 		return;
 	}
@@ -1507,21 +1500,28 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 		PlayerNoise(self->owner, self->s.origin, PNOISE_IMPACT);
 	}
 
+	if (plane)
+	{
+		VectorCopy(plane->normal, normal);
+	}
+	else
+	{
+		VectorCopy(vec3_origin, normal);
+	}
+
 	if (other->takedamage)
 	{
-		/* the only time players will be firing blaster2
-		   bolts will be from the defender sphere. */
-		if (self->owner->client)
-		{
-			mod = MOD_DEFENDER_SPHERE;
-		}
-		else
-		{
-			mod = MOD_BLASTER2;
-		}
+		mod = MOD_BLASTER2;
 
 		if (self->owner)
 		{
+			/* the only time players will be firing blaster2
+			   bolts will be from the defender sphere. */
+			if (self->owner->client)
+			{
+				mod = MOD_DEFENDER_SPHERE;
+			}
+
 			damagestat = self->owner->takedamage;
 			self->owner->takedamage = DAMAGE_NO;
 
@@ -1531,8 +1531,9 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 						self->dmg_radius, 0);
 			}
 
-			T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal,
+			T_Damage(other, self, self->owner, self->velocity, self->s.origin, normal,
 					self->dmg, 1, DAMAGE_ENERGY, mod);
+
 			self->owner->takedamage = damagestat;
 		}
 		else
@@ -1544,7 +1545,7 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 			}
 
 			T_Damage(other, self, self->owner, self->velocity, self->s.origin,
-					plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod);
+					normal, self->dmg, 1, DAMAGE_ENERGY, mod);
 		}
 	}
 	else
@@ -1559,16 +1560,7 @@ blaster2_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 		gi.WriteByte(svc_temp_entity);
 		gi.WriteByte(TE_BLASTER2);
 		gi.WritePosition(self->s.origin);
-
-		if (!plane)
-		{
-			gi.WriteDir(vec3_origin);
-		}
-		else
-		{
-			gi.WriteDir(plane->normal);
-		}
-
+		gi.WriteDir(normal);
 		gi.multicast(self->s.origin, MULTICAST_PVS);
 	}
 
@@ -1758,7 +1750,7 @@ tracker_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	float damagetime;
 
-	if (!self || !other || !surf || !plane)
+	if (!self || !other || !plane)
 	{
 		return;
 	}
@@ -1813,7 +1805,6 @@ tracker_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 	}
 
 	tracker_explode(self, plane);
-	return;
 }
 
 void
@@ -1868,7 +1859,7 @@ fire_tracker(edict_t *self, vec3_t start, vec3_t dir, int damage,
 	edict_t *bolt;
 	trace_t tr;
 
-	if (!self || !enemy)
+	if (!self)
 	{
 		return;
 	}

@@ -124,7 +124,7 @@ gib_touch(edict_t *self, edict_t *other /* unused */, cplane_t *plane, csurface_
 {
 	vec3_t normal_angles, right;
 
-	if (!self || !plane)
+	if (!self)
 	{
 		return;
 	}
@@ -864,18 +864,13 @@ SP_func_wall(edict_t *self)
 void
 func_object_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf /* unused */)
 {
-	if (!self || !other || !plane)
+	if (!self || !other)
 	{
 		return;
 	}
 
 	/* only squash thing we fall on top of */
-	if (!plane)
-	{
-		return;
-	}
-
-	if (plane->normal[2] < 1.0)
+	if (plane && plane->normal[2] < 1.0)
 	{
 		return;
 	}
@@ -996,7 +991,6 @@ func_explosive_explode(edict_t *self, edict_t *inflictor, edict_t *attacker,
 	int count;
 	int mass;
 	edict_t *master;
-	qboolean done = false;
 
     if (!self || !inflictor || !attacker)
 	{
@@ -1067,24 +1061,18 @@ func_explosive_explode(edict_t *self, edict_t *inflictor, edict_t *attacker,
 
 	if (self->flags & FL_TEAMSLAVE)
 	{
-		if (self->teammaster)
+		master = self->teammaster;
+
+		/* because mappers (other than jim (usually)) are stupid.... */
+		while (master)
 		{
-			master = self->teammaster;
-
-			/* because mappers (other than jim (usually)) are stupid.... */
-			if (master && master->inuse)
+			if (master->teamchain == self)
 			{
-				while (!done)
-				{
-					if (master->teamchain == self)
-					{
-						master->teamchain = self->teamchain;
-						done = true;
-					}
-
-					master = master->teamchain;
-				}
+				master->teamchain = self->teamchain;
+				break;
 			}
+
+			master = master->teamchain;
 		}
 	}
 
@@ -1291,7 +1279,7 @@ barrel_explode(edict_t *self)
 	ThrowDebris(self, "models/objects/debris3/tris.md2", spd, org);
 
 	/* a bunch of little chunks */
-	spd = 2 * self->dmg / 200;
+	spd = 2.0 * (float)self->dmg / 200.0;
 	org[0] = self->s.origin[0] + crandom() * self->size[0];
 	org[1] = self->s.origin[1] + crandom() * self->size[1];
 	org[2] = self->s.origin[2] + crandom() * self->size[2];
