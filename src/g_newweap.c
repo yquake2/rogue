@@ -155,10 +155,14 @@ Prox_Explode(edict_t *ent)
 		PlayerNoise(owner, ent->s.origin, PNOISE_IMPACT);
 	}
 
-	/* play quad sound if appopriate */
-	if (ent->dmg > PROX_DAMAGE)
+	/* play double/quad sound if appopriate */
+	if (ent->dmg >= (PROX_DAMAGE * 4))
 	{
 		gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage3.wav"), 1, ATTN_NORM, 0);
+	}
+	else if (ent->dmg == (PROX_DAMAGE * 2))
+	{
+		gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/ddamage3.wav"), 1, ATTN_NORM, 0);
 	}
 
 	ent->takedamage = DAMAGE_NO;
@@ -708,9 +712,13 @@ Nuke_Explode(edict_t *ent)
 	T_RadiusNukeDamage(ent, ent->teammaster, ent->dmg,
 			ent, ent->dmg_radius, MOD_NUKE);
 
-	if (ent->dmg > NUKE_DAMAGE)
+	if (ent->dmg >= (NUKE_DAMAGE * 4))
 	{
 		gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage3.wav"), 1, ATTN_NORM, 0);
+	}
+	else if (ent->dmg == (NUKE_DAMAGE * 2))
+	{
+		gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/ddamage3.wav"), 1, ATTN_NORM, 0);
 	}
 
 	gi.sound(ent, CHAN_NO_PHS_ADD + CHAN_VOICE, gi.soundindex("weapons/grenlx1a.wav"), 1, ATTN_NONE, 0);
@@ -957,10 +965,17 @@ tesla_remove(edict_t *self)
 	self->owner = self->teammaster; /* Going away, set the owner correctly. */
 	self->enemy = NULL;
 
-	/* play quad sound if quadded and an underwater explosion */
-	if ((self->dmg_radius) && (self->dmg > (TESLA_DAMAGE * TESLA_EXPLOSION_DAMAGE_MULT)))
+	/* play double/quad sound if doubled/quadded and an underwater explosion */
+	if (self->dmg_radius)
 	{
-		gi.sound(self, CHAN_ITEM, gi.soundindex("items/damage3.wav"), 1, ATTN_NORM, 0);
+		if (self->dmg >= (TESLA_DAMAGE * TESLA_EXPLOSION_DAMAGE_MULT * 4))
+		{
+			gi.sound(self, CHAN_ITEM, gi.soundindex("items/damage3.wav"), 1, ATTN_NORM, 0);
+		}
+		else if (self->dmg == (TESLA_DAMAGE * TESLA_EXPLOSION_DAMAGE_MULT * 2))
+		{
+			gi.sound(self, CHAN_ITEM, gi.soundindex("misc/ddamage3.wav"), 1, ATTN_NORM, 0);
+		}
 	}
 
 	Grenade_Explode(self);
@@ -1067,10 +1082,14 @@ tesla_think_active(edict_t *self)
 		{
 			VectorSubtract(hit->s.origin, start, dir);
 
-			/* play quad sound if it's above the "normal" damage */
-			if (self->dmg > TESLA_DAMAGE)
+			/* play double/quad sound if it's above the "normal" damage */
+			if (self->dmg >= (TESLA_DAMAGE * 4))
 			{
 				gi.sound(self, CHAN_ITEM, gi.soundindex("items/damage3.wav"), 1, ATTN_NORM, 0);
+			}
+			else if (self->dmg == (TESLA_DAMAGE * 2))
+			{
+				gi.sound(self, CHAN_ITEM, gi.soundindex("misc/ddamage3.wav"), 1, ATTN_NORM, 0);
 			}
 
 			/*  don't do knockback to walking monsters */
