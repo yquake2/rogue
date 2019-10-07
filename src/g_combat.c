@@ -479,7 +479,7 @@ M_ReactToDamage(edict_t *targ, edict_t *attacker, edict_t *inflictor)
 	{
 		new_tesla = MarkTeslaArea(targ, inflictor);
 
-		if (new_tesla)
+		if (new_tesla || !targ->enemy)
 		{
 			TargetTesla(targ, inflictor);
 		}
