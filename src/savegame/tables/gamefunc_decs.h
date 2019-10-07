@@ -1000,7 +1000,7 @@ extern edict_t * SV_TestEntityPosition ( edict_t * ent ) ;
 extern void fire_tracker ( edict_t * self , vec3_t start , vec3_t dir , int damage , int speed , edict_t * enemy ) ;
 extern void tracker_fly ( edict_t * self ) ;
 extern void tracker_touch ( edict_t * self , edict_t * other , cplane_t * plane , csurface_t * surf ) ;
-extern void tracker_explode ( edict_t * self , cplane_t * plane ) ;
+extern void tracker_explode ( edict_t * self ) ;
 extern void tracker_pain_daemon_spawn ( edict_t * owner , edict_t * enemy , int damage ) ;
 extern void tracker_pain_daemon_think ( edict_t * self ) ;
 extern void fire_blaster2 ( edict_t * self , vec3_t start , vec3_t dir , int damage , int speed , int effect , qboolean hyper ) ;

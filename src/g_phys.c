@@ -1255,18 +1255,16 @@ G_RunEntity(edict_t *ent)
 			gi.error("SV_Physics: bad movetype %i", (int)ent->movetype);
 	}
 
-	if (saved_origin)
+	/* if we moved, check and fix origin if needed */
+	/* also check inuse since entities are very often freed while thinking */
+	if (saved_origin && ent->inuse && !VectorCompare(ent->s.origin, previous_origin))
 	{
-		/* if we moved, check and fix origin if needed */
-		if (!VectorCompare(ent->s.origin, previous_origin))
-		{
-			trace = gi.trace(ent->s.origin, ent->mins, ent->maxs,
-					previous_origin, ent, MASK_MONSTERSOLID);
+		trace = gi.trace(ent->s.origin, ent->mins, ent->maxs,
+				previous_origin, ent, MASK_MONSTERSOLID);
 
-			if (trace.allsolid || trace.startsolid)
-			{
-				VectorCopy(previous_origin, ent->s.origin);
-			}
+		if (trace.allsolid || trace.startsolid)
+		{
+			VectorCopy(previous_origin, ent->s.origin);
 		}
 	}
 }
