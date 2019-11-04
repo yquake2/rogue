@@ -885,7 +885,7 @@ mutant_jump_updown(edict_t *self)
 		return;
 	}
 
-	if (self->enemy->s.origin[2] > self->s.origin[2])
+	if (self->enemy->absmin[2] > self->absmin[2])
 	{
 		self->monsterinfo.currentmove = &mutant_move_jump_up;
 	}

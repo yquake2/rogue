@@ -585,7 +585,7 @@ mframe_t berserk_frames_jump2[] = {
 	{ai_move, -8, NULL},
 	{ai_move, -4, NULL},
 	{ai_move, -4, NULL},
-	{ai_move, 0, berserk_jump_now},
+	{ai_move, 0, berserk_jump2_now},
 	{ai_move, 0, NULL},
 	{ai_move, 0, NULL},
 	{ai_move, 0, berserk_jump_wait_land},
@@ -610,7 +610,7 @@ berserk_jump(edict_t *self)
 
 	monster_done_dodge(self);
 
-	if (self->enemy->s.origin[2] > self->s.origin[2])
+	if (self->enemy->absmin[2] > self->absmin[2])
 	{
 		self->monsterinfo.currentmove = &berserk_move_jump2;
 	}
