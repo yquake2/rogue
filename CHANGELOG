@@ -1,3 +1,13 @@
+Ground Zero 2.05 to 2.06
+- New commands: 'listentities' allows listing of entities. 'teleport'
+  teleports the player to the given coordinates.
+- A lot of fixes for subtle, long standing AI and game play bugs. (by
+  BjossiAlfreds)
+- Fix problem found by PVS studio. (analysis by demoth and fixes by
+  BjossiAlfreds)
+- Add back Ground Zero specific monster behaviors, lost during initial
+  merge in 2008. (by BjossiAlfreds)
+
 Ground Zero 2.04 to 2.05
 - Fix the parasite not attacking the player in some situations.
 - Small bugfixes and better support the the current version of the
