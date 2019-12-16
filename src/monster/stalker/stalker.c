@@ -1269,7 +1269,7 @@ stalker_jump(edict_t *self)
 		return;
 	}
 
-	if (self->enemy->s.origin[2] >= self->s.origin[2])
+	if (self->enemy->absmin[2] >= self->absmin[2])
 	{
 		self->monsterinfo.currentmove = &stalker_move_jump_up;
 	}
