@@ -804,16 +804,6 @@ floater_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /*
 qboolean
 floater_blocked(edict_t *self, float dist)
 {
-	if (!self)
-	{
-		return false;
-	}
-
-	if (blocked_checkshot(self, 0.25 + (0.05 * skill->value)))
-	{
-		return true;
-	}
-
 	return false;
 }
 

@@ -1105,7 +1105,6 @@
 {"blocked_checknewenemy", (byte *)blocked_checknewenemy},
 {"blocked_checkjump", (byte *)blocked_checkjump},
 {"blocked_checkplat", (byte *)blocked_checkplat},
-{"blocked_checkshot", (byte *)blocked_checkshot},
 {"monster_done_dodge", (byte *)monster_done_dodge},
 {"stationarymonster_start", (byte *)stationarymonster_start},
 {"stationarymonster_start_go", (byte *)stationarymonster_start_go},

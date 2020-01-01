@@ -1178,14 +1178,15 @@ tank_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* un
 	self->monsterinfo.currentmove = &tank_move_death;
 }
 
-qboolean tank_blocked(edict_t *self, float dist)
+qboolean
+tank_blocked(edict_t *self, float dist)
 {
-	if (blocked_checkshot(self, 0.25 + (0.05 * skill->value) ))
+	if (!self)
 	{
-		return true;
+		return false;
 	}
 
-	if(blocked_checkplat(self, dist))
+	if (blocked_checkplat(self, dist))
 	{
 		return true;
 	}
