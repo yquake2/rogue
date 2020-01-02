@@ -1105,7 +1105,6 @@ extern edict_t * hintpath_findstart ( edict_t * ent ) ;
 extern qboolean blocked_checknewenemy ( edict_t * self ) ;
 extern qboolean blocked_checkjump ( edict_t * self , float dist , float maxDown , float maxUp ) ;
 extern qboolean blocked_checkplat ( edict_t * self , float dist ) ;
-extern qboolean blocked_checkshot ( edict_t * self , float shotChance ) ;
 extern void monster_done_dodge ( edict_t * self ) ;
 extern void stationarymonster_start ( edict_t * self ) ;
 extern void stationarymonster_start_go ( edict_t * self ) ;

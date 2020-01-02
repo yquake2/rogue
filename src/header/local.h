@@ -924,7 +924,6 @@ void fire_tracker(edict_t *self, vec3_t start, vec3_t dir, int damage,
 		int speed, edict_t *enemy);
 
 /* g_newai.c */
-qboolean blocked_checkshot(edict_t *self, float shotChance);
 qboolean blocked_checkplat(edict_t *self, float dist);
 qboolean blocked_checkjump(edict_t *self, float dist, float maxDown, float maxUp);
 qboolean blocked_checknewenemy(edict_t *self);

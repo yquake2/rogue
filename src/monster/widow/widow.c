@@ -1765,11 +1765,6 @@ widow_blocked(edict_t *self, float dist)
 		return true;
 	}
 
-	if (blocked_checkshot(self, 0.25 + (0.05 * skill->value)))
-	{
-		return true;
-	}
-
 	return false;
 }
 

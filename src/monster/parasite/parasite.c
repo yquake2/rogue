@@ -753,9 +753,38 @@ parasite_blocked(edict_t *self, float dist)
 		return false;
 	}
 
-	if (blocked_checkshot(self, 0.25 + (0.05 * skill->value)))
+	if (self->enemy && self->enemy->client && random() >= (0.25 + (0.05 * skill->value)))
 	{
-		return true;
+		vec3_t f, r, offset, start, end;
+
+		AngleVectors(self->s.angles, f, r, NULL);
+		VectorSet(offset, 24, 0, 6);
+		G_ProjectSource(self->s.origin, offset, f, r, start);
+
+		VectorCopy(self->enemy->s.origin, end);
+
+		if (!parasite_drain_attack_ok(start, end))
+		{
+			end[2] = self->enemy->s.origin[2] + self->enemy->maxs[2] - 8;
+
+			if (!parasite_drain_attack_ok(start, end))
+			{
+				end[2] = self->enemy->s.origin[2] + self->enemy->mins[2] + 8;
+
+				if (!parasite_drain_attack_ok(start, end))
+				{
+					return false;
+				}
+			}
+		}
+
+		VectorCopy(self->enemy->s.origin, end);
+
+		if (visible(self, self->enemy))
+		{
+			parasite_attack(self);
+			return true;
+		}
 	}
 
 	if (blocked_checkjump(self, dist, 256, 68))
