@@ -1222,10 +1222,10 @@ struct edict_s
 	void (*die)(edict_t *self, edict_t *inflictor, edict_t *attacker,
 			int damage, vec3_t point);
 
-	float touch_debounce_time;              /* are all these legit?  do we need more/less of them? */
+	float touch_debounce_time;
 	float pain_debounce_time;
 	float damage_debounce_time;
-	float fly_sound_debounce_time;          /* move to clientinfo */
+	float fly_sound_debounce_time;	/* now also used by insane marines to store pain sound timeout */
 	float last_move_time;
 
 	int health;
