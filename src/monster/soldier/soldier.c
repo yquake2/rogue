@@ -1668,7 +1668,6 @@ soldier_duck(edict_t *self, float eta)
 
 	if (skill->value == 0)
 	{
-		self->monsterinfo.nextframe = FRAME_duck01;
 		self->monsterinfo.currentmove = &soldier_move_duck;
 		self->monsterinfo.duck_wait_time = level.time + eta + 1;
 		return;
@@ -1678,18 +1677,14 @@ soldier_duck(edict_t *self, float eta)
 
 	if (r > (skill->value * 0.3))
 	{
-		self->monsterinfo.nextframe = FRAME_duck01;
 		self->monsterinfo.currentmove = &soldier_move_duck;
 		self->monsterinfo.duck_wait_time = level.time + eta + (0.1 * (3 - skill->value));
 	}
 	else
 	{
-		self->monsterinfo.nextframe = FRAME_attak301;
 		self->monsterinfo.currentmove = &soldier_move_attack3;
 		self->monsterinfo.duck_wait_time = level.time + eta + 1;
 	}
-
-	return;
 }
 
 mframe_t soldier_frames_blind[] = {
