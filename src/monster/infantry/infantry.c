@@ -277,7 +277,7 @@ infantry_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage
 
 	self->pain_debounce_time = level.time + 3;
 
-	if (skill->value == 3)
+	if (skill->value == SKILL_HARDPLUS)
 	{
 		return; /* no pain anims in nightmare */
 	}
@@ -854,14 +854,14 @@ infantry_duck(edict_t *self, float eta)
 		(self->monsterinfo.currentmove == &infantry_move_attack2))
 	{
 		/* if we're shooting, and not on easy, don't dodge */
-		if (skill->value)
+		if (skill->value > SKILL_EASY)
 		{
 			self->monsterinfo.aiflags &= ~AI_DUCKED;
 			return;
 		}
 	}
 
-	if (skill->value == 0)
+	if (skill->value == SKILL_EASY)
 	{
 		/* stupid dodge */
 		self->monsterinfo.duck_wait_time = level.time + eta + 1;
@@ -898,7 +898,7 @@ infantry_sidestep(edict_t *self)
 		(self->monsterinfo.currentmove == &infantry_move_attack2))
 	{
 		/* if we're shooting, and not on easy, don't dodge */
-		if (skill->value)
+		if (skill->value > SKILL_EASY)
 		{
 			self->monsterinfo.aiflags &= ~AI_DODGING;
 			return;

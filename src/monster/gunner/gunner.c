@@ -388,7 +388,7 @@ gunner_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 		gi.sound(self, CHAN_VOICE, sound_pain2, 1, ATTN_NORM, 0);
 	}
 
-	if (skill->value == 3)
+	if (skill->value == SKILL_HARDPLUS)
 	{
 		return; /* no pain anims in nightmare */
 	}
@@ -504,7 +504,7 @@ gunner_duck_down(edict_t *self)
 
 	self->monsterinfo.aiflags |= AI_DUCKED;
 
-	if (skill->value >= 2)
+	if (skill->value >= SKILL_HARD)
 	{
 		if (random() > 0.5)
 		{
@@ -1136,14 +1136,14 @@ gunner_duck(edict_t *self, float eta)
 		)
 	{
 		/* if we're shooting, and not on easy, don't dodge */
-		if (skill->value)
+		if (skill->value > SKILL_EASY)
 		{
 			self->monsterinfo.aiflags &= ~AI_DUCKED;
 			return;
 		}
 	}
 
-	if (skill->value == 0)
+	if (skill->value == SKILL_EASY)
 	{
 		/* stupid dodge */
 		self->monsterinfo.duck_wait_time = level.time + eta + 1;
@@ -1181,7 +1181,7 @@ gunner_sidestep(edict_t *self)
 		)
 	{
 		/* if we're shooting, and not on easy, don't dodge */
-		if (skill->value)
+		if (skill->value > SKILL_EASY)
 		{
 			self->monsterinfo.aiflags &= ~AI_DODGING;
 			return;

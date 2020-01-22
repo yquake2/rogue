@@ -517,7 +517,7 @@ soldier_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 		return;
 	}
 
-	if (skill->value == 3)
+	if (skill->value == SKILL_HARDPLUS)
 	{
 		return; /* no pain anims in nightmare */
 	}
@@ -640,7 +640,7 @@ soldier_fire(edict_t *self, int in_flash_number)
 		vectoangles(aim, dir);
 		AngleVectors(dir, forward, right, up);
 
-		if (skill->value < 2)
+		if (skill->value < SKILL_HARD)
 		{
 			r = crandom() * 1000;
 			u = crandom() * 500;
@@ -740,7 +740,7 @@ soldier_attack1_refire1(edict_t *self)
 		return;
 	}
 
-	if (((skill->value == 3) && (random() < 0.5)) || (range(self, self->enemy) == RANGE_MELEE))
+	if (((skill->value == SKILL_HARDPLUS) && (random() < 0.5)) || (range(self, self->enemy) == RANGE_MELEE))
 	{
 		self->monsterinfo.nextframe = FRAME_attak102;
 	}
@@ -773,7 +773,7 @@ soldier_attack1_refire2(edict_t *self)
 		return;
 	}
 
-	if (((skill->value == 3) && (random() < 0.5)) || (range(self, self->enemy) == RANGE_MELEE))
+	if (((skill->value == SKILL_HARDPLUS) && (random() < 0.5)) || (range(self, self->enemy) == RANGE_MELEE))
 	{
 		self->monsterinfo.nextframe = FRAME_attak102;
 	}
@@ -835,7 +835,7 @@ soldier_attack2_refire1(edict_t *self)
 		return;
 	}
 
-	if (((skill->value == 3) && (random() < 0.5)) || (range(self, self->enemy) == RANGE_MELEE))
+	if (((skill->value == SKILL_HARDPLUS) && (random() < 0.5)) || (range(self, self->enemy) == RANGE_MELEE))
 	{
 		self->monsterinfo.nextframe = FRAME_attak204;
 	}
@@ -868,7 +868,7 @@ soldier_attack2_refire2(edict_t *self)
 		return;
 	}
 
-	if (((skill->value == 3) && (random() < 0.5)) || (range(self, self->enemy) == RANGE_MELEE))
+	if (((skill->value == SKILL_HARDPLUS) && (random() < 0.5)) || (range(self, self->enemy) == RANGE_MELEE))
 	{
 		self->monsterinfo.nextframe = FRAME_attak204;
 	}
@@ -1012,7 +1012,7 @@ soldier_attack6_refire(edict_t *self)
 		return;
 	}
 
-	if ((skill->value == 3) || ((random() < (0.25 * ((float)skill->value)))))
+	if ((skill->value == SKILL_HARDPLUS) || ((random() < (0.25 * ((float)skill->value)))))
 	{
 		self->monsterinfo.nextframe = FRAME_runs03;
 	}
@@ -1141,7 +1141,7 @@ soldier_sight(edict_t *self, edict_t *other /* unused */)
 		gi.sound(self, CHAN_VOICE, sound_sight2, 1, ATTN_NORM, 0);
 	}
 
-	if ((skill->value > 0) && (self->enemy) &&
+	if ((skill->value > SKILL_EASY) && (self->enemy) &&
 		(range(self, self->enemy) >= RANGE_NEAR))
 	{
 		/*	don't let machinegunners run & shoot */
@@ -1666,7 +1666,7 @@ soldier_duck(edict_t *self, float eta)
 	/* has to be done immediately otherwise he can get stuck */
 	monster_duck_down(self);
 
-	if (skill->value == 0)
+	if (skill->value == SKILL_EASY)
 	{
 		self->monsterinfo.currentmove = &soldier_move_duck;
 		self->monsterinfo.duck_wait_time = level.time + eta + 1;

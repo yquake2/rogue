@@ -698,7 +698,7 @@ T_Damage(edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	}
 
 	/* easy mode takes half damage */
-	if ((skill->value == 0) && (deathmatch->value == 0) && targ->client)
+	if ((skill->value == SKILL_EASY) && (deathmatch->value == 0) && targ->client)
 	{
 		damage *= 0.5;
 
@@ -917,7 +917,7 @@ T_Damage(edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 			targ->pain(targ, attacker, knockback, take);
 
 			/* nightmare mode monsters don't go into pain frames often */
-			if (skill->value == 3)
+			if (skill->value == SKILL_HARDPLUS)
 			{
 				targ->pain_debounce_time = level.time + 5;
 			}
