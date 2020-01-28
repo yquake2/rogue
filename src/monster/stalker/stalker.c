@@ -423,11 +423,11 @@ stalker_heal(edict_t *self)
 		return;
 	}
 
-	if (skill->value == 2)
+	if (skill->value == SKILL_HARD)
 	{
 		self->health += 2;
 	}
-	else if (skill->value == 3)
+	else if (skill->value == SKILL_HARDPLUS)
 	{
 		self->health += 3;
 	}
@@ -547,7 +547,7 @@ stalker_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 		self->s.skinnum = 1;
 	}
 
-	if (skill->value == 3)
+	if (skill->value == SKILL_HARDPLUS)
 	{
 		return; /* no pain anims in nightmare */
 	}

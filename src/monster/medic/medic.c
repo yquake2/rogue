@@ -653,7 +653,7 @@ medic_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 
 	self->pain_debounce_time = level.time + 3;
 
-	if (skill->value == 3)
+	if (skill->value == SKILL_HARDPLUS)
 	{
 		return; /* no pain anims in nightmare */
 	}
@@ -1752,7 +1752,7 @@ medic_checkattack(edict_t *self)
 		return true;
 	}
 
-	if (skill->value > 0)
+	if (skill->value > SKILL_EASY)
 	{
 		if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 		{
@@ -1813,7 +1813,7 @@ medic_duck(edict_t *self, float eta)
 		return;
 	}
 
-	if (skill->value == 0)
+	if (skill->value == SKILL_EASY)
 	{
 		/* stupid dodge */
 		self->monsterinfo.duck_wait_time = level.time + eta + 1;
@@ -1845,7 +1845,7 @@ medic_sidestep(edict_t *self)
 		(self->monsterinfo.currentmove == &medic_move_callReinforcements))
 	{
 		/* if we're shooting, and not on easy, don't dodge */
-		if (skill->value)
+		if (skill->value > SKILL_EASY)
 		{
 			self->monsterinfo.aiflags &= ~AI_DODGING;
 			return;
@@ -1945,19 +1945,19 @@ SP_monster_medic(edict_t *self)
 	{
 		self->s.skinnum = 2;
 
-		if (skill->value == 0)
+		if (skill->value == SKILL_EASY)
 		{
 			self->monsterinfo.monster_slots = 3;
 		}
-		else if (skill->value == 1)
+		else if (skill->value == SKILL_MEDIUM)
 		{
 			self->monsterinfo.monster_slots = 4;
 		}
-		else if (skill->value == 2)
+		else if (skill->value == SKILL_HARD)
 		{
 			self->monsterinfo.monster_slots = 6;
 		}
-		else if (skill->value == 3)
+		else if (skill->value == SKILL_HARDPLUS)
 		{
 			self->monsterinfo.monster_slots = 6;
 		}

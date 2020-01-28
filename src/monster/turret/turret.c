@@ -495,22 +495,22 @@ TurretFire(edict_t *self)
 	{
 		rocketSpeed = 550;
 
-		if (skill->value == 2)
+		if (skill->value == SKILL_HARD)
 		{
 			rocketSpeed += 200 * random();
 		}
-		else if (skill->value == 3)
+		else if (skill->value == SKILL_HARDPLUS)
 		{
 			rocketSpeed += 100 + (200 * random());
 		}
 	}
 	else if (self->spawnflags & SPAWN_BLASTER)
 	{
-		if (skill->value == 0)
+		if (skill->value == SKILL_EASY)
 		{
 			rocketSpeed = 600;
 		}
-		else if (skill->value == 1)
+		else if (skill->value == SKILL_MEDIUM)
 		{
 			rocketSpeed = 800;
 		}
@@ -616,11 +616,11 @@ TurretFireBlind(edict_t *self)
 	{
 		rocketSpeed = 550;
 
-		if (skill->value == 2)
+		if (skill->value == SKILL_HARD)
 		{
 			rocketSpeed += 200 * random();
 		}
-		else if (skill->value == 3)
+		else if (skill->value == SKILL_HARDPLUS)
 		{
 			rocketSpeed += 100 + (200 * random());
 		}
@@ -1053,7 +1053,7 @@ turret_checkattack(edict_t *self)
 	if (enemy_range == RANGE_MELEE)
 	{
 		/* don't always melee in easy mode */
-		if ((skill->value == 0) && (rand() & 3))
+		if ((skill->value == SKILL_EASY) && (rand() & 3))
 		{
 			return false;
 		}
@@ -1078,11 +1078,11 @@ turret_checkattack(edict_t *self)
 		nexttime = (0.8 - (0.1 * skill->value));
 	}
 
-	if (skill->value == 0)
+	if (skill->value == SKILL_EASY)
 	{
 		chance *= 0.5;
 	}
-	else if (skill->value > 1)
+	else if (skill->value > SKILL_MEDIUM)
 	{
 		chance *= 2;
 	}

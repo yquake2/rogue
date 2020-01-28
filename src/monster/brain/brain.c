@@ -582,7 +582,7 @@ brain_pain(edict_t *self, edict_t *other /* unused */, float kick /* unused */,
 
 	self->pain_debounce_time = level.time + 3;
 
-	if (skill->value == 3)
+	if (skill->value == SKILL_HARDPLUS)
 	{
 		return; /* no pain anims in nightmare */
 	}
@@ -693,7 +693,7 @@ brain_duck(edict_t *self, float eta)
 	/* has to be done immediately otherwise he can get stuck */
 	monster_duck_down(self);
 
-	if (skill->value == 0)
+	if (skill->value == SKILL_EASY)
 	{
 		/* PMM - stupid dodge */
 		self->monsterinfo.duck_wait_time = level.time + eta + 1;

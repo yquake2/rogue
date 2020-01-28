@@ -359,7 +359,7 @@ chick_pain(edict_t *self, edict_t *other /* other */, float kick /* other */, in
 		gi.sound(self, CHAN_VOICE, sound_pain3, 1, ATTN_NORM, 0);
 	}
 
-	if (skill->value == 3)
+	if (skill->value == SKILL_HARDPLUS)
 	{
 		return; /* no pain anims in nightmare */
 	}
@@ -1004,7 +1004,7 @@ chick_duck(edict_t *self, float eta)
 		}
 	}
 
-	if (skill->value == 0)
+	if (skill->value == SKILL_EASY)
 	{
 		/* stupid dodge */
 		self->monsterinfo.duck_wait_time = level.time + eta + 1;
@@ -1034,7 +1034,7 @@ chick_sidestep(edict_t *self)
 		(self->monsterinfo.currentmove == &chick_move_attack1))
 	{
 		/* if we're shooting, and not on easy, don't dodge */
-		if (skill->value)
+		if (skill->value > SKILL_EASY)
 		{
 			self->monsterinfo.aiflags &= ~AI_DODGING;
 			return;

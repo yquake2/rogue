@@ -862,9 +862,9 @@ SpawnEntities(const char *mapname, char *entities, const char *spawnpoint)
 					  (ent->spawnflags & SPAWNFLAG_NOT_MEDIUM) &&
 					  (ent->spawnflags & SPAWNFLAG_NOT_HARD)))
 				{
-					if (((skill->value == 0) && (ent->spawnflags & SPAWNFLAG_NOT_EASY)) ||
-						((skill->value == 1) && (ent->spawnflags & SPAWNFLAG_NOT_MEDIUM)) ||
-						(((skill->value == 2) || (skill->value == 3)) && (ent->spawnflags & SPAWNFLAG_NOT_HARD)))
+					if (((skill->value == SKILL_EASY) && (ent->spawnflags & SPAWNFLAG_NOT_EASY)) ||
+						((skill->value == SKILL_MEDIUM) && (ent->spawnflags & SPAWNFLAG_NOT_MEDIUM)) ||
+						(((skill->value == SKILL_HARD) || (skill->value == SKILL_HARDPLUS)) && (ent->spawnflags & SPAWNFLAG_NOT_HARD)))
 					{
 						G_FreeEdict(ent);
 						inhibit++;
@@ -874,9 +874,9 @@ SpawnEntities(const char *mapname, char *entities, const char *spawnpoint)
 			}
 			else
 			{
-				if (((skill->value == 0) && (ent->spawnflags & SPAWNFLAG_NOT_EASY)) ||
-					((skill->value == 1) && (ent->spawnflags & SPAWNFLAG_NOT_MEDIUM)) ||
-					(((skill->value == 2) || (skill->value == 3)) && (ent->spawnflags & SPAWNFLAG_NOT_HARD)))
+				if (((skill->value == SKILL_EASY) && (ent->spawnflags & SPAWNFLAG_NOT_EASY)) ||
+					((skill->value == SKILL_MEDIUM) && (ent->spawnflags & SPAWNFLAG_NOT_MEDIUM)) ||
+					(((skill->value == SKILL_HARD) || (skill->value == SKILL_HARDPLUS)) && (ent->spawnflags & SPAWNFLAG_NOT_HARD)))
 				{
 					G_FreeEdict(ent);
 					inhibit++;

@@ -1274,7 +1274,7 @@ carrier_pain(edict_t *self, edict_t *other /* unused */, float kick /* unused */
 		self->s.skinnum = 1;
 	}
 
-	if (skill->value == 3)
+	if (skill->value == SKILL_HARDPLUS)
 	{
 		return; /* no pain anims in nightmare */
 	}
