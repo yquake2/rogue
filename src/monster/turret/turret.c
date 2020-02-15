@@ -980,7 +980,6 @@ turret_checkattack(edict_t *self)
 	vec3_t spot1, spot2;
 	float chance, nexttime;
 	trace_t tr;
-	int enemy_range;
 
 	if (!self)
 	{
@@ -1046,20 +1045,6 @@ turret_checkattack(edict_t *self)
 	if (level.time < self->monsterinfo.attack_finished)
 	{
 		return false;
-	}
-
-	enemy_range = range(self, self->enemy);
-
-	if (enemy_range == RANGE_MELEE)
-	{
-		/* don't always melee in easy mode */
-		if ((skill->value == SKILL_EASY) && (rand() & 3))
-		{
-			return false;
-		}
-
-		self->monsterinfo.attack_state = AS_MISSILE;
-		return true;
 	}
 
 	if (self->spawnflags & SPAWN_ROCKET)
