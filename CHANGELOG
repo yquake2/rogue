@@ -1,3 +1,6 @@
+Ground Zero 2.06 to 2.07
+- Several fixes for subtile bugs (by BjossiAlfreds)
+
 Ground Zero 2.05 to 2.06
 - New commands: 'listentities' allows listing of entities. 'teleport'
   teleports the player to the given coordinates.
