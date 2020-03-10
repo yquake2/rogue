@@ -503,7 +503,7 @@ FoundTarget(edict_t *self)
 		level.sight_entity->light_level = 128;
 	}
 
-	self->show_hostile = (int)level.time + 1; /* wake up other monsters */
+	self->show_hostile = level.time + 1; /* wake up other monsters */
 
 	VectorCopy(self->enemy->s.origin, self->monsterinfo.last_sighting);
 	self->monsterinfo.trail_time = level.time;
@@ -692,7 +692,7 @@ FindTarget(edict_t *self)
 
 		if (r == RANGE_NEAR)
 		{
-			if ((client->show_hostile < (int)level.time) && !infront(self, client))
+			if ((client->show_hostile < level.time) && !infront(self, client))
 			{
 				return false;
 			}
@@ -1199,7 +1199,7 @@ ai_checkattack(edict_t *self, float dist)
 			}
 			else
 			{
-				self->show_hostile = (int)level.time + 1;
+				self->show_hostile = level.time + 1;
 				return false;
 			}
 		}
@@ -1279,7 +1279,7 @@ ai_checkattack(edict_t *self, float dist)
 		}
 	}
 
-	self->show_hostile = (int)level.time + 1; /* wake up other monsters */
+	self->show_hostile = level.time + 1; /* wake up other monsters */
 
 	/* check knowledge of enemy */
 	enemy_vis = visible(self, self->enemy);
