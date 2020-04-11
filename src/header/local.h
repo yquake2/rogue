@@ -232,6 +232,7 @@ typedef struct
 #define IT_POWERUP 0x00000020
 #define IT_MELEE 0x00000040
 #define IT_NOT_GIVEABLE 0x00000080      /* item can not be given */
+#define IT_INSTANT_USE 0x000000100		/* item is insta-used on pickup if dmflag is set */
 
 /* gitem_t->weapmodel for weapons indicates model index */
 #define WEAP_BLASTER 1
