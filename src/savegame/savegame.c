@@ -245,6 +245,9 @@ InitGame(void)
 	/* disruptor availability */
 	g_disruptor = gi.cvar ("g_disruptor", "0", 0);
 
+	/* others */
+	aimfix = gi.cvar("aimfix", "0", CVAR_ARCHIVE);
+
 	/* items */
 	InitItems ();
 
