@@ -1018,7 +1018,6 @@ Add_Ammo(edict_t *ent, gitem_t *item, int count)
 
 	if (item->tag == AMMO_BULLETS)
 	{
-		printf("1\n");
 		max = ent->client->pers.max_bullets;
 	}
 	else if (item->tag == AMMO_SHELLS)
@@ -1055,7 +1054,6 @@ Add_Ammo(edict_t *ent, gitem_t *item, int count)
 	}
 	else if (item->tag == AMMO_DISRUPTOR)
 	{
-		printf("2\n");
 		max = ent->client->pers.max_rounds;
 	}
 	else
