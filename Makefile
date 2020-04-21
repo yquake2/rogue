@@ -19,33 +19,33 @@
 
 # Detect the OS
 ifdef SystemRoot
-OSTYPE := Windows
+YQ2_OSTYPE ?= Windows
 else
-OSTYPE := $(shell uname -s)
+YQ2_OSTYPE ?= $(shell uname -s)
 endif
 
 # Special case for MinGW
-ifneq (,$(findstring MINGW,$(OSTYPE)))
-OSTYPE := Windows
-endif
-
-# On Windows / MinGW $(CC) is undefined by default.
-ifeq ($(OSTYPE),Windows)
-CC := gcc
+ifneq (,$(findstring MINGW,$(YQ2_OSTYPE)))
+YQ2_OSTYPE := Windows
 endif
 
 # Detect the architecture
-ifeq ($(OSTYPE), Windows)
+ifeq ($(YQ2_OSTYPE), Windows)
 ifdef PROCESSOR_ARCHITEW6432
 # 64 bit Windows
-ARCH := $(PROCESSOR_ARCHITEW6432)
+YQ2_ARCH ?= $(PROCESSOR_ARCHITEW6432)
 else
 # 32 bit Windows
-ARCH := $(PROCESSOR_ARCHITECTURE)
+YQ2_ARCH ?= $(PROCESSOR_ARCHITECTURE)
 endif
 else
-# Normalize some abiguous ARCH strings
-ARCH := $(shell uname -m | sed -e 's/i.86/i386/' -e 's/amd64/x86_64/' -e 's/^arm.*/arm/')
+# Normalize some abiguous YQ2_ARCH strings
+YQ2_ARCH ?= $(shell uname -m | sed -e 's/i.86/i386/' -e 's/amd64/x86_64/' -e 's/^arm.*/arm/')
+endif
+
+# On Windows / MinGW $(CC) is undefined by default.
+ifeq ($(YQ2_OSTYPE),Windows)
+CC ?= gcc
 endif
 
 # Detect the compiler
@@ -61,30 +61,32 @@ endif
 
 # ----------
 
-# Base CFLAGS. 
-#
-# -O2 are enough optimizations.
-# 
-# -fno-strict-aliasing since the source doesn't comply
-#  with strict aliasing rules and it's next to impossible
-#  to get it there...
-#
-# -fomit-frame-pointer since the framepointer is mostly
-#  useless for debugging Quake II and slows things down.
-#
-# -g to build allways with debug symbols. Please do not
-#  change this, since it's our only chance to debug this
-#  crap when random crashes happen!
-#
-# -fPIC for position independend code.
-#
-# -MMD to generate header dependencies.
-ifeq ($(OSTYPE), Darwin)
-CFLAGS := -O2 -fno-strict-aliasing -fomit-frame-pointer \
-		  -Wall -pipe -g -fwrapv -arch i386 -arch x86_64
+# Base CFLAGS. These may be overridden by the environment.
+# Highest supported optimizations are -O2, higher levels
+# will likely break this crappy code.
+ifdef DEBUG
+CFLAGS ?= -O0 -g -Wall -pipe
 else
-CFLAGS := -std=gnu99 -O2 -fno-strict-aliasing -fomit-frame-pointer \
-		  -Wall -pipe -g -MMD -fwrapv
+CFLAGS ?= -O2 -Wall -pipe -fomit-frame-pointer
+endif
+
+# Always needed are:
+#  -fno-strict-aliasing since the source doesn't comply
+#   with strict aliasing rules and it's next to impossible
+#   to get it there...
+#  -fwrapv for defined integer wrapping. MSVC6 did this
+#   and the game code requires it.
+override CFLAGS += -std=gnu99 -fno-strict-aliasing -fwrapv
+
+# -MMD to generate header dependencies. Unsupported by
+#  the Clang shipped with OS X.
+ifneq ($(YQ2_OSTYPE), Darwin)
+override CFLAGS += -MMD
+endif
+
+# OS X architecture.
+ifeq ($(YQ2_OSTYPE), Darwin)
+override CFLAGS += -arch $(YQ2_ARCH)
 endif
 
 # ----------
@@ -106,17 +108,48 @@ endif
 # ----------
 
 # Defines the operating system and architecture
-CFLAGS += -DOSTYPE=\"$(OSTYPE)\" -DARCH=\"$(ARCH)\"
+override CFLAGS += -DYQ2OSTYPE=\"$(YQ2_OSTYPE)\" -DYQ2ARCH=\"$(YQ2_ARCH)\"
+
+# ----------
+
+# For reproduceable builds, look here for details:
+# https://reproducible-builds.org/specs/source-date-epoch/
+ifdef SOURCE_DATE_EPOCH
+CFLAGS += -DBUILD_DATE=\"$(shell date --utc --date="@${SOURCE_DATE_EPOCH}" +"%b %_d %Y" | sed -e 's/ /\\ /g')\"
+endif
+
+# ----------
+
+# If we're building with gcc for i386 let's define -ffloat-store.
+# This helps the old and crappy x87 FPU to produce correct values.
+# Would be nice if Clang had something comparable.
+ifeq ($(YQ2_ARCH), i386)
+ifeq ($(COMPILER), gcc)
+override CFLAGS += -ffloat-store
+endif
+endif
+
+# Force SSE math on x86_64. All sane compilers should do this
+# anyway, just to protect us from broken Linux distros.
+ifeq ($(YQ2_ARCH), x86_64)
+override CFLAGS += -mfpmath=sse
+endif
 
 # ----------
 
 # Base LDFLAGS.
-ifeq ($(OSTYPE), Darwin)
-LDFLAGS := -shared -arch i386 -arch x86_64 
-else ifeq ($(OSTYPE), Windows)
-LDFLAGS := -shared -static-libgcc
+LDFLAGS ?=
+
+# It's a shared library.
+override LDFLAGS += -shared
+
+# Required libaries
+ifeq ($(YQ2_OSTYPE), Darwin)
+override LDFLAGS += -arch $(YQ2_ARCH)
+else ifeq ($(YQ2_OSTYPE), Windows)
+override LDFLAGS += -static-libgcc
 else
-LDFLAGS := -shared -lm
+override LDFLAGS += -lm
 endif
 
 # ----------
@@ -136,12 +169,12 @@ Q := @
 endif
 
 # ----------
- 
+
 # Phony targets
 .PHONY : all clean rogue
 
 # ----------
- 
+
 # Cleanup
 clean:
 	@echo "===> CLEAN"
@@ -150,12 +183,12 @@ clean:
 # ----------
 
 # The rogue game
-ifeq ($(OSTYPE), Windows)
+ifeq ($(YQ2_OSTYPE), Windows)
 rogue:
 	@echo "===> Building game.dll"
 	${Q}mkdir -p release
 	$(MAKE) release/game.dll
-else ifeq ($(OSTYPE), Darwin)
+else ifeq ($(YQ2_OSTYPE), Darwin)
 rogue:
 	@echo "===> Building game.dylib"
 	${Q}mkdir -p release
@@ -238,7 +271,7 @@ ROGUE_OBJS_ = \
 	src/savegame/savegame.o \
 	src/shared/flash.o \
 	src/shared/rand.o \
-	src/shared/shared.o 
+	src/shared/shared.o
 
 # ----------
 
@@ -260,15 +293,15 @@ ROGUE_DEPS= $(ROGUE_OBJS:.o=.d)
 ifeq ($(OSTYPE), Windows)
 release/game.dll : $(ROGUE_OBJS)
 	@echo "===> LD $@"
-	${Q}$(CC) $(LDFLAGS) -o $@ $(ROGUE_OBJS)
+	${Q}$(CC) -o $@ $(ROGUE_OBJS) $(LDFLAGS)
 else ifeq ($(OSTYPE), Darwin)
 release/game.dylib : $(ROGUE_OBJS)
 	@echo "===> LD $@"
-	${Q}$(CC) $(LDFLAGS) -o $@ $(ROGUE_OBJS)
+	${Q}$(CC) -o $@ $(ROGUE_OBJS) $(LDFLAGS)
 else
 release/game.so : $(ROGUE_OBJS)
 	@echo "===> LD $@"
-	${Q}$(CC) $(LDFLAGS) -o $@ $(ROGUE_OBJS)
+	${Q}$(CC) -o $@ $(ROGUE_OBJS) $(LDFLAGS)
 endif
 
 # ----------

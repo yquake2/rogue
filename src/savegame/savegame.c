@@ -58,12 +58,12 @@
  * created on other systems or architectures. This will
  * crash q2 in spectacular ways
  */
-#ifndef OSTYPE
-#error OSTYPE should be defined by the build system
+#ifndef YQ2OSTYPE
+#error YQ2OSTYPE should be defined by the build system
 #endif
 
-#ifndef ARCH
-#error ARCH should be defined by the build system
+#ifndef YQ2ARCH
+#error YQ2ARCH should be defined by the build system
 #endif
 
 /*
@@ -71,29 +71,29 @@
  * macros, implemented by savegame version YQ2-2.
  */
 #if defined(__APPLE__)
-#define OSTYPE_1 "MacOS X"
+#define YQ2OSTYPE_1 "MacOS X"
 #elif defined(__FreeBSD__)
-#define OSTYPE_1 "FreeBSD"
+#define YQ2OSTYPE_1 "FreeBSD"
 #elif defined(__OpenBSD__)
-#define OSTYPE_1 "OpenBSD"
+#define YQ2OSTYPE_1 "OpenBSD"
 #elif defined(__linux__)
- #define OSTYPE_1 "Linux"
+ #define YQ2OSTYPE_1 "Linux"
 #elif defined(_WIN32)
- #define OSTYPE_1 "Windows"
+ #define YQ2OSTYPE_1 "Windows"
 #else
- #define OSTYPE_1 "Unknown"
+ #define YQ2OSTYPE_1 "Unknown"
 #endif
 
 #if defined(__i386__)
-#define ARCH_1 "i386"
+#define YQ2ARCH_1 "i386"
 #elif defined(__x86_64__)
-#define ARCH_1 "amd64"
+#define YQ2ARCH_1 "amd64"
 #elif defined(__sparc__)
-#define ARCH_1 "sparc64"
+#define YQ2ARCH_1 "sparc64"
 #elif defined(__ia64__)
- #define ARCH_1 "ia64"
+ #define YQ2ARCH_1 "ia64"
 #else
- #define ARCH_1 "unknown"
+ #define YQ2ARCH_1 "unknown"
 #endif
 
 /*
@@ -791,8 +791,8 @@ WriteGame(const char *filename, qboolean autosave)
 
 	strncpy(str_ver, SAVEGAMEVER, sizeof(str_ver) - 1);
 	strncpy(str_game, GAMEVERSION, sizeof(str_game) - 1);
-	strncpy(str_os, OSTYPE, sizeof(str_os) - 1);
-    strncpy(str_arch, ARCH, sizeof(str_arch) - 1);
+	strncpy(str_os, YQ2OSTYPE, sizeof(str_os) - 1);
+    strncpy(str_arch, YQ2ARCH, sizeof(str_arch) - 1);
 
 	fwrite(str_ver, sizeof(str_ver), 1, f);
 	fwrite(str_game, sizeof(str_game), 1, f);
@@ -851,12 +851,12 @@ ReadGame(const char *filename)
 			fclose(f);
 			gi.error("Savegame from an other game.so.\n");
 		}
-		else if (strcmp(str_os, OSTYPE))
+		else if (strcmp(str_os, YQ2OSTYPE))
 		{
 			fclose(f);
 			gi.error("Savegame from an other os.\n");
 		}
-		else if (strcmp(str_arch, ARCH))
+		else if (strcmp(str_arch, YQ2ARCH))
 		{
 			fclose(f);
 			gi.error("Savegame from an other architecure.\n");
@@ -871,12 +871,12 @@ ReadGame(const char *filename)
 			fclose(f);
 			gi.error("Savegame from an other game.so.\n");
 		}
-		else if (strcmp(str_os, OSTYPE))
+		else if (strcmp(str_os, YQ2OSTYPE))
 		{
 			fclose(f);
 			gi.error("Savegame from an other os.\n");
 		}
-		else if (strcmp(str_arch, ARCH))
+		else if (strcmp(str_arch, YQ2ARCH))
 		{
 			fclose(f);
 			gi.error("Savegame from an other architecure.\n");
@@ -891,7 +891,7 @@ ReadGame(const char *filename)
 			fclose(f);
 			gi.error("Savegame from an other game.so.\n");
 		}
-		else if (strcmp(str_os, OSTYPE_1))
+		else if (strcmp(str_os, YQ2OSTYPE_1))
 		{
 			fclose(f);
 			gi.error("Savegame from an other os.\n");
@@ -908,7 +908,7 @@ ReadGame(const char *filename)
 		}
 		else
 		{
-			if (strcmp(str_arch, ARCH_1))
+			if (strcmp(str_arch, YQ2ARCH_1))
 			{
 				fclose(f);
 				gi.error("Savegame from an other architecure.\n");
