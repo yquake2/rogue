@@ -19,13 +19,13 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -fno-strict-aliasing -fwrapv")
 string(REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
 
 # Operating system
-add_definitions(-DOSTYPE="${CMAKE_SYSTEM_NAME}")
+add_definitions(-DYQ2OSTYPE="${CMAKE_SYSTEM_NAME}")
 
 # Architecture string
-string(REGEX REPLACE "amd64" "x86_64" ARCH "${CMAKE_SYSTEM_PROCESSOR}")
-string(REGEX REPLACE "i.86" "i386" ARCH "${ARCH}")
-string(REGEX REPLACE "^arm.*" "arm" ARCH "${ARCH}")
-add_definitions(-DARCH="${ARCH}")
+string(REGEX REPLACE "amd64" "x86_64" YQ2_ARCH "${CMAKE_SYSTEM_PROCESSOR}")
+string(REGEX REPLACE "i.86" "i386" YQ2_ARCH "${YQ2_ARCH}")
+string(REGEX REPLACE "^arm.*" "arm" YQ2_ARCH "${YQ2_ARCH}")
+add_definitions(-DYQ2ARCH="${YQ2_ARCH}")
 
 # Linker Flags
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
