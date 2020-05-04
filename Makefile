@@ -290,11 +290,11 @@ ROGUE_DEPS= $(ROGUE_OBJS:.o=.d)
 
 # ----------
 
-ifeq ($(OSTYPE), Windows)
+ifeq ($(YQ2_OSTYPE), Windows)
 release/game.dll : $(ROGUE_OBJS)
 	@echo "===> LD $@"
 	${Q}$(CC) -o $@ $(ROGUE_OBJS) $(LDFLAGS)
-else ifeq ($(OSTYPE), Darwin)
+else ifeq ($(YQ2_OSTYPE), Darwin)
 release/game.dylib : $(ROGUE_OBJS)
 	@echo "===> LD $@"
 	${Q}$(CC) -o $@ $(ROGUE_OBJS) $(LDFLAGS)
