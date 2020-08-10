@@ -1487,3 +1487,4 @@ extern void DBall_GameInit ( void ) ;
 extern void DBall_SelectSpawnPoint ( edict_t * ent , vec3_t origin , vec3_t angles ) ;
 extern void DBall_ClientBegin ( edict_t * ent ) ;
 extern int DBall_CheckDMRules ( void ) ;
+extern void wait_and_change_think(edict_t* ent);

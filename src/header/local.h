@@ -585,6 +585,7 @@ extern cvar_t *maxentities;
 extern cvar_t *deathmatch;
 extern cvar_t *coop;
 extern cvar_t *coop_baseq2;	/* treat spawnflags according to baseq2 rules */
+extern cvar_t *coop_elevator_delay;
 extern cvar_t *coop_pickup_weapons;
 extern cvar_t *dmflags;
 extern cvar_t *skill;

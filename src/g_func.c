@@ -665,6 +665,39 @@ Use_Plat(edict_t *ent, edict_t *other, edict_t *activator /* unused */)
 }
 
 void
+wait_and_change_think(edict_t* ent)
+{
+	void (*afterwaitfunc)(edict_t *) = ent->moveinfo.endfunc;
+	ent->moveinfo.endfunc = NULL;
+	afterwaitfunc(ent);
+}
+
+/*
+ * In coop mode, this waits for coop_elevator_delay seconds
+ * before calling afterwaitfunc(ent); otherwise it just calls
+ * afterwaitfunc(ent);
+ */
+static void
+wait_and_change(edict_t* ent, void (*afterwaitfunc)(edict_t *))
+{
+	float waittime = coop_elevator_delay->value;
+	if (coop->value && waittime > 0.0f)
+	{
+		if(ent->nextthink == 0)
+		{
+			ent->moveinfo.endfunc = afterwaitfunc;
+			ent->think = wait_and_change_think;
+			ent->nextthink = level.time + waittime;
+		}
+	}
+	else
+	{
+		afterwaitfunc(ent);
+
+	}
+}
+
+void
 Touch_Plat_Center(edict_t *ent, edict_t *other, cplane_t *plane /* unsed */,
 		csurface_t *surf /* unused */)
 {
@@ -687,7 +720,7 @@ Touch_Plat_Center(edict_t *ent, edict_t *other, cplane_t *plane /* unsed */,
 
 	if (ent->moveinfo.state == STATE_BOTTOM)
 	{
-		plat_go_up(ent);
+		wait_and_change(ent, plat_go_up);
 	}
 	else if (ent->moveinfo.state == STATE_TOP)
 	{
