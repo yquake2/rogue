@@ -214,6 +214,7 @@ InitGame(void)
 	deathmatch = gi.cvar ("deathmatch", "0", CVAR_LATCH);
 	coop = gi.cvar ("coop", "0", CVAR_LATCH);
 	coop_baseq2 = gi.cvar ("coop_baseq2", "0", CVAR_LATCH);
+	coop_pickup_weapons = gi.cvar("coop_pickup_weapons", "0", 0);
 	skill = gi.cvar ("skill", "1", CVAR_LATCH);
 	maxentities = gi.cvar ("maxentities", "1024", CVAR_LATCH);
 	gamerules = gi.cvar ("gamerules", "0", CVAR_LATCH);			//PGM
