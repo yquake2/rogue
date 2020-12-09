@@ -123,7 +123,7 @@ extern void ChangeWeapon ( edict_t * ent ) ;
 extern qboolean Pickup_Weapon ( edict_t * ent , edict_t * other ) ;
 extern void PlayerNoise ( edict_t * who , vec3_t where , int type ) ;
 extern void P_ProjectSource2 ( gclient_t * client , vec3_t point , vec3_t distance , vec3_t forward , vec3_t right , vec3_t up , vec3_t result ) ;
-extern void P_ProjectSource ( gclient_t * client , vec3_t point , vec3_t distance , vec3_t forward , vec3_t right , vec3_t result ) ;
+extern void P_ProjectSource(edict_t *ent, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result);
 extern byte P_DamageModifier ( edict_t * ent ) ;
 extern void ClientEndServerFrame ( edict_t * ent ) ;
 extern void G_SetClientFrame ( edict_t * ent ) ;
