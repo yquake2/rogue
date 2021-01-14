@@ -51,7 +51,7 @@
  * load older savegames. This should be bumped if the files
  * in tables/ are changed, otherwise strange things may happen.
  */
-#define SAVEGAMEVER "YQ2-4"
+#define SAVEGAMEVER "YQ2-5"
 
 /*
  * This macros are used to prohibit loading of savegames
@@ -844,50 +844,33 @@ ReadGame(const char *filename)
 	fread(str_os, sizeof(str_os), 1, f);
 	fread(str_arch, sizeof(str_arch), 1, f);
 
-	if (!strcmp(str_ver, SAVEGAMEVER))
-	{
-		save_ver = 4;
+	static const struct {
+		const char* verstr;
+		int vernum;
+	} version_mappings[] = {
+		{"YQ2-1", 1},
+		{"YQ2-2", 2},
+		{"YQ2-3", 3},
+		{"YQ2-4", 4},
+		{"YQ2-5", 5},
+	};
 
-		if (strcmp(str_game, GAMEVERSION))
+	for (i=0; i < sizeof(version_mappings)/sizeof(version_mappings[0]); ++i)
+	{
+		if (strcmp(version_mappings[i].verstr, str_ver) == 0)
 		{
-			fclose(f);
-			gi.error("Savegame from an other game.so.\n");
-		}
-		else if (strcmp(str_os, YQ2OSTYPE))
-		{
-			fclose(f);
-			gi.error("Savegame from an other os.\n");
-		}
-		else if (strcmp(str_arch, YQ2ARCH))
-		{
-			fclose(f);
-			gi.error("Savegame from an other architecure.\n");
+			save_ver = version_mappings[i].vernum;
+			break;
 		}
 	}
-	else if (!strcmp(str_ver, "YQ2-3"))
+	
+	if(save_ver < 2)
 	{
-		save_ver = 3;
-
-		if (strcmp(str_game, GAMEVERSION))
-		{
-			fclose(f);
-			gi.error("Savegame from an other game.so.\n");
-		}
-		else if (strcmp(str_os, YQ2OSTYPE))
-		{
-			fclose(f);
-			gi.error("Savegame from an other os.\n");
-		}
-		else if (strcmp(str_arch, YQ2ARCH))
-		{
-			fclose(f);
-			gi.error("Savegame from an other architecure.\n");
-		}
+		fclose(f);
+		gi.error("Savegame from an incompatible version.\n");
 	}
-	else if (!strcmp(str_ver, "YQ2-2"))
+	else if (save_ver == 2)
 	{
-		save_ver = 2;
-
 		if (strcmp(str_game, GAMEVERSION))
 		{
 			fclose(f);
@@ -899,28 +882,47 @@ ReadGame(const char *filename)
 			gi.error("Savegame from an other os.\n");
 		}
 
-		if (!strcmp(str_os, "Windows"))
+#ifdef _WIN32
+		/* Windows was forced to i386 */
+		if (strcmp(str_arch, "i386") != 0)
 		{
-			/* Windows was forced to i386 */
-			if (strcmp(str_arch, "i386"))
-			{
-				fclose(f);
-				gi.error("Savegame from an other architecure.\n");
-			}
+			fclose(f);
+			gi.error("Savegame from another architecture.\n");
 		}
-		else
+#else
+		if (strcmp(str_arch, YQ2ARCH_1) != 0)
 		{
-			if (strcmp(str_arch, YQ2ARCH_1))
-			{
-				fclose(f);
-				gi.error("Savegame from an other architecure.\n");
-			}
+			fclose(f);
+			gi.error("Savegame from another architecture.\n");
 		}
+#endif
 	}
-	else
+	else // all newer savegame versions
 	{
-		fclose(f);
-		gi.error("Savegame from an incompatible version.\n");
+		if (strcmp(str_game, GAMEVERSION) != 0)
+		{
+			fclose(f);
+			gi.error("Savegame from another game.so.\n");
+		}
+		else if (strcmp(str_os, YQ2OSTYPE) != 0)
+		{
+			fclose(f);
+			gi.error("Savegame from another os.\n");
+		}
+		else if (strcmp(str_arch, YQ2ARCH) != 0)
+		{
+#if defined(_WIN32) && (defined(__i386__) || defined(_M_IX86))
+			// before savegame version "YQ2-5" (and after version 2),
+			// the official Win32 binaries accidentally had the YQ2ARCH "AMD64"
+			// instead of "i386" set due to a bug in the Makefile.
+			// This quirk allows loading those savegames anyway
+			if (save_ver >= 5 || strcmp(str_arch, "AMD64") != 0)
+#endif
+			{
+				fclose(f);
+				gi.error("Savegame from another architecture.\n");
+			}
+		}
 	}
 
 	g_edicts = gi.TagMalloc(game.maxentities * sizeof(g_edicts[0]), TAG_GAME);
