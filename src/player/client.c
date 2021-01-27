@@ -103,7 +103,7 @@ SP_info_player_coop_lava(edict_t *self)
  * as well as yaw. 'pitch yaw roll'
  */
 void
-SP_info_player_intermission(void)
+SP_info_player_intermission(edict_t *ent)
 {
 }
 

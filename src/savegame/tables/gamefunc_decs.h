@@ -187,7 +187,7 @@ extern void ClientObituary ( edict_t * self , edict_t * inflictor , edict_t * at
 extern qboolean IsNeutral ( edict_t * ent ) ;
 extern qboolean IsFemale ( edict_t * ent ) ;
 extern void player_pain ( edict_t * self , edict_t * other , float kick , int damage ) ;
-extern void SP_info_player_intermission ( void ) ;
+extern void SP_info_player_intermission ( edict_t *ent );
 extern void SP_info_player_coop_lava ( edict_t * self ) ;
 extern void SP_info_player_coop ( edict_t * self ) ;
 extern void SP_info_player_deathmatch ( edict_t * self ) ;
@@ -485,7 +485,7 @@ extern qboolean medic_checkattack ( edict_t * self ) ;
 extern void medic_finish_spawn ( edict_t *self );
 extern void medic_spawngrows ( edict_t *self );
 extern void medic_determine_spawn ( edict_t *self ) ;
-extern void medic_start_spawn ( edict_t *self ) ; 
+extern void medic_start_spawn ( edict_t *self ) ;
 extern void medic_attack ( edict_t * self ) ;
 extern void medic_hook_retract ( edict_t * self ) ;
 extern void medic_cable_attack ( edict_t * self ) ;
