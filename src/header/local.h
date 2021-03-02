@@ -595,6 +595,7 @@ extern cvar_t *password;
 extern cvar_t *spectator_password;
 extern cvar_t *g_select_empty;
 extern cvar_t *dedicated;
+extern cvar_t *g_footsteps;
 
 extern cvar_t *filterban;
 
