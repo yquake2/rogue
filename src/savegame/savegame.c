@@ -118,6 +118,14 @@ typedef struct
 	mmove_t *mmovePtr;
 } mmoveList_t;
 
+typedef struct
+{
+    char ver[32];
+    char game[32];
+    char os[32];
+    char arch[32];
+} savegameHeader_t;
+
 /* ========================================================= */
 
 /*
@@ -768,12 +776,9 @@ ReadClient(FILE *f, gclient_t *client, short save_ver)
 void
 WriteGame(const char *filename, qboolean autosave)
 {
+	savegameHeader_t sv;
 	FILE *f;
 	int i;
-	char str_ver[32];
-	char str_game[32];
-    char str_os[32];
-	char str_arch[32];
 
 	if (!autosave)
 	{
@@ -788,20 +793,14 @@ WriteGame(const char *filename, qboolean autosave)
 	}
 
 	/* Savegame identification */
-	memset(str_ver, 0, sizeof(str_ver));
-	memset(str_game, 0, sizeof(str_game));
-	memset(str_os, 0, sizeof(str_os));
-	memset(str_arch, 0, sizeof(str_arch));
+	memset(&sv, 0, sizeof(sv));
 
-	strncpy(str_ver, SAVEGAMEVER, sizeof(str_ver) - 1);
-	strncpy(str_game, GAMEVERSION, sizeof(str_game) - 1);
-	strncpy(str_os, YQ2OSTYPE, sizeof(str_os) - 1);
-    strncpy(str_arch, YQ2ARCH, sizeof(str_arch) - 1);
+	strncpy(sv.ver, SAVEGAMEVER, sizeof(sv.ver) - 1);
+	strncpy(sv.game, GAMEVERSION, sizeof(sv.game) - 1);
+	strncpy(sv.os, YQ2OSTYPE, sizeof(sv.os) - 1);
+    strncpy(sv.arch, YQ2ARCH, sizeof(sv.arch) - 1);
 
-	fwrite(str_ver, sizeof(str_ver), 1, f);
-	fwrite(str_game, sizeof(str_game), 1, f);
-	fwrite(str_os, sizeof(str_os), 1, f);
-	fwrite(str_arch, sizeof(str_arch), 1, f);
+	fwrite(&sv, sizeof(sv), 1, f);
 
 	game.autosaved = autosave;
 	fwrite(&game, sizeof(game), 1, f);
@@ -823,12 +822,10 @@ WriteGame(const char *filename, qboolean autosave)
 void
 ReadGame(const char *filename)
 {
+	savegameHeader_t sv;
 	FILE *f;
 	int i;
-	char str_ver[32];
-	char str_game[32];
-	char str_os[32];
-	char str_arch[32];
+
 	short save_ver = 0;
 
 	gi.FreeTags(TAG_GAME);
@@ -841,10 +838,7 @@ ReadGame(const char *filename)
 	}
 
 	/* Sanity checks */
-	fread(str_ver, sizeof(str_ver), 1, f);
-	fread(str_game, sizeof(str_game), 1, f);
-	fread(str_os, sizeof(str_os), 1, f);
-	fread(str_arch, sizeof(str_arch), 1, f);
+	fread(&sv, sizeof(sv), 1, f);
 
 	static const struct {
 		const char* verstr;
@@ -859,7 +853,7 @@ ReadGame(const char *filename)
 
 	for (i=0; i < sizeof(version_mappings)/sizeof(version_mappings[0]); ++i)
 	{
-		if (strcmp(version_mappings[i].verstr, str_ver) == 0)
+		if (strcmp(version_mappings[i].verstr, sv.ver) == 0)
 		{
 			save_ver = version_mappings[i].vernum;
 			break;
@@ -873,12 +867,12 @@ ReadGame(const char *filename)
 	}
 	else if (save_ver == 2)
 	{
-		if (strcmp(str_game, GAMEVERSION))
+		if (strcmp(sv.game, GAMEVERSION))
 		{
 			fclose(f);
 			gi.error("Savegame from an other game.so.\n");
 		}
-		else if (strcmp(str_os, YQ2OSTYPE_1))
+		else if (strcmp(sv.os, YQ2OSTYPE_1))
 		{
 			fclose(f);
 			gi.error("Savegame from an other os.\n");
@@ -886,13 +880,13 @@ ReadGame(const char *filename)
 
 #ifdef _WIN32
 		/* Windows was forced to i386 */
-		if (strcmp(str_arch, "i386") != 0)
+		if (strcmp(sv.arch, "i386") != 0)
 		{
 			fclose(f);
 			gi.error("Savegame from another architecture.\n");
 		}
 #else
-		if (strcmp(str_arch, YQ2ARCH_1) != 0)
+		if (strcmp(sv.arch, YQ2ARCH_1) != 0)
 		{
 			fclose(f);
 			gi.error("Savegame from another architecture.\n");
@@ -901,24 +895,24 @@ ReadGame(const char *filename)
 	}
 	else // all newer savegame versions
 	{
-		if (strcmp(str_game, GAMEVERSION) != 0)
+		if (strcmp(sv.game, GAMEVERSION) != 0)
 		{
 			fclose(f);
 			gi.error("Savegame from another game.so.\n");
 		}
-		else if (strcmp(str_os, YQ2OSTYPE) != 0)
+		else if (strcmp(sv.os, YQ2OSTYPE) != 0)
 		{
 			fclose(f);
 			gi.error("Savegame from another os.\n");
 		}
-		else if (strcmp(str_arch, YQ2ARCH) != 0)
+		else if (strcmp(sv.arch, YQ2ARCH) != 0)
 		{
 #if defined(_WIN32) && (defined(__i386__) || defined(_M_IX86))
 			// before savegame version "YQ2-5" (and after version 2),
 			// the official Win32 binaries accidentally had the YQ2ARCH "AMD64"
 			// instead of "i386" set due to a bug in the Makefile.
 			// This quirk allows loading those savegames anyway
-			if (save_ver >= 5 || strcmp(str_arch, "AMD64") != 0)
+			if (save_ver >= 5 || strcmp(sv.arch, "AMD64") != 0)
 #endif
 			{
 				fclose(f);
