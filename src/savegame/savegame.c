@@ -795,10 +795,10 @@ WriteGame(const char *filename, qboolean autosave)
 	/* Savegame identification */
 	memset(&sv, 0, sizeof(sv));
 
-	strncpy(sv.ver, SAVEGAMEVER, sizeof(sv.ver) - 1);
-	strncpy(sv.game, GAMEVERSION, sizeof(sv.game) - 1);
-	strncpy(sv.os, YQ2OSTYPE, sizeof(sv.os) - 1);
-    strncpy(sv.arch, YQ2ARCH, sizeof(sv.arch) - 1);
+	Q_strlcpy(sv.ver, SAVEGAMEVER, sizeof(sv.ver) - 1);
+	Q_strlcpy(sv.game, GAMEVERSION, sizeof(sv.game) - 1);
+	Q_strlcpy(sv.os, YQ2OSTYPE, sizeof(sv.os) - 1);
+    	Q_strlcpy(sv.arch, YQ2ARCH, sizeof(sv.arch) - 1);
 
 	fwrite(&sv, sizeof(sv), 1, f);
 
