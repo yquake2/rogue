@@ -330,6 +330,13 @@ G_UseTargets(edict_t *ent, edict_t *activator)
 				}
 			}
 
+			/* correct killcounter if a living monster gets killtargeted */
+			if ((t->monsterinfo.checkattack || strcmp (t->classname, "turret_driver") == 0) &&
+				!(t->monsterinfo.aiflags & (AI_GOOD_GUY|AI_DO_NOT_COUNT)) && t->deadflag != DEAD_DEAD)
+			{
+				level.killed_monsters++;
+			}
+
 			G_FreeEdict(t);
 
 			if (!ent->inuse)
