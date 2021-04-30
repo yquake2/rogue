@@ -730,8 +730,8 @@ player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 		/* don't toss gibs if we got vaped by the nuke */
 		if (!(self->flags & FL_NOGIB))
 		{
-			/* gib */
-			gi.sound(self, CHAN_BODY, gi.soundindex( "misc/udeath.wav"), 1, ATTN_NORM, 0);
+			/* gib (play sound at end of server frame) */
+			self->sounds = gi.soundindex( "misc/udeath.wav");
 
 			/* more meaty gibs for your dollar! */
 			if ((deathmatch->value) && (self->health < -80))
@@ -788,7 +788,11 @@ player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 				}
 			}
 
-			gi.sound(self, CHAN_VOICE, gi.soundindex(va("*death%i.wav", (rand() % 4) + 1)), 1, ATTN_NORM, 0);
+			/* play sound at end of server frame */
+			if (!self->sounds)
+			{
+				self->sounds = gi.soundindex(va("*death%i.wav", (rand() % 4) + 1));
+			}
 		}
 	}
 
