@@ -1,3 +1,16 @@
+Ground Zero 2.07 to 2.08
+- Fix wrong sound for some items when activated. (by BjossiAlfreds)
+- Port the 'aimfix' cvar. (by Mitchell Richters)
+- Port the 'coop_pickup_weapons' and 'coop_elevator_delay' cvars.
+- Fix a long standing crash occuring when exploding projectiles like
+  grenates or rockets generate sound targets and a least one monster
+  starts moving to one of that targets.
+- Add a cvar `g_footsteps` to control the generation of footstep sound.
+- Move several hard coded map fixes to entity files. Add newly
+  discovered mapfixes to the entity files. (by BjossiAlfreds)
+- Fix several subtile gameplay and entity handling bug. (by
+  BjossiAlfreds)
+
 Ground Zero 2.06 to 2.07
 - Several fixes for subtile bugs (by BjossiAlfreds)
 
