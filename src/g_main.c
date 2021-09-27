@@ -75,6 +75,7 @@ cvar_t *randomrespawn;
 cvar_t *g_disruptor;
 
 cvar_t *aimfix;
+cvar_t *machinegun_norecoil;
 
 void SpawnEntities(char *mapname, char *entities, char *spawnpoint);
 void ClientThink(edict_t *ent, usercmd_t *cmd);

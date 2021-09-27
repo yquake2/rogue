@@ -1475,7 +1475,7 @@ Machinegun_Fire(edict_t *ent)
 	ent->client->kick_angles[0] = ent->client->machinegun_shots * -1.5;
 
 	/* raise the gun as it is firing */
-	if (!deathmatch->value)
+	if (!(deathmatch->value || machinegun_norecoil->value))
 	{
 		ent->client->machinegun_shots++;
 
