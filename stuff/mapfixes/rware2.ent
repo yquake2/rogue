@@ -1,25 +1,31 @@
 // FIXED ENTITY STRING (by BjossiAlfreds)
 //
-// 1. Fixed unreachable monster_soldier (2684)
+// 1. Fixed unreachable monster_soldier (2690)
 //
 // This guy was set to a triggered spawn but has no targetname.
 // Changed his spawnflags from 2051 to 2049.
 //
-// 2. Fixed console warning for monster_stalker (5934)
+// 2. Fixed console warning for monster_stalker (5942)
 //
 // Changed his spawnflags from 2057 to 2825 (Hard only).
-// And spawned another monster_stalker (8306) (same guy) with
+// And spawned another monster_stalker (8313) (same guy) with
 // spawnflags 3081 (Easy + Medium).
 //
-// 3. Raised item_pack vertically (83)
+// 3. Raised item_pack vertically (89)
 //
 // This Ammo Pack had a tendency to be in solid, so I raised it up
 // a few units on vertical axis.
 //
-// 4. Moved item_armor_jacket (201) out of a wall
+// 4. Moved item_armor_jacket (207) out of a wall
 //
 // This Jacket Armor was spawning partially inside a wall
 // so I lowered its X-positioning a bit (1664 to 1624).
+//
+// 5. Silenced warning for monster_stalker (5078)
+//
+// He spawns on all difficulties but his targets (t119) are
+// not present on easy or medium. Fixed by giving him a
+// dummy target (3000) just so he has "something" to target.
 {
 "classname" "worldspawn"
 "message" "Waterfront Storage"
@@ -2991,6 +2997,7 @@
 {
 "classname" "ammo_rockets"
 "origin" "1696 8 992"
+"targetname" "t119"	// added to silence warning
 }
 {
 "classname" "item_health"
