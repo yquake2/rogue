@@ -1809,6 +1809,9 @@ SP_monster_soldier_light(edict_t *self)
 		return;
 	}
 
+	self->health = 20;
+	self->gib_health = -30;
+
 	SP_monster_soldier_x(self);
 
 	sound_pain_light = gi.soundindex("soldier/solpain2.wav");
@@ -1818,9 +1821,6 @@ SP_monster_soldier_light(edict_t *self)
 	gi.soundindex("soldier/solatck2.wav");
 
 	self->s.skinnum = 0;
-	self->health = 20;
-	self->gib_health = -30;
-
 	self->monsterinfo.blindfire = true;
 }
 
@@ -1843,6 +1843,9 @@ SP_monster_soldier(edict_t *self)
 		return;
 	}
 
+	self->health = 30;
+	self->gib_health = -30;
+
 	SP_monster_soldier_x(self);
 
 	sound_pain = gi.soundindex("soldier/solpain1.wav");
@@ -1850,8 +1853,6 @@ SP_monster_soldier(edict_t *self)
 	gi.soundindex("soldier/solatck1.wav");
 
 	self->s.skinnum = 2;
-	self->health = 30;
-	self->gib_health = -30;
 }
 
 /*
@@ -1873,6 +1874,9 @@ SP_monster_soldier_ss(edict_t *self)
 		return;
 	}
 
+	self->health = 40;
+	self->gib_health = -30;
+
 	SP_monster_soldier_x(self);
 
 	sound_pain_ss = gi.soundindex("soldier/solpain3.wav");
@@ -1880,6 +1884,4 @@ SP_monster_soldier_ss(edict_t *self)
 	gi.soundindex("soldier/solatck3.wav");
 
 	self->s.skinnum = 4;
-	self->health = 40;
-	self->gib_health = -30;
 }
