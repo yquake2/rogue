@@ -1,3 +1,14 @@
+Ground Zero 2.08 to 2.09
+- Refine the 'g_footstep' cvar to match Quake II itself.
+- Implement 'g_machinegun_norecoil'. The cvar is cheat protected. (by
+  De-Seppe)
+- Update the entity files for rmine1, rsewer2 and rware2, fixing some
+  smaller map bugs. (by BjossiAlfreds and Dremor8484)
+- Fix soldiers never showing their pain skins as long as they're alive.
+  (by BjossiAlfreds)
+- Implement the 'prefweap' command to select a weapon by priority. (by
+  Jaime Moreira)
+
 Ground Zero 2.07 to 2.08
 - Fix wrong sound for some items when activated. (by BjossiAlfreds)
 - Port the 'aimfix' cvar. (by Mitchell Richters)
