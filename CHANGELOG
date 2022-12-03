@@ -1,3 +1,16 @@
+Ground Zero 2.09 to 2.10
+- Implement faster weapon switching with the new 'cycleweap' command.
+  (by protocultor).
+- Fixes pusher delta yaw manipulation. This fixes the infamous bug were
+  a player standing on a blocked elevator gets turned around (by
+  skuller).
+- Fix several coop related bugs with the powercubes. (by BjossiAlfreds)
+- A way better fix for dead bodys obstructing elevators or falling
+  through the worldmodel. (by BjossiAlfreds)
+- Fix items already in water playing a splash sound at level start. (by
+  BjossiAlfreds)
+- Phalanx explosions should be muffeled under water. (by protocultor)
+
 Ground Zero 2.08 to 2.09
 - Refine the 'g_footstep' cvar to match Quake II itself.
 - Implement 'g_machinegun_norecoil'. The cvar is cheat protected. (by
