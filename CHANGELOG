@@ -9,7 +9,6 @@ Ground Zero 2.09 to 2.10
   through the worldmodel. (by BjossiAlfreds)
 - Fix items already in water playing a splash sound at level start. (by
   BjossiAlfreds)
-- Phalanx explosions should be muffeled under water. (by protocultor)
 
 Ground Zero 2.08 to 2.09
 - Refine the 'g_footstep' cvar to match Quake II itself.
