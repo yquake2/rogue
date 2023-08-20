@@ -12,6 +12,8 @@
 // Basically trigger_always trigger during savegame loads when they
 // really shouldn't. It's harmless most of the time but target_help
 // modify the global game state which is not cleared at this point.
+//
+// 3. Fixed wrong/overlapping secret sound effect (b#3)
 {
 "spawnflags" "2"
 "angle" "0"
@@ -692,12 +694,12 @@
 }
 {
 "origin" "-120 -336 -168"
+"message" "You found a secret." // b#3: moved here
 "targetname" "t384"
 "classname" "target_secret"
 }
 {
 "model" "*14"
-"message" "You found a secret."
 "target" "t384"
 "spawnflags" "2048"
 "classname" "trigger_once"
@@ -1263,20 +1265,21 @@
 "origin" "-328 2152 -8"
 "targetname" "t300"
 "classname" "target_secret"
+"message" "You released the Mutant!" // b#3: moved this here
 }
 {
 "origin" "-408 8 16"
 "target" "t300"
 "targetname" "t299"
-"message" "You released the Mutant!"
 "classname" "trigger_relay"
+"spawnflags" "7936" // b#3: added this
 }
 {
 "model" "*36"
 "mass" "800"
 "dmg" "1"
 "health" "101"
-"target" "t299"
+"target" "t300" // b#3: t299 -> t300
 "targetname" "t218"
 "spawnflags" "2057"
 "classname" "func_explosive"
@@ -2021,7 +2024,6 @@
 }
 {
 "model" "*70"
-"message" "Something just fell in a container."
 "_minlight" ".2"
 "target" "t208"
 "wait" "-1"
@@ -2034,6 +2036,7 @@
 "targetname" "t208"
 "origin" "-328 2152 -8"
 "classname" "target_secret"
+"message" "Something just fell in a container." // b#3: moved here
 }
 {
 "model" "*71"
