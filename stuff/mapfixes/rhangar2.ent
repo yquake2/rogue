@@ -14,6 +14,8 @@
 // modify the global game state which is not cleared at this point.
 //
 // 3. Fixed wrong/overlapping secret sound effect (b#3)
+//
+// 4. Fixed old classnames (b#4)
 {
 "spawnflags" "2"
 "angle" "0"
@@ -155,11 +157,11 @@
 }
 {
 "origin" "-584 840 664"
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 }
 {
 "origin" "-1136 1224 784"
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 }
 {
 "origin" "-1456 1224 784"
@@ -230,7 +232,7 @@
 {
 "origin" "-544 552 544"
 "spawnflags" "1792"
-"classname" "weapon_heatbeam"
+"classname" "weapon_plasmabeam" // b#4: heat -> plasma
 }
 {
 "origin" "-288 480 552"
@@ -245,11 +247,11 @@
 {
 "origin" "40 2528 -176"
 "spawnflags" "5888"
-"classname" "weapon_nailgun"
+"classname" "weapon_etf_rifle" // b#4: nailgun -> etf_rifle
 }
 {
 "origin" "-96 2528 -176"
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 }
 {
 "origin" "-224 2656 -168"
@@ -272,7 +274,7 @@
 {
 "origin" "-80 1768 96"
 "spawnflags" "1536"
-"classname" "weapon_heatbeam"
+"classname" "weapon_plasmabeam" // b#4: heat -> plasma
 }
 {
 "origin" "-80 1832 96"
@@ -445,7 +447,7 @@
 "origin" "872 560 272"
 }
 {
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 "origin" "-272 -1040 -64"
 }
 {
@@ -7259,7 +7261,7 @@
 }
 {
 "origin" "-320 -1016 -64"
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 }
 {
 "origin" "1344 736 288"
@@ -7315,7 +7317,7 @@
 "classname" "item_health_large"
 }
 {
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 "origin" "-32 2528 -176"
 }
 {
