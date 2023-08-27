@@ -6,8 +6,8 @@
 #                                                       #
 # Dependencies:                                         #
 # - None, but you need a Quake II to play.              #
-#   While in theorie every client should work           #
-#   Yamagi Quake II ist recommended.                    #
+#   While in theory every client should work            #
+#   Yamagi Quake II is recommended.                     #
 #                                                       #
 # Platforms:                                            #
 # - FreeBSD                                             #
@@ -286,7 +286,7 @@ ROGUE_OBJS_ = \
 
 # ----------
 
-# Rewrite pathes to our object directory
+# Rewrite paths to our object directory
 ROGUE_OBJS = $(patsubst %,build/%,$(ROGUE_OBJS_))
 
 # ----------
