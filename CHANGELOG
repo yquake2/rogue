@@ -5,7 +5,7 @@ Ground Zero 2.09 to 2.10
   a player standing on a blocked elevator gets turned around (by
   skuller).
 - Fix several coop related bugs with the powercubes. (by BjossiAlfreds)
-- A way better fix for dead bodys obstructing elevators or falling
+- A way better fix for dead bodies obstructing elevators or falling
   through the worldmodel. (by BjossiAlfreds)
 - Fix items already in water playing a splash sound at level start. (by
   BjossiAlfreds)
