@@ -1,10 +1,21 @@
 // FIXED ENTITY STRING (by BjossiAlfreds)
 //
-// 1. Made a monster_turret (1056) accessible
+// 1. Made a monster_turret reachable (b#1)
 //
-// The turret spawns but is behind a func_door (1062) that never
+// The turret spawns but is behind a func_door that never
 // opens. It has targetname t332 but is never targeted, so I set it
 // to t311 instead so it opens after pressing the console nearby.
+//
+// 2. Fixed nagging help message (b#2)
+//
+// This is more of a code bug but can be avoided by a mapfix too.
+// Basically trigger_always trigger during savegame loads when they
+// really shouldn't. It's harmless most of the time but target_help
+// modify the global game state which is not cleared at this point.
+//
+// 3. Fixed wrong/overlapping secret sound effect (b#3)
+//
+// 4. Fixed old classnames (b#4)
 {
 "spawnflags" "2"
 "angle" "0"
@@ -55,6 +66,7 @@
 "targetname" "t11"
 "delay" "5"
 "killtarget" "t399"
+"target" "t11help" // b#2: added this
 "origin" "96 -480 8"
 }
 {
@@ -145,11 +157,11 @@
 }
 {
 "origin" "-584 840 664"
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 }
 {
 "origin" "-1136 1224 784"
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 }
 {
 "origin" "-1456 1224 784"
@@ -220,7 +232,7 @@
 {
 "origin" "-544 552 544"
 "spawnflags" "1792"
-"classname" "weapon_heatbeam"
+"classname" "weapon_plasmabeam" // b#4: heat -> plasma
 }
 {
 "origin" "-288 480 552"
@@ -235,11 +247,11 @@
 {
 "origin" "40 2528 -176"
 "spawnflags" "5888"
-"classname" "weapon_nailgun"
+"classname" "weapon_etf_rifle" // b#4: nailgun -> etf_rifle
 }
 {
 "origin" "-96 2528 -176"
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 }
 {
 "origin" "-224 2656 -168"
@@ -262,7 +274,7 @@
 {
 "origin" "-80 1768 96"
 "spawnflags" "1536"
-"classname" "weapon_heatbeam"
+"classname" "weapon_plasmabeam" // b#4: heat -> plasma
 }
 {
 "origin" "-80 1832 96"
@@ -435,7 +447,7 @@
 "origin" "872 560 272"
 }
 {
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 "origin" "-272 -1040 -64"
 }
 {
@@ -572,7 +584,7 @@
 "origin" "48 -168 344"
 "spawnflags" "1"
 "message" "Gain entrance to waste\ndisposal control."
-"targetname" "t11"
+"targetname" "t11help" // b#2: t11 -> t11help
 }
 {
 "model" "*10"
@@ -684,12 +696,12 @@
 }
 {
 "origin" "-120 -336 -168"
+"message" "You found a secret." // b#3: moved here
 "targetname" "t384"
 "classname" "target_secret"
 }
 {
 "model" "*14"
-"message" "You found a secret."
 "target" "t384"
 "spawnflags" "2048"
 "classname" "trigger_once"
@@ -1065,7 +1077,7 @@
 "wait" "-1"
 "angle" "-1"
 "classname" "func_door"
-"targetname" "t311"
+"targetname" "t311" // b#1: t332 -> t311
 }
 {
 "spawnflags" "4"
@@ -1255,20 +1267,21 @@
 "origin" "-328 2152 -8"
 "targetname" "t300"
 "classname" "target_secret"
+"message" "You released the Mutant!" // b#3: moved this here
 }
 {
 "origin" "-408 8 16"
 "target" "t300"
 "targetname" "t299"
-"message" "You released the Mutant!"
 "classname" "trigger_relay"
+"spawnflags" "7936" // b#3: added this
 }
 {
 "model" "*36"
 "mass" "800"
 "dmg" "1"
 "health" "101"
-"target" "t299"
+"target" "t300" // b#3: t299 -> t300
 "targetname" "t218"
 "spawnflags" "2057"
 "classname" "func_explosive"
@@ -2013,7 +2026,6 @@
 }
 {
 "model" "*70"
-"message" "Something just fell in a container."
 "_minlight" ".2"
 "target" "t208"
 "wait" "-1"
@@ -2026,6 +2038,7 @@
 "targetname" "t208"
 "origin" "-328 2152 -8"
 "classname" "target_secret"
+"message" "Something just fell in a container." // b#3: moved here
 }
 {
 "model" "*71"
@@ -7189,7 +7202,7 @@
 "spawnflags" "0"
 "origin" "80 -200 344"
 "classname" "target_help"
-"targetname" "t11"
+"targetname" "t11help" // b#2: t11 -> t11help
 }
 {
 "origin" "168 2648 -104"
@@ -7248,7 +7261,7 @@
 }
 {
 "origin" "-320 -1016 -64"
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 }
 {
 "origin" "1344 736 288"
@@ -7304,7 +7317,7 @@
 "classname" "item_health_large"
 }
 {
-"classname" "ammo_nails"
+"classname" "ammo_flechettes" // b#4: nails -> flechettes
 "origin" "-32 2528 -176"
 }
 {
