@@ -7,6 +7,7 @@
 
 #include "../header/local.h"
 #include "../monster/misc/player.h"
+#include <limits.h>
 
 #define PLAYER_NOISE_SELF 0
 #define PLAYER_NOISE_IMPACT 1
