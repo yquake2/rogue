@@ -405,9 +405,9 @@ Pickup_Pack(edict_t *ent, edict_t *other)
 		other->client->pers.max_slugs = 100;
 	}
 
-	if (other->client->pers.max_flechettes < 200)
+	if (other->client->pers.max_flechettes < 300)
 	{
-		other->client->pers.max_flechettes = 200;
+		other->client->pers.max_flechettes = 300;
 	}
 
 	if (g_disruptor->value)
