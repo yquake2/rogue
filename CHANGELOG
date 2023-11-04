@@ -1,3 +1,20 @@
+Ground Zero 2.10 to 2.11
+- Relicense under GPL2.
+- Fix Entity used itself in rbase1 and other minor fixes. (by
+  BjossiAlfreds)
+- Some fixes for rsewer1. (by BjossiAlfreds)
+- Fix minor AI glitches with turrets (by BjossiAlfreds)
+- Fixed nagging help message in rhangar2. (by BjossiAlfreds)
+- Fixed gunner grenade duck code running twice. (by BjossiAlfreds)
+- Fixed wrong Tank muzzle flash. (by BjossiAlfreds)
+- Implement `g_swap_speed`. This allows to skip frames of "putting down
+  weapon" and "raising weapon" animations, speeding them up. (by Jaime
+  Moreira)
+- Several fixes to makron (by BjossiAlfreds)
+- Fixed stand-ground gladiators not attacking at certain range. (by
+  BjossiAlfreds)
+- Fixed monsters seeing players during intermissions. (by BjossiAlfreds)
+
 Ground Zero 2.09 to 2.10
 - Implement faster weapon switching with the new 'cycleweap' command.
   (by protocultor).
