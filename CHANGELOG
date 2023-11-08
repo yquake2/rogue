@@ -8,8 +8,8 @@ Ground Zero 2.10 to 2.11
 - Fixed gunner grenade duck code running twice. (by BjossiAlfreds)
 - Fixed wrong Tank muzzle flash. (by BjossiAlfreds)
 - Implement `g_swap_speed`. This allows to skip frames of "putting down
-  weapon" and "raising weapon" animations, speeding them up. (by Jaime
-  Moreira)
+  weapon" and "raising weapon" animations, speeding them up. (by
+  protocultor)
 - Several fixes to makron (by BjossiAlfreds)
 - Fixed stand-ground gladiators not attacking at certain range. (by
   BjossiAlfreds)
@@ -36,7 +36,7 @@ Ground Zero 2.08 to 2.09
 - Fix soldiers never showing their pain skins as long as they're alive.
   (by BjossiAlfreds)
 - Implement the 'prefweap' command to select a weapon by priority. (by
-  Jaime Moreira)
+  protocultor)
 
 Ground Zero 2.07 to 2.08
 - Fix wrong sound for some items when activated. (by BjossiAlfreds)
