@@ -728,12 +728,20 @@ Cmd_WeapPrev_f(edict_t *ent)
 
 	cl = ent->client;
 
-	if (!cl->pers.weapon)
+	if (g_quick_weap->value && cl->newweapon)
+	{
+		it = cl->newweapon;
+	}
+	else if (cl->pers.weapon)
+	{
+		it = cl->pers.weapon;
+	}
+	else
 	{
 		return;
 	}
 
-	selected_weapon = ITEM_INDEX(cl->pers.weapon);
+	selected_weapon = ITEM_INDEX(it);
 
 	/* scan  for the next valid one */
 	for (i = 1; i <= MAX_ITEMS; i++)
@@ -748,12 +756,7 @@ Cmd_WeapPrev_f(edict_t *ent)
 
 		it = &itemlist[index];
 
-		if (!it->use)
-		{
-			continue;
-		}
-
-		if (!(it->flags & IT_WEAPON))
+		if (!it->use || !(it->flags & IT_WEAPON))
 		{
 			continue;
 		}
@@ -783,14 +786,22 @@ Cmd_WeapNext_f(edict_t *ent)
 
 	cl = ent->client;
 
-	if (!cl->pers.weapon)
+	if (g_quick_weap->value && cl->newweapon)
+	{
+		it = cl->newweapon;
+	}
+	else if (cl->pers.weapon)
+	{
+		it = cl->pers.weapon;
+	}
+	else
 	{
 		return;
 	}
 
-	selected_weapon = ITEM_INDEX(cl->pers.weapon);
+	selected_weapon = ITEM_INDEX(it);
 
-	/* scan  for the next valid one */
+	/* scan for the next valid one */
 	for (i = 1; i <= MAX_ITEMS; i++)
 	{
 		/* prevent scrolling through ALL weapons */
@@ -803,12 +814,7 @@ Cmd_WeapNext_f(edict_t *ent)
 
 		it = &itemlist[index];
 
-		if (!it->use)
-		{
-			continue;
-		}
-
-		if (!(it->flags & IT_WEAPON))
+		if (!it->use || !(it->flags & IT_WEAPON))
 		{
 			continue;
 		}
