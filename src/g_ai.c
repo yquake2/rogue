@@ -1,3 +1,5 @@
+// Copyright (c) ZeniMax Media Inc.
+// Licensed under the GNU General Public License 2.0.
 /* =======================================================================
  *
  * The basic AI functions like enemy detection, attacking and so on.
