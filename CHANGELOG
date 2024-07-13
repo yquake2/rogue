@@ -1,3 +1,6 @@
+Ground Zero 2.11 to 2.12
+- Faster `weapprev` and `weapnext` behavior. (by protocultor)
+
 Ground Zero 2.10 to 2.11
 - Relicense under GPL2.
 - Fix Entity used itself in rbase1 and other minor fixes. (by
