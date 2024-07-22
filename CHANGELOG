@@ -4,6 +4,7 @@ Ground Zero 2.11 to 2.12
   possible to skip weapons by quickly tapping one of these keys. (by
   protocultor)
 - Work around naggy help icons. (by BjossiAlfreds)
+- Implement `g_monsterfootsteps` (by 0lvin)
 
 Ground Zero 2.10 to 2.11
 - Relicense under GPL2.
