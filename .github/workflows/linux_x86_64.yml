@@ -1,5 +1,5 @@
-name: Testbuild for Linux
-run-name: testbuild_linux
+name: Testbuild for Linux (x86_64)
+run-name: testbuild_linux_x86_64
 on:
   push:
     branches:
@@ -14,8 +14,8 @@ concurrency:
   group: ${{github.workflow}}-${{github.event_name == 'pull_request' && github.head_ref || github.sha}}
   cancel-in-progress: true
 jobs:
-  build_ubuntu_x64_64:
-    runs-on: ubuntu-latest
+  build_ubuntu_x86_64:
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -31,16 +31,16 @@ jobs:
     - name: Create testbuild package
       run: |
         # Create release directory tree
-        mkdir -p publish/quake2-rogue-linux-${{github.sha}}/misc/docs
+        mkdir -p publish/quake2-rogue-linux_x86_64-${{github.sha}}/misc/docs
         # Copy release assets
-        cp -r release/* publish/quake2-rogue-linux-${{github.sha}}/
+        cp -r release/* publish/quake2-rogue-linux_x86_64-${{github.sha}}/
         # Copy misc assets
-        cp -r stuff/mapfixes publish/quake2-rogue-linux-${{github.sha}}/misc
-        cp LICENSE publish/quake2-rogue-linux-${{github.sha}}/misc/docs/LICENSE.txt
-        cp README.md publish/quake2-rogue-linux-${{github.sha}}/misc/docs/README.txt
+        cp -r stuff/mapfixes publish/quake2-rogue-linux_x86_64-${{github.sha}}/misc
+        cp LICENSE publish/quake2-rogue-linux_x86_64-${{github.sha}}/misc/docs/LICENSE.txt
+        cp README.md publish/quake2-rogue-linux_x86_64-${{github.sha}}/misc/docs/README.txt
     - name: Upload testbuild package
       uses: actions/upload-artifact@v4
       with:
-        name: quake2-rogue-linux-${{github.sha}}
+        name: quake2-rogue-linux_x86_64-${{github.sha}}
         path: publish/
         if-no-files-found: error
