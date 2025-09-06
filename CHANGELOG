@@ -1,3 +1,9 @@
+Ground Zero 2.14 to 2.15
+- Fix monsters acting confused while following combat points. (by
+  BjossiAlfreds)
+- Fix machinegun guard freezes under some circumstances. (by
+  BjossiAlfreds)
+
 Ground Zero 2.13 to 2.14
 - Fix savegame and mod incompatibilities when Yamagi Quake II is
   complied in C23 mode. With this fix applied savegames written by
