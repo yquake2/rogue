@@ -627,7 +627,6 @@ extern cvar_t *sv_maplist;
 
 extern cvar_t *sv_stopspeed;
 
-extern cvar_t *g_showlogic;
 extern cvar_t *huntercam;
 extern cvar_t *strong_mines;
 extern cvar_t *randomrespawn;
