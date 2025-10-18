@@ -1,3 +1,16 @@
+// FIXED ENTITY STRING (by Dremor8484 & BjossiAlfreds)
+//
+// 1. Fixed monster_berserk stuck in geometry (b#1) (Dremor8484)
+//
+// 2. Fixed old classnames (b#2) (BjossiAlfreds)
+//
+// 3. Fixed wrong/overlapping secret sound effect (b#3) (BjossiAlfreds)
+//
+// 4. Fixed orphaned target_speaker (b#4) (BjossiAlfreds)
+//
+// 5. Removed unused entities (b#5) (BjossiAlfreds)
+//
+// 6. Fixed dm_tag_token in solid (b#6) (BjossiAlfreds)
 {
 "sounds" "6"
 "sky" "rogue1"
@@ -228,7 +241,7 @@
 {
 "origin" "-752 -1760 0"
 "spawnflags" "5888"
-"classname" "weapon_heatbeam"
+"classname" "weapon_plasmabeam" // b#2: heat -> plasma
 }
 {
 "model" "*9"
@@ -702,6 +715,7 @@
 "spawnflags" "2048"
 "noise" "world/lava1.wav"
 "classname" "target_speaker"
+"targetname" "t354" // b#4: added this
 "origin" "-1760 -2320 112"
 }
 {
@@ -1049,7 +1063,7 @@
 "classname" "monster_infantry"
 }
 {
-"origin" "968 544 744" //stuck monster at "968 544 720" (it spawns after Tectonic Stabilizer objectives are completed)
+"origin" "968 544 744" // b#1: 720 -> 744
 "angle" "0"
 "spawnflags" "3"
 "targetname" "t350"
@@ -2332,12 +2346,12 @@
 "origin" "576 -632 624"
 "targetname" "t308"
 "classname" "target_secret"
+"message" "You found a secret!" // b#3: moved here from trigger
 }
 {
 "model" "*36"
 "spawnflags" "2048"
 "target" "t308"
-"message" "You found a secret!"
 "classname" "trigger_once"
 }
 {
@@ -2558,7 +2572,7 @@
 "classname" "item_armor_body"
 }
 {
-"origin" "1088 -256 512"
+"origin" "1088 -256 516" // b#6: 512 -> 516
 "classname" "dm_tag_token"
 }
 {
@@ -3269,10 +3283,12 @@
 {
 "origin" "-1168 -1984 1216"
 "classname" "point_combat"
+"spawnflags" "7936" // b#5: added this
 }
 {
 "model" "*46"
 "classname" "trigger_once"
+"spawnflags" "7936" // b#5: added this
 }
 {
 "classname" "target_speaker"
@@ -7104,4 +7120,3 @@
 "light" "200"
 "_color" "1.000000 1.000000 0.501961"
 }
-

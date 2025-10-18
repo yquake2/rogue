@@ -461,19 +461,10 @@ ClientObituary(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker
 				gi.bprintf(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname,
 						message, attacker->client->pers.netname, message2);
 
-				if (gamerules && gamerules->value)
+				if (DMGame.Score)
 				{
-					if (DMGame.Score)
-					{
-						if (ff)
-						{
-							DMGame.Score(attacker, self, -1);
-						}
-						else
-						{
-							DMGame.Score(attacker, self, 1);
-						}
-					}
+					DMGame.Score(attacker, self,
+						ff ? -1 : 1);
 
 					return;
 				}
@@ -499,14 +490,9 @@ ClientObituary(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker
 
 	if (deathmatch->value)
 	{
-		if (gamerules && gamerules->value)
+		if (DMGame.Score)
 		{
-			if (DMGame.Score)
-			{
-				DMGame.Score(self, self, -1);
-			}
-
-			return;
+			DMGame.Score(self, self, -1);
 		}
 		else
 		{
@@ -681,12 +667,9 @@ player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 		}
 	}
 
-	if (gamerules && gamerules->value) /* if we're in a dm game, alert the game */
+	if (DMGame.PlayerDeath)
 	{
-		if (DMGame.PlayerDeath)
-		{
-			DMGame.PlayerDeath(self, inflictor, attacker);
-		}
+		DMGame.PlayerDeath(self, inflictor, attacker);
 	}
 
 	/* remove powerups */
@@ -1571,7 +1554,7 @@ PutClientInServer(edict_t *ent)
 
 	/* find a spawn point. do it before setting health back
 	   up, so farthest ranging doesn't count this client */
-	if (gamerules && gamerules->value && DMGame.SelectSpawnPoint)
+	if (DMGame.SelectSpawnPoint)
 	{
 		DMGame.SelectSpawnPoint(ent, spawn_origin, spawn_angles);
 	}
@@ -1775,7 +1758,7 @@ ClientBeginDeathmatch(edict_t *ent)
 	G_InitEdict(ent);
 	InitClientResp(ent->client);
 
-	if (gamerules && gamerules->value && DMGame.ClientBegin)
+	if (DMGame.ClientBegin)
 	{
 		DMGame.ClientBegin(ent);
 	}
@@ -2085,12 +2068,9 @@ ClientDisconnect(edict_t *ent)
 		ent->client->owned_sphere = NULL;
 	}
 
-	if (gamerules && gamerules->value)
+	if (DMGame.PlayerDisconnect)
 	{
-		if (DMGame.PlayerDisconnect)
-		{
-			DMGame.PlayerDisconnect(ent);
-		}
+		DMGame.PlayerDisconnect(ent);
 	}
 
 	/* send effect */

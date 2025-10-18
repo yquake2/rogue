@@ -230,7 +230,6 @@ InitGame(void)
 	coop_pickup_weapons = gi.cvar("coop_pickup_weapons", "0", CVAR_ARCHIVE);
 	skill = gi.cvar ("skill", "1", CVAR_LATCH);
 	maxentities = gi.cvar ("maxentities", "1024", CVAR_LATCH);
-	gamerules = gi.cvar ("gamerules", "0", CVAR_LATCH);			//PGM
 	g_footsteps = gi.cvar ("g_footsteps", "1", CVAR_LATCH);
 	g_monsterfootsteps = gi.cvar("g_monsterfootsteps", "0", CVAR_ARCHIVE);
 	g_fix_triggered = gi.cvar ("g_fix_triggered", "0", 0);
@@ -285,10 +284,7 @@ InitGame(void)
 	game.clients = gi.TagMalloc (game.maxclients * sizeof(game.clients[0]), TAG_GAME);
 	globals.num_edicts = game.maxclients+1;
 
-	if (gamerules)
-	{
-		InitGameRules();
-	}
+	InitGameRules();
 }
 
 /* ========================================================= */

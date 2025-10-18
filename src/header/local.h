@@ -234,6 +234,7 @@ typedef struct
 #define IT_MELEE 0x00000040
 #define IT_NOT_GIVEABLE 0x00000080      /* item can not be given */
 #define IT_INSTANT_USE 0x000000100		/* item is insta-used on pickup if dmflag is set */
+#define IT_SPAWNFUNC 0x00000200 /* skip SpawnItem and try call a spawn function instead */
 
 /* gitem_t->weapmodel for weapons indicates model index */
 #define WEAP_BLASTER 1
@@ -627,7 +628,6 @@ extern cvar_t *sv_maplist;
 extern cvar_t *sv_stopspeed;
 
 extern cvar_t *g_showlogic;
-extern cvar_t *gamerules;
 extern cvar_t *huntercam;
 extern cvar_t *strong_mines;
 extern cvar_t *randomrespawn;
@@ -982,7 +982,6 @@ edict_t *DoRandomRespawn(edict_t *ent);
 void PrecacheForRandomRespawn(void);
 qboolean Tag_PickupToken(edict_t *ent, edict_t *other);
 void Tag_DropToken(edict_t *ent, gitem_t *item);
-void Tag_PlayerDeath(edict_t *targ, edict_t *inflictor, edict_t *attacker);
 void fire_doppleganger(edict_t *ent, vec3_t start, vec3_t aimdir);
 
 /* g_spawn.c */
@@ -1331,6 +1330,8 @@ struct edict_s
 
 typedef struct dm_game_rs
 {
+	int Type;
+
 	void (*GameInit)(void);
 	void (*PostInitSetup)(void);
 	void (*ClientBegin)(edict_t *ent);
@@ -1346,15 +1347,6 @@ typedef struct dm_game_rs
 } dm_game_rt;
 
 extern dm_game_rt DMGame;
-
-void Tag_GameInit(void);
-void Tag_PostInitSetup(void);
-void Tag_PlayerDeath(edict_t *targ, edict_t *inflictor, edict_t *attacker);
-void Tag_Score(edict_t *attacker, edict_t *victim, int scoreChange);
-void Tag_PlayerEffects(edict_t *ent);
-void Tag_DogTag(edict_t *ent, edict_t *killer, char **pic);
-void Tag_PlayerDisconnect(edict_t *ent);
-int Tag_ChangeDamage(edict_t *targ, edict_t *attacker, int damage, int mod);
 
 void DBall_GameInit(void);
 void DBall_ClientBegin(edict_t *ent);

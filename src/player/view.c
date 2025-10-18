@@ -1013,12 +1013,9 @@ G_SetClientEffects(edict_t *ent)
 		ent->s.renderfx |= RF_USE_DISGUISE;
 	}
 
-	if (gamerules && gamerules->value)
+	if (DMGame.PlayerEffects)
 	{
-		if (DMGame.PlayerEffects)
-		{
-			DMGame.PlayerEffects(ent);
-		}
+		DMGame.PlayerEffects(ent);
 	}
 
 	if (ent->powerarmor_time > level.time)

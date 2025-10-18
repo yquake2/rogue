@@ -68,7 +68,6 @@ cvar_t *sv_maplist;
 cvar_t *sv_stopspeed;
 
 cvar_t *g_showlogic;
-cvar_t *gamerules;
 cvar_t *huntercam;
 cvar_t *strong_mines;
 cvar_t *randomrespawn;
@@ -344,12 +343,9 @@ CheckDMRules(void)
 		return;
 	}
 
-	if (gamerules && gamerules->value && DMGame.CheckDMRules)
+	if (DMGame.CheckDMRules && DMGame.CheckDMRules())
 	{
-		if (DMGame.CheckDMRules())
-		{
-			return;
-		}
+		return;
 	}
 
 	if (timelimit->value)

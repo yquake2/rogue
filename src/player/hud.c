@@ -269,12 +269,9 @@ DeathmatchScoreboardMessage(edict_t *ent, edict_t *killer /* can be NULL */)
 		}
 
 		/* allow new DM games to override the tag picture */
-		if (gamerules && gamerules->value)
+		if (DMGame.DogTag)
 		{
-			if (DMGame.DogTag)
-			{
-				DMGame.DogTag(cl_ent, killer, &tag);
-			}
+			DMGame.DogTag(cl_ent, killer, &tag);
 		}
 
 		if (tag)

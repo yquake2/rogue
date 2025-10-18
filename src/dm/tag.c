@@ -9,18 +9,21 @@
 
 extern edict_t *SelectFarthestDeathmatchSpawnPoint(void);
 extern void SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles);
+void droptofloor(edict_t *self);
 void SP_dm_tag_token(edict_t *self);
 
-edict_t *tag_token;
-edict_t *tag_owner;
-int tag_count;
+static edict_t *tag_owner;
+static int tag_count;
+
+static gitem_t *it_token;
+static gitem_t *it_quad;
 
 void
 Tag_PlayerDeath(edict_t *targ, edict_t *inflictor /* unused */, edict_t *attacker /* unused */)
 {
-	if (tag_token && targ && (targ == tag_owner))
+	if (targ && (tag_owner == targ))
 	{
-		Tag_DropToken(targ, FindItem("Tag Token"));
+		Tag_DropToken(targ, it_token);
 		tag_owner = NULL;
 		tag_count = 0;
 	}
@@ -62,9 +65,9 @@ Tag_KillItBonus(edict_t *self)
 void
 Tag_PlayerDisconnect(edict_t *self)
 {
-	if (tag_token && self && (self == tag_owner))
+	if (self && (tag_owner == self))
 	{
-		Tag_DropToken(self, FindItem("Tag Token"));
+		Tag_DropToken(self, it_token);
 		tag_owner = NULL;
 		tag_count = 0;
 	}
@@ -73,7 +76,6 @@ Tag_PlayerDisconnect(edict_t *self)
 void
 Tag_Score(edict_t *attacker, edict_t *victim, int scoreChange)
 {
-	gitem_t *quad;
 	int mod;
 
 	if (!attacker || !victim)
@@ -83,7 +85,7 @@ Tag_Score(edict_t *attacker, edict_t *victim, int scoreChange)
 
 	mod = meansOfDeath & ~MOD_FRIENDLY_FIRE;
 
-	if (tag_token && tag_owner)
+	if (tag_owner)
 	{
 		/* owner killed somone else */
 		if ((scoreChange > 0) && (tag_owner == attacker))
@@ -93,10 +95,13 @@ Tag_Score(edict_t *attacker, edict_t *victim, int scoreChange)
 
 			if (tag_count == 5)
 			{
-				quad = FindItem("Quad Damage");
-				attacker->client->pers.inventory[ITEM_INDEX(quad)]++;
-				quad->use(attacker, quad);
 				tag_count = 0;
+
+				if (it_quad)
+				{
+					attacker->client->pers.inventory[ITEM_INDEX(it_quad)]++;
+					it_quad->use(attacker, it_quad);
+				}
 			}
 		}
 		/* owner got killed. 5 points and switch owners */
@@ -108,7 +113,7 @@ Tag_Score(edict_t *attacker, edict_t *victim, int scoreChange)
 				(mod == MOD_DOPPLE_VENGEANCE) || (mod == MOD_DOPPLE_HUNTER) ||
 				(attacker->health <= 0))
 			{
-				Tag_DropToken(tag_owner, FindItem("Tag Token"));
+				Tag_DropToken(tag_owner, it_token);
 				tag_owner = NULL;
 				tag_count = 0;
 			}
@@ -127,28 +132,19 @@ Tag_Score(edict_t *attacker, edict_t *victim, int scoreChange)
 qboolean
 Tag_PickupToken(edict_t *ent, edict_t *other)
 {
-	if (gamerules && (gamerules->value != 2))
+	if (!ent)
 	{
 		return false;
 	}
-
-	if (!ent || !other)
-	{
-		return false;
-	}
-
-	/* sanity checking is good. */
-	if (tag_token != ent)
-	{
-		tag_token = ent;
-	}
-
-	other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
 
 	tag_owner = other;
 	tag_count = 0;
 
-	Tag_KillItBonus(other);
+	if (other)
+	{
+		other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
+		Tag_KillItBonus(other);
+	}
 
 	return true;
 }
@@ -165,7 +161,7 @@ Tag_Respawn(edict_t *ent)
 
 	spot = SelectFarthestDeathmatchSpawnPoint();
 
-	if (spot == NULL)
+	if (!spot)
 	{
 		ent->nextthink = level.time + 1;
 		return;
@@ -185,25 +181,20 @@ Tag_MakeTouchable(edict_t *ent)
 
 	ent->touch = Touch_Item;
 
-	tag_token->think = Tag_Respawn;
+	ent->think = Tag_Respawn;
 
 	/* check here to see if it's in lava or slime. if so, do a respawn sooner */
-	if (gi.pointcontents(ent->s.origin) & (CONTENTS_LAVA | CONTENTS_SLIME))
-	{
-		tag_token->nextthink = level.time + 3;
-	}
-	else
-	{
-		tag_token->nextthink = level.time + 30;
-	}
+	ent->nextthink = level.time + ((gi.pointcontents(ent->s.origin) & (CONTENTS_LAVA | CONTENTS_SLIME)) ?
+		3 : 30);
 }
 
 void
 Tag_DropToken(edict_t *ent, gitem_t *item)
 {
+	edict_t *tag_token;
 	trace_t trace;
 	vec3_t forward, right;
-	vec3_t offset;
+	static vec3_t offset = {24, 0, -16};
 
 	if (!ent || !item)
 	{
@@ -229,9 +220,11 @@ Tag_DropToken(edict_t *ent, gitem_t *item)
 	tag_token->touch = NULL;
 	tag_token->owner = ent;
 
-	AngleVectors(ent->client->v_angle, forward, right, NULL);
-	VectorSet(offset, 24, 0, -16);
+	AngleVectors(ent->client ? ent->client->v_angle : ent->s.angles,
+		forward, right, NULL);
+
 	G_ProjectSource(ent->s.origin, offset, forward, right, tag_token->s.origin);
+
 	trace = gi.trace(ent->s.origin, tag_token->mins, tag_token->maxs, tag_token->s.origin, ent, CONTENTS_SOLID);
 	VectorCopy(trace.endpos, tag_token->s.origin);
 
@@ -243,8 +236,11 @@ Tag_DropToken(edict_t *ent, gitem_t *item)
 
 	gi.linkentity(tag_token);
 
-	ent->client->pers.inventory[ITEM_INDEX(item)]--;
-	ValidateSelectedItem(ent);
+	if (ent->client)
+	{
+		ent->client->pers.inventory[ITEM_INDEX(item)]--;
+		ValidateSelectedItem(ent);
+	}
 }
 
 void
@@ -294,30 +290,37 @@ Tag_ChangeDamage(edict_t *targ, edict_t *attacker, int damage, int mod)
 void
 Tag_GameInit(void)
 {
-	tag_token = NULL;
-	tag_owner = NULL;
-	tag_count = 0;
+	it_token = FindItem("Tag Token");
+	it_quad = FindItem("Quad Damage");
+}
+
+static void
+Tag_SpawnToken(void)
+{
+	edict_t *e;
+	vec3_t angles, origin;
+
+	e = G_Spawn();
+	e->classname = "dm_tag_token";
+
+	SelectSpawnPoint(e, origin, angles);
+	VectorCopy(origin, e->s.origin);
+	VectorCopy(origin, e->s.old_origin);
+	VectorCopy(angles, e->s.angles);
+
+	SP_dm_tag_token(e);
 }
 
 void
 Tag_PostInitSetup(void)
 {
-	edict_t *e;
-	vec3_t origin, angles;
+	tag_owner = NULL;
+	tag_count = 0;
 
 	/* automatic spawning of tag token if one is not present on map. */
-	e = G_Find(NULL, FOFS(classname), "dm_tag_token");
-
-	if (e == NULL)
+	if (!G_Find(NULL, FOFS(classname), "dm_tag_token"))
 	{
-		e = G_Spawn();
-		e->classname = "dm_tag_token";
-
-		SelectSpawnPoint(e, origin, angles);
-		VectorCopy(origin, e->s.origin);
-		VectorCopy(origin, e->s.old_origin);
-		VectorCopy(angles, e->s.angles);
-		SP_dm_tag_token(e);
+		Tag_SpawnToken();
 	}
 }
 
@@ -333,24 +336,29 @@ SP_dm_tag_token(edict_t *self)
 		return;
 	}
 
-	if (!(deathmatch->value))
+	if (!deathmatch->value || DMGame.Type != RDM_TAG)
 	{
 		G_FreeEdict(self);
 		return;
 	}
 
-	if (gamerules && (gamerules->value != 2))
-	{
-		G_FreeEdict(self);
-		return;
-	}
-
-	/* store the tag token edict pointer for later use. */
-	tag_token = self;
-	tag_count = 0;
-
-	self->classname = "dm_tag_token";
-	self->model = "models/items/tagtoken/tris.md2";
-	self->count = 1;
-	SpawnItem(self, FindItem("Tag Token"));
+	SpawnItem(self, it_token);
 }
+
+const dm_game_rt dm_game_tag =
+{
+	.Type = RDM_TAG,
+
+	.GameInit = Tag_GameInit,
+	.PostInitSetup = Tag_PostInitSetup,
+	.ClientBegin = NULL,
+	.SelectSpawnPoint = NULL,
+	.PlayerDeath = Tag_PlayerDeath,
+	.Score = Tag_Score,
+	.PlayerEffects = Tag_PlayerEffects,
+	.DogTag = Tag_DogTag,
+	.PlayerDisconnect = Tag_PlayerDisconnect,
+	.ChangeDamage = Tag_ChangeDamage,
+	.ChangeKnockback = NULL,
+	.CheckDMRules = NULL
+};

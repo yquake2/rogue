@@ -385,6 +385,12 @@ ED_CallSpawn(edict_t *ent)
 
 		if (!strcmp(item->classname, ent->classname))
 		{
+			/* skip SpawnItem and look for a spawn function instead */
+			if (item->flags & IT_SPAWNFUNC)
+			{
+				break;
+			}
+
 		 	/* found it */
 			SpawnItem(ent, item);
 			return;
@@ -918,12 +924,9 @@ SpawnEntities(const char *mapname, char *entities, const char *spawnpoint)
 		InitHintPaths();
 	}
 
-	if (deathmatch->value && gamerules && gamerules->value)
+	if (DMGame.PostInitSetup)
 	{
-		if (DMGame.PostInitSetup)
-		{
-			DMGame.PostInitSetup();
-		}
+		DMGame.PostInitSetup();
 	}
 }
 
