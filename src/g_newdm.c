@@ -21,39 +21,47 @@ extern edict_t *Sphere_Spawn(edict_t *owner, int spawnflags);
 extern void ED_CallSpawn(edict_t *ent);
 void fire_doppleganger(edict_t *ent, vec3_t start, vec3_t aimdir);
 
+extern const dm_game_rt dm_game_tag;
+
+static const dm_game_rt *
+GetDMGame(const char *name, int num)
+{
+	if ((num == RDM_TAG) ||
+		(name && Q_stricmp(name, "tag") == 0))
+	{
+		return &dm_game_tag;
+	}
+
+	return NULL;
+}
+
 void
 InitGameRules(void)
 {
-	int gameNum;
+	const dm_game_rt *choice;
+	cvar_t *gamerules;
 
-	/* clear out the game rule structure before we start */
-	memset(&DMGame, 0, sizeof(dm_game_rt));
+	memset(&DMGame, 0, sizeof(DMGame));
 
-	if (gamerules && gamerules->value)
+	gamerules = gi.cvar("gamerules", "0", CVAR_LATCH);
+
+	if (!deathmatch->value)
 	{
-		gameNum = gamerules->value;
-
-		switch (gameNum)
-		{
-			case RDM_TAG:
-				DMGame.GameInit = Tag_GameInit;
-				DMGame.PostInitSetup = Tag_PostInitSetup;
-				DMGame.PlayerDeath = Tag_PlayerDeath;
-				DMGame.Score = Tag_Score;
-				DMGame.PlayerEffects = Tag_PlayerEffects;
-				DMGame.DogTag = Tag_DogTag;
-				DMGame.PlayerDisconnect = Tag_PlayerDisconnect;
-				DMGame.ChangeDamage = Tag_ChangeDamage;
-				break;
-
-			/* reset gamerules if it's not a valid number */
-			default:
-				gamerules->value = 0;
-				break;
-		}
+		gi.cvar_forceset("gamerules", "0");
+		return;
 	}
 
-	/* if we're set up to play, initialize the game as needed. */
+	choice = (gamerules) ?
+		GetDMGame(gamerules->string, gamerules->value) : NULL;
+
+	if (!choice)
+	{
+		gi.cvar_forceset("gamerules", "0");
+		return;
+	}
+
+	DMGame = *choice;
+
 	if (DMGame.GameInit)
 	{
 		DMGame.GameInit();

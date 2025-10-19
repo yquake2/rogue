@@ -692,17 +692,14 @@ T_Damage(edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	meansOfDeath = mod;
 
 	/* allow the deathmatch game to change values */
-	if (deathmatch->value && gamerules && gamerules->value)
+	if (DMGame.ChangeKnockback)
 	{
-		if (DMGame.ChangeDamage)
-		{
-			damage = DMGame.ChangeDamage(targ, attacker, damage, mod);
-		}
+		knockback = DMGame.ChangeKnockback(targ, attacker, knockback, mod);
+	}
 
-		if (DMGame.ChangeKnockback)
-		{
-			knockback = DMGame.ChangeKnockback(targ, attacker, knockback, mod);
-		}
+	if (DMGame.ChangeDamage)
+	{
+		damage = DMGame.ChangeDamage(targ, attacker, damage, mod);
 
 		if (!damage)
 		{

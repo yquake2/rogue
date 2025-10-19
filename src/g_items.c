@@ -3191,7 +3191,7 @@ gitem_t itemlist[] = {
 	},
 
 	{
-		NULL,
+		"dm_tag_token",
 		Tag_PickupToken,
 		NULL,
 		NULL,
@@ -3205,7 +3205,7 @@ gitem_t itemlist[] = {
 		0,
 		0,
 		NULL,
-		IT_POWERUP | IT_NOT_GIVEABLE,
+		IT_POWERUP | IT_NOT_GIVEABLE | IT_SPAWNFUNC,
 		0,
 		NULL,
 		1,

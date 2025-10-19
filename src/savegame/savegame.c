@@ -238,7 +238,6 @@ InitGame(void)
 	sv_maxvelocity = gi.cvar ("sv_maxvelocity", "2000", 0);
 	sv_gravity = gi.cvar ("sv_gravity", "800", 0);
 	sv_stopspeed = gi.cvar ("sv_stopspeed", "100", 0);
-	g_showlogic = gi.cvar ("g_showlogic", "0", 0);
 	huntercam = gi.cvar ("huntercam", "1", CVAR_SERVERINFO|CVAR_LATCH);
 	strong_mines = gi.cvar ("strong_mines", "0", 0);
 	randomrespawn = gi.cvar ("randomrespawn", "0", 0);
@@ -259,7 +258,6 @@ InitGame(void)
 	coop_pickup_weapons = gi.cvar("coop_pickup_weapons", "0", CVAR_ARCHIVE);
 	skill = gi.cvar ("skill", "1", CVAR_LATCH);
 	maxentities = gi.cvar ("maxentities", "1024", CVAR_LATCH);
-	gamerules = gi.cvar ("gamerules", "0", CVAR_LATCH);			//PGM
 	g_footsteps = gi.cvar ("g_footsteps", "1", CVAR_LATCH);
 	g_monsterfootsteps = gi.cvar("g_monsterfootsteps", "0", CVAR_ARCHIVE);
 	g_fix_triggered = gi.cvar ("g_fix_triggered", "0", 0);
@@ -304,10 +302,7 @@ InitGame(void)
 	/* initialize entities and clients arrays */
 	InitAllocations();
 
-	if (gamerules)
-	{
-		InitGameRules();
-	}
+	InitGameRules();
 }
 
 /* ========================================================= */

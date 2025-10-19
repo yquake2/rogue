@@ -636,12 +636,6 @@ SP_dm_dball_ball(edict_t *self)
 		return;
 	}
 
-	if (gamerules && (gamerules->value != RDM_DEATHBALL))
-	{
-		G_FreeEdict(self);
-		return;
-	}
-
 	dball_ball_entity = self;
 
 	self->s.modelindex = gi.modelindex("models/objects/dball/tris.md2");
@@ -680,11 +674,6 @@ SP_dm_dball_team1_start(edict_t *self)
 		return;
 	}
 
-	if (gamerules && (gamerules->value != RDM_DEATHBALL))
-	{
-		G_FreeEdict(self);
-		return;
-	}
 }
 
 /*
@@ -700,12 +689,6 @@ SP_dm_dball_team2_start(edict_t *self)
 	}
 
 	if (!deathmatch->value)
-	{
-		G_FreeEdict(self);
-		return;
-	}
-
-	if (gamerules && (gamerules->value != RDM_DEATHBALL))
 	{
 		G_FreeEdict(self);
 		return;
@@ -729,12 +712,6 @@ SP_dm_dball_ball_start(edict_t *self)
 		G_FreeEdict(self);
 		return;
 	}
-
-	if (gamerules && (gamerules->value != RDM_DEATHBALL))
-	{
-		G_FreeEdict(self);
-		return;
-	}
 }
 
 /*
@@ -754,12 +731,6 @@ SP_dm_dball_speed_change(edict_t *self)
 	}
 
 	if (!deathmatch->value)
-	{
-		G_FreeEdict(self);
-		return;
-	}
-
-	if (gamerules && (gamerules->value != RDM_DEATHBALL))
 	{
 		G_FreeEdict(self);
 		return;
@@ -809,13 +780,7 @@ SP_dm_dball_goal(edict_t *self)
 		return;
 	}
 
-	if (!(deathmatch->value))
-	{
-		G_FreeEdict(self);
-		return;
-	}
-
-	if (gamerules && (gamerules->value != RDM_DEATHBALL))
+	if (!deathmatch->value)
 	{
 		G_FreeEdict(self);
 		return;
