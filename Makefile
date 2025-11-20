@@ -34,6 +34,9 @@
 #   If set, adds a BUILD_DATE define to CFLAGS.
 # VERBOSE
 #   Prints full compile, linker and misc commands.
+# WERR
+#   Treat compiler warnings as errors.
+#   If defined, -Werror is added to compiler flags.
 # ----------
 
 # User configurable options
@@ -121,6 +124,11 @@ ifdef DEBUG
 CFLAGS ?= -O0 -g -Wall -pipe
 else
 CFLAGS ?= -O2 -Wall -pipe -fomit-frame-pointer
+endif
+
+# Optionally treat warnings as errors
+ifdef WERR
+override CFLAGS += -Werror
 endif
 
 # Always needed are:
