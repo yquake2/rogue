@@ -17,6 +17,17 @@
 # - Windows                                             #
 # ----------------------------------------------------- #
 
+# This is an optional configuration file, it'll be used in
+# case of presence.
+CONFIG_FILE:=config.mk
+
+# ----------
+
+# In case of a configuration file being present, we'll just use it
+ifeq ($(wildcard $(CONFIG_FILE)), $(CONFIG_FILE))
+include $(CONFIG_FILE)
+endif
+
 # Detect the OS
 ifdef SystemRoot
 YQ2_OSTYPE ?= Windows
