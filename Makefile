@@ -26,6 +26,8 @@
 #   Available values:
 #   x86_64-w64-mingw32 -> indicates x86_64
 #   i686-w64-mingw32   -> indicates i386
+# QUIET
+#   If defined, "===> CC ..." lines are silenced.
 # SOURCE_DATE_EPOCH
 #   For reproduceable builds, look here for details:
 #   https://reproducible-builds.org/specs/source-date-epoch/
@@ -47,6 +49,13 @@ CONFIG_FILE:=config.mk
 # In case of a configuration file being present, we'll just use it
 ifeq ($(wildcard $(CONFIG_FILE)), $(CONFIG_FILE))
 include $(CONFIG_FILE)
+endif
+
+# Normalize QUIET value to either "x" or ""
+ifdef QUIET
+	override QUIET := "x"
+else
+	override QUIET := ""
 endif
 
 # Detect the OS
@@ -244,7 +253,9 @@ release/game.so : CFLAGS += -fPIC
 endif
 
 build/%.o: %.c
-	@echo "===> CC $<"
+	@if [ -z $(QUIET) ]; then\
+		echo "===> CC $<";\
+	fi
 	${Q}mkdir -p $(@D)
 	${Q}$(CC) -c $(CFLAGS) -o $@ $<
 
