@@ -840,7 +840,7 @@ Swap_Init(void)
 	byte swaptest[2] = {1, 0};
 
 	/* set the byte swapping variables in a portable manner */
-	/* PVS NOTE: maybe use memcpy instead? */
+	/* PVS NOTE: maybe use memcpy here? */
 	if (*(short *)swaptest == 1)
 	{
 		bigendien = false;
