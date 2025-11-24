@@ -26,26 +26,131 @@ typedef unsigned char byte;
  #define NULL ((void *)0)
 #endif
 
+// stuff to align variables/arrays and for noreturn
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L // C11 or newer
+	#define YQ2_ALIGNAS_SIZE(SIZE)  _Alignas(SIZE)
+	#define YQ2_ALIGNAS_TYPE(TYPE)  _Alignas(TYPE)
+	// must be used as prefix (YQ2_ATTR_NORETURN void bla();)!
+	#define YQ2_ATTR_NORETURN       _Noreturn
+	#define YQ2_STATIC_ASSERT(C, M) _Static_assert((C), M)
+  #if defined(__GNUC__)
+	#define YQ2_ATTR_MALLOC         __attribute__ ((__malloc__))
+	#define YQ2_ATTR_INLINE         __attribute__((always_inline)) inline
+	#define YQ2_ATTR_RETURNS_NONNULL __attribute__ ((returns_nonnull))
+  #elif defined(_MSC_VER)
+	#define YQ2_ATTR_MALLOC         __declspec(restrict)
+	#define YQ2_ATTR_INLINE         __forceinline
+	#define YQ2_ATTR_RETURNS_NONNULL
+  #else
+	// no equivalent per see
+	#define YQ2_ATTR_MALLOC
+	#define YQ2_ATTR_INLINE         inline
+	#define YQ2_ATTR_RETURNS_NONNULL
+  #endif
+#elif defined(__GNUC__) // GCC and clang should support this attribute
+	#define YQ2_ALIGNAS_SIZE(SIZE)  __attribute__(( __aligned__(SIZE) ))
+	#define YQ2_ALIGNAS_TYPE(TYPE)  __attribute__(( __aligned__(__alignof__(TYPE)) ))
+	// must be used as prefix (YQ2_ATTR_NORETURN void bla();)!
+	#define YQ2_ATTR_NORETURN       __attribute__ ((noreturn))
+	#define YQ2_ATTR_RETURNS_NONNULL __attribute__ ((returns_nonnull))
+	#define YQ2_ATTR_MALLOC         __attribute__ ((__malloc__))
+	#define YQ2_ATTR_INLINE         __attribute__((always_inline)) inline
+	// GCC supports this extension since 4.6
+	#define YQ2_STATIC_ASSERT(C, M) _Static_assert((C), M)
+#elif defined(_MSC_VER)
+	// Note: We prefer VS2019 16.8 or newer in C11 mode (/std:c11),
+	//       then the __STDC_VERSION__ >= 201112L case above is used
+
+	#define YQ2_ALIGNAS_SIZE(SIZE)  __declspec(align(SIZE))
+	// FIXME: for some reason, the following line doesn't work
+	//#define YQ2_ALIGNAS_TYPE( TYPE )  __declspec(align(__alignof(TYPE)))
+
+  #ifdef _WIN64 // (hopefully) good enough workaround
+	#define YQ2_ALIGNAS_TYPE(TYPE)  __declspec(align(8))
+  #else // 32bit
+	#define YQ2_ALIGNAS_TYPE(TYPE)  __declspec(align(4))
+  #endif // _WIN64
+
+	// must be used as prefix (YQ2_ATTR_NORETURN void bla();)!
+	#define YQ2_ATTR_NORETURN       __declspec(noreturn)
+	#define YQ2_ATTR_RETURNS_NONNULL
+	#define YQ2_ATTR_MALLOC         __declspec(restrict)
+	#define YQ2_ATTR_INLINE         __forceinline
+	#define YQ2_STATIC_ASSERT(C, M) assert((C) && M)
+#else
+	#warning "Please add a case for your compiler here to align correctly"
+	#define YQ2_ALIGNAS_SIZE(SIZE)
+	#define YQ2_ALIGNAS_TYPE(TYPE)
+	#define YQ2_ATTR_NORETURN
+	#define YQ2_ATTR_RETURNS_NONNULL
+	#define YQ2_ATTR_MALLOC
+	#define YQ2_ATTR_INLINE         inline
+	#define YQ2_STATIC_ASSERT(C, M) assert((C) && M)
+#endif
+
+#if defined(__GNUC__)
+	/* ISO C11 _Noreturn can't be attached to function pointers, so
+	 * use the gcc/clang-specific version for function pointers, even
+	 * in C11 mode. MSVC __declspec(noreturn) seems to have the same
+	 * restriction as _Noreturn so can't be used here either. */
+	#define YQ2_ATTR_NORETURN_FUNCPTR  __attribute__ ((noreturn))
+#else
+	#define YQ2_ATTR_NORETURN_FUNCPTR  /* nothing */
+#endif
+
 /* angle indexes */
 #define PITCH 0                     /* up / down */
 #define YAW 1                       /* left / right */
 #define ROLL 2                      /* fall over */
 
-#define MAX_STRING_CHARS 1024       /* max length of a string passed to Cmd_TokenizeString */
+#define Q_min(a, b) (((a) < (b)) ? (a) : (b))
+#define Q_max(a, b) (((a) > (b)) ? (a) : (b))
+#define Q_clamp(x, l, u) ((l) > (x) ? (l) : (x) > (u) ? (u) : (x))
+#define Q_signf(x) ((x) < 0.0f ? -1.0f : 1.0f)
+
+#define MAX_STRING_CHARS 2048       /* max length of a string passed to Cmd_TokenizeString */
 #define MAX_STRING_TOKENS 80        /* max tokens resulting from Cmd_TokenizeString */
-#define MAX_TOKEN_CHARS 128         /* max length of an individual token */
+#define MAX_TOKEN_CHARS 1024        /* max length of an individual token */
 
 #define MAX_QPATH 64                /* max length of a quake game pathname */
 
+/*
+ * DG: For some stupid reason, SV_WriteServerFile() and SV_ReadeServerFile() used
+ * MAX_OSPATH as buffer length for CVAR_LATCH CVARS and saved the whole buffer
+ * into $game/save/current/server.ssv, so changing MAX_OSPATH breaks savegames...
+ * Unfortunately, for some other fucking reason MAX_OSPATH was 128 for non-Windows
+ * which is just horrible.. so I introduced LATCH_CVAR_SAVELENGTH with the stupid
+ * values so I could bump MAX_OSPATH.
+ * TODO: whenever you break savegame compatibility next, make
+ *       LATCH_CVAR_SAVELENGTH system-independent (or remove it and hardcode a
+ *       sensible value in the two functions)
+ */
+
 #ifdef _WIN32
-#define MAX_OSPATH 256             /* max length of a filesystem pathname (same as MAX_PATH) */
-#else
-#define MAX_OSPATH 128              /* max length of a filesystem pathname */
+ #define MAX_OSPATH 256             /* max length of a filesystem pathname (same as MAX_PATH) */
+ #define LATCH_CVAR_SAVELENGTH 256
+
+ // by default dlls don't export any functions, use this to
+ // make a function visible (for GetGameAPI(), GetRefAPI() and similar)
+ #define Q2_DLL_EXPORTED  __declspec(dllexport)
+
+#else // not Win32 (Linux, BSD, Mac, ..)
+
+ #define MAX_OSPATH 4096            /* max length of a filesystem pathname */
+ #define LATCH_CVAR_SAVELENGTH 128
+
+ // by default our .so/.dylibs don't export any functions, use this to
+ // make a function visible (for GetGameAPI(), GetRefAPI() and similar)
+ #define Q2_DLL_EXPORTED  __attribute__((__visibility__("default")))
 #endif
 
-/* */
+#ifdef _MSC_VER
+ #define PRINTF_ATTR(FMT, VARGS)
+#else // at least GCC/mingw and clang support this
+ #define PRINTF_ATTR(FMT, VARGS) __attribute__((format(printf, FMT , VARGS )))
+#endif
+
 /* per-level limits */
-/* */
 #define MAX_CLIENTS 256             /* absolute limit */
 #define MAX_EDICTS 1024             /* must change protocol to increase more */
 #define MAX_LIGHTSTYLES 256
@@ -91,6 +196,7 @@ typedef enum
 typedef float vec_t;
 typedef vec_t vec3_t[3];
 typedef vec_t vec5_t[5];
+typedef float quat_t[4]; // x, y, z, w
 
 typedef int fixed4_t;
 typedef int fixed8_t;
@@ -108,13 +214,16 @@ extern vec3_t vec3_origin;
 
 #define IS_NAN(x) (((*(int *)&x) & nanmask) == nanmask)
 
+// FIXME: use int instead of long, it's only used with int anyway?
 #define Q_ftol(f) (long)(f)
 
 #define DotProduct(x, y) (x[0] * y[0] + x[1] * y[1] + x[2] * y[2])
-#define VectorSubtract(a, b, c) (c[0] = a[0] - b[0], c[1] = a[1] - b[1], c[2] =	\
-									 a[2] - b[2])
-#define VectorAdd(a, b, c) (c[0] = a[0] + b[0], c[1] = a[1] + b[1], c[2] = \
-								a[2] + b[2])
+#define VectorSubtract(a, b, c)	\
+	(c[0] = a[0] - b[0], c[1] = a[1] - b[1], c[2] =	\
+	 a[2] - b[2])
+#define VectorAdd(a, b, c) \
+	(c[0] = a[0] + b[0], c[1] = a[1] + b[1], c[2] =	\
+	 a[2] + b[2])
 #define VectorCopy(a, b) (b[0] = a[0], b[1] = a[1], b[2] = a[2])
 #define VectorClear(a) (a[0] = a[1] = a[2] = 0)
 #define VectorNegate(a, b) (b[0] = -a[0], b[1] = -a[1], b[2] = -a[2])
@@ -129,22 +238,33 @@ void _VectorAdd(vec3_t veca, vec3_t vecb, vec3_t out);
 void _VectorCopy(vec3_t in, vec3_t out);
 
 void ClearBounds(vec3_t mins, vec3_t maxs);
-void AddPointToBounds(vec3_t v, vec3_t mins, vec3_t maxs);
-int VectorCompare(vec3_t v1, vec3_t v2);
-vec_t VectorLength(vec3_t v);
-void CrossProduct(vec3_t v1, vec3_t v2, vec3_t cross);
+void AddPointToBounds(const vec3_t v, vec3_t mins, vec3_t maxs);
+void ClosestPointOnBounds(const vec3_t p, const vec3_t amin, const vec3_t amax, vec3_t out);
+qboolean IsZeroVector(vec3_t v);
+int VectorCompare(const vec3_t v1, const vec3_t v2);
+vec_t VectorLengthSquared(vec3_t v);
+vec_t VectorLength(const vec3_t v);
+void CrossProduct(const vec3_t v1, const vec3_t v2, vec3_t cross);
 vec_t VectorNormalize(vec3_t v); /* returns vector length */
-vec_t VectorNormalize2(vec3_t v, vec3_t out);
+vec_t VectorNormalize2(const vec3_t v, vec3_t out);
 void VectorInverse(vec3_t v);
-void VectorScale(vec3_t in, vec_t scale, vec3_t out);
+void VectorInverse2(const vec3_t v, vec3_t out);
+void VectorScale(const vec3_t in, const vec_t scale, vec3_t out);
+void VectorLerp(const vec3_t v1, const vec3_t v2, const vec_t factor, vec3_t out);
+void VectorToQuat(const vec3_t v, quat_t out);
+void QuatInverse(const quat_t q, quat_t out);
+void QuatMultiply(const quat_t q1, const quat_t q2, quat_t out);
+void QuatAngleAxis(const vec3_t v, float angle, quat_t out);
+void RotateVectorByUnitQuat(vec3_t v, quat_t q_unit);
+float Q_magnitude(float x, float y);
 int Q_log2(int val);
 
-void R_ConcatRotations(float in1[3][3], float in2[3][3], float out[3][3]);
-void R_ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4]);
+void R_ConcatRotations(const float in1[3][3], const float in2[3][3], float out[3][3]);
+void R_ConcatTransforms(const float in1[3][4], const float in2[3][4], float out[3][4]);
 
-void AngleVectors(vec3_t angles, vec3_t forward, vec3_t right, vec3_t up);
-void AngleVectors2(vec3_t value1, vec3_t angles);
-int BoxOnPlaneSide(vec3_t emins, vec3_t emaxs, struct cplane_s *plane);
+void AngleVectors(const vec3_t angles, vec3_t forward, vec3_t right, vec3_t up);
+void AngleVectors2(const vec3_t value1, vec3_t angles);
+int BoxOnPlaneSide(const vec3_t emins, const vec3_t emaxs, const struct cplane_s *plane);
 float anglemod(float a);
 float LerpAngle(float a1, float a2, float frac);
 
@@ -166,13 +286,16 @@ float LerpAngle(float a1, float a2, float frac);
 
 void ProjectPointOnPlane(vec3_t dst, const vec3_t p, const vec3_t normal);
 void PerpendicularVector(vec3_t dst, const vec3_t src);
-void RotatePointAroundVector(vec3_t dst, const vec3_t dir,
-		const vec3_t point, float degrees);
+void RotatePointAroundVector(vec3_t dst,
+		const vec3_t dir,
+		const vec3_t point,
+		float degrees);
 
 /* ============================================= */
 
 char *COM_SkipPath(char *pathname);
 void COM_StripExtension(char *in, char *out);
+YQ2_ATTR_RETURNS_NONNULL const char *COM_FileExtension(const char *in);
 void COM_FileBase(char *in, char *out);
 void COM_FilePath(const char *in, char *out);
 void COM_DefaultExtension(char *path, const char *extension);
@@ -184,14 +307,58 @@ void Com_sprintf(char *dest, int size, char *fmt, ...);
 
 void Com_PageInMemory(byte *buffer, int size);
 
-char *strlwr ( char *s );
-
 /* ============================================= */
 
 /* portable case insensitive compare */
 int Q_stricmp(const char *s1, const char *s2);
-int Q_strcasecmp(char *s1, char *s2);
-int Q_strncasecmp(char *s1, char *s2, int n);
+int Q_strcasecmp(const char *s1, const char *s2);
+int Q_strncasecmp(const char *s1, const char *s2, int n);
+char *Q_strcasestr(const char *s1, const char *s2);
+
+/* portable string lowercase */
+char *Q_strlwr(char *s);
+
+/* portable safe string copy/concatenate */
+int Q_strlcpy(char *dst, const char *src, int size);
+int Q_strlcat(char *dst, const char *src, int size);
+
+/* Copies only ASCII chars > 31 && < 127 from s to d, up to n - 1
+ * Returns space needed to fully copy s to d (minus null char)
+ * Does not modify d at all if n is 0
+ * Example: needed = Q_strlcpy_ascii(d, "b\robby", 3)
+ *          needed is 5 and d contains "bo\0"
+ */
+size_t Q_strlcpy_ascii(char *d, const char *s, size_t n);
+
+/* Delete n characters from s starting at index i */
+void Q_strdel(char *s, size_t i, size_t n);
+
+/* Insert src into dest starting at index i, total, n is the total size of the buffer */
+/* Returns length of src on success, 0 if there is not enough space in dest for src */
+size_t Q_strins(char *dest, const char *src, size_t i, size_t n);
+qboolean Q_strisnum(const char *s);
+
+/* A strchr that can search for multiple characters
+ * chrs is a string of characters to search for
+ * If found, returns a pointer to that char inside s, NULL otherwise
+ */
+char *Q_strchrs(const char *s, const char *chrs);
+
+/* Returns a pointer to c in s if found
+ * Otherwise returns a pointer to the null-terminator at the end of s
+ */
+char *Q_strchr0(const char *s, char c);
+
+/* ============================================= */
+
+/* Unicode wrappers that also make sure it's a regular file around fopen(). */
+FILE *Q_fopen(const char *file, const char *mode);
+
+/* Comparator function for qsort(), compares case-insensitive strings. */
+int Q_sort_stricmp(const void *s1, const void *s2);
+
+/* Comparator function for qsort(), compares strings. */
+int Q_sort_strcomp(const void *s1, const void *s2);
 
 /* ============================================= */
 
@@ -203,24 +370,25 @@ float BigFloat(float l);
 float LittleFloat(float l);
 
 void Swap_Init(void);
-char *va(const char *format, ...);
+char *va(const char *format, ...)  PRINTF_ATTR(1, 2);
 
 /* ============================================= */
 
 /* key / value info strings */
 #define MAX_INFO_KEY 64
 #define MAX_INFO_VALUE 64
+#define MAX_INFO_KEYVAL ((MAX_INFO_KEY - 1) + (MAX_INFO_VALUE - 1) + 3) /* 3 for 2 backslashes and null char */
 #define MAX_INFO_STRING 512
 
-char *Info_ValueForKey(char *s, char *key);
-void Info_RemoveKey(char *s, char *key);
-void Info_SetValueForKey(char *s, char *key, char *value);
-qboolean Info_Validate(char *s);
+char *Info_ValueForKey(const char *s, const char *key);
+void Info_RemoveKey(char *s, const char *key);
+void Info_SetValueForKey(char *s, const char *key, const char *value);
+qboolean Info_Validate(const char *s);
 
 /* ============================================= */
 
 /* Random number generator */
-int  randk(void);
+int randk(void);
 float frandk(void);
 float crandk(void);
 void randk_seed(void);
@@ -236,15 +404,13 @@ void randk_seed(void);
 extern int curtime; /* time returned by last Sys_Milliseconds */
 
 int Sys_Milliseconds(void);
-void Sys_Mkdir(char *path);
-char *strlwr(char *s);
-/* portable safe string copy/concatenate */
-int Q_strlcpy(char *dst, const char *src, int size);
-int Q_strlcat(char *dst, const char *src, int size);
+void Sys_Mkdir(const char *path);
+qboolean Sys_IsDir(const char *path);
+qboolean Sys_IsFile(const char *path);
 
 /* large block stack allocation routines */
-void *Hunk_Begin(int maxsize);
-void *Hunk_Alloc(int size);
+YQ2_ATTR_MALLOC void *Hunk_Begin(int maxsize);
+YQ2_ATTR_MALLOC void *Hunk_Alloc(int size);
 void Hunk_Free(void *buf);
 int Hunk_End(void);
 
@@ -256,13 +422,13 @@ int Hunk_End(void);
 #define SFF_SYSTEM 0x10
 
 /* pass in an attribute mask of things you wish to REJECT */
-char *Sys_FindFirst(char *path, unsigned musthave, unsigned canthave);
+char *Sys_FindFirst(const char *path, unsigned musthave, unsigned canthave);
 char *Sys_FindNext(unsigned musthave, unsigned canthave);
 void Sys_FindClose(void);
 
-/* this is only here so the functions in q_shared.c and q_shwin.c can link */
-void Sys_Error(char *error, ...);
-void Com_Printf(char *msg, ...);
+/* this is only here so the functions in shared source files can link */
+YQ2_ATTR_NORETURN void Sys_Error(const char *error, ...);
+void Com_Printf(const char *msg, ...);
 
 /*
  * ==========================================================
@@ -292,6 +458,9 @@ typedef struct cvar_s
 	qboolean modified; /* set each time the cvar is changed */
 	float value;
 	struct cvar_s *next;
+
+	/* Added by YQ2. Must be at the end to preserve ABI. */
+	char *default_string;
 } cvar_t;
 
 #endif /* CVAR */
@@ -350,19 +519,23 @@ typedef struct cvar_s
 /* content masks */
 #define MASK_ALL (-1)
 #define MASK_SOLID (CONTENTS_SOLID | CONTENTS_WINDOW)
-#define MASK_PLAYERSOLID (CONTENTS_SOLID | CONTENTS_PLAYERCLIP | \
-						  CONTENTS_WINDOW | CONTENTS_MONSTER)
+#define MASK_PLAYERSOLID \
+	(CONTENTS_SOLID | CONTENTS_PLAYERCLIP |	\
+	 CONTENTS_WINDOW | CONTENTS_MONSTER)
 #define MASK_DEADSOLID (CONTENTS_SOLID | CONTENTS_PLAYERCLIP | CONTENTS_WINDOW)
-#define MASK_MONSTERSOLID (CONTENTS_SOLID | CONTENTS_MONSTERCLIP | \
-						   CONTENTS_WINDOW | CONTENTS_MONSTER)
+#define MASK_MONSTERSOLID \
+	(CONTENTS_SOLID | CONTENTS_MONSTERCLIP | \
+	 CONTENTS_WINDOW | CONTENTS_MONSTER)
 #define MASK_WATER (CONTENTS_WATER | CONTENTS_LAVA | CONTENTS_SLIME)
 #define MASK_OPAQUE (CONTENTS_SOLID | CONTENTS_SLIME | CONTENTS_LAVA)
-#define MASK_SHOT (CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_WINDOW | \
-				   CONTENTS_DEADMONSTER)
-#define MASK_CURRENT (CONTENTS_CURRENT_0 | CONTENTS_CURRENT_90 | \
-					  CONTENTS_CURRENT_180 | CONTENTS_CURRENT_270 |	\
-					  CONTENTS_CURRENT_UP |	\
-					  CONTENTS_CURRENT_DOWN)
+#define MASK_SHOT \
+	(CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_WINDOW | \
+	 CONTENTS_DEADMONSTER)
+#define MASK_CURRENT \
+	(CONTENTS_CURRENT_0 | CONTENTS_CURRENT_90 |	\
+	 CONTENTS_CURRENT_180 | CONTENTS_CURRENT_270 | \
+	 CONTENTS_CURRENT_UP | \
+	 CONTENTS_CURRENT_DOWN)
 
 /* gi.BoxEdicts() can return a list of either solid or trigger entities */
 #define AREA_SOLID 1
@@ -374,7 +547,7 @@ typedef struct cplane_s
 	vec3_t normal;
 	float dist;
 	byte type; /* for fast side tests */
-	byte signbits; /* signx + (signy<<1) + (signz<<1) */
+	byte signbits; /* signx + (signy<<1) + (signz<<2) */
 	byte pad[2];
 } cplane_t;
 
@@ -398,8 +571,8 @@ typedef struct cmodel_s
 typedef struct csurface_s
 {
 	char name[16];
-	int flags;
-	int value;
+	int flags; /* SURF_* */
+	int value; /* unused */
 } csurface_t;
 
 typedef struct mapsurface_s  /* used internally due to name len probs */
@@ -444,10 +617,10 @@ typedef enum
 #define PMF_NO_PREDICTION 64    /* temporarily disables prediction (used for grappling hook) */
 
 /* this structure needs to be communicated bit-accurate/
-   from the server to the client to guarantee that
-   prediction stays in sync, so no floats are used.
-   if any part of the game code modifies this struct, it
-   will result in a prediction error of some degree. */
+ * from the server to the client to guarantee that
+ * prediction stays in sync, so no floats are used.
+ * if any part of the game code modifies this struct, it
+ * will result in a prediction error of some degree. */
 typedef struct
 {
 	pmtype_t pm_type;
@@ -458,7 +631,7 @@ typedef struct
 	byte pm_time;               /* each unit = 8 ms */
 	short gravity;
 	short delta_angles[3];      /* add to command angles to get view direction
-								   changed by spawns, rotating objects, and teleporters */
+								 * changed by spawns, rotating objects, and teleporters */
 } pmove_state_t;
 
 /* button bits */
@@ -506,10 +679,10 @@ typedef struct
 } pmove_t;
 
 /* entity_state_t->effects
-   Effects are things handled on the client side (lights, particles,
-   frame animations)  that happen constantly on the given entity.
-   An entity that has effects will be sent to the client even if
-   it has a zero index model. */
+ * Effects are things handled on the client side (lights, particles,
+ * frame animations)  that happen constantly on the given entity.
+ * An entity that has effects will be sent to the client even if
+ * it has a zero index model. */
 #define EF_ROTATE 0x00000001                /* rotate (bonus items) */
 #define EF_GIB 0x00000002                   /* leave a trail */
 #define EF_BLASTER 0x00000008               /* redlight + trail */
@@ -830,9 +1003,9 @@ typedef struct
 extern vec3_t monster_flash_offset[];
 
 /* Temp entity events are for things that happen
-   at a location seperate from any existing entity.
-   Temporary entity messages are explicitly constructed
-   and broadcast. */
+ * at a location seperate from any existing entity.
+ * Temporary entity messages are explicitly constructed
+ * and broadcast. */
 typedef enum
 {
 	TE_GUNSHOT,
@@ -902,9 +1075,9 @@ typedef enum
 #define SPLASH_BLOOD 6
 
 /* sound channels:
-   channel 0 never willingly overrides
-   other channels (1-7) allways override
-   a playing sound on that channel */
+ * channel 0 never willingly overrides
+ * other channels (1-7) allways override
+ * a playing sound on that channel */
 #define CHAN_AUTO 0
 #define CHAN_WEAPON 1
 #define CHAN_VOICE 2
@@ -979,8 +1152,8 @@ typedef enum
 #define SHORT2ANGLE(x) ((x) * (360.0 / 65536))
 
 /* config strings are a general means of communication from
-   the server to all connected clients. Each config string
-   can be at most MAX_QPATH characters. */
+ * the server to all connected clients. Each config string
+ * can be at most MAX_QPATH characters. */
 #define CS_NAME 0
 #define CS_CDTRACK 1
 #define CS_SKY 2
@@ -1004,9 +1177,9 @@ typedef enum
 /* ============================================== */
 
 /* entity_state_t->event values
-   entity events are for effects that take place reletive
-   to an existing entities origin.  Very network efficient.
-   All muzzle flashes really should be converted to events... */
+ * entity events are for effects that take place reletive
+ * to an existing entities origin.  Very network efficient.
+ * All muzzle flashes really should be converted to events... */
 typedef enum
 {
 	EV_NONE,
@@ -1020,8 +1193,8 @@ typedef enum
 } entity_event_t;
 
 /* entity_state_t is the information conveyed from the server
-   in an update message about entities that the client will
-   need to render in some way */
+ * in an update message about entities that the client will
+ * need to render in some way */
 typedef struct entity_state_s
 {
 	int number;             /* edict index */
@@ -1047,9 +1220,9 @@ typedef struct entity_state_s
 /* ============================================== */
 
 /* player_state_t is the information needed in addition to pmove_state_t
-   to rendered a view.  There will only be 10 player_state_t sent each second,
-   but the number of pmove_state_t changes will be reletive to client
-   frame rates */
+ * to rendered a view.  There will only be 10 player_state_t sent each second,
+ * but the number of pmove_state_t changes will be reletive to client
+ * frame rates */
 typedef struct
 {
 	pmove_state_t pmove;        /* for prediction */
@@ -1070,12 +1243,6 @@ typedef struct
 
 	short stats[MAX_STATS];     /* fast status bar updates */
 } player_state_t;
-
-#define VIDREF_GL 1
-#define VIDREF_SOFT 2
-#define VIDREF_OTHER 3
-
-extern int vidref_val;
 
 size_t verify_fread(void *, size_t, size_t, FILE *);
 size_t verify_fwrite(void *, size_t, size_t, FILE *);

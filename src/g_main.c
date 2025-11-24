@@ -147,7 +147,7 @@ GetGameAPI(game_import_t *import)
  * q_shared.c and q_shwin.c can link
  */
 void
-Sys_Error(char *error, ...)
+Sys_Error(const char *error, ...)
 {
 	va_list argptr;
 	char text[1024];
@@ -160,7 +160,7 @@ Sys_Error(char *error, ...)
 }
 
 void
-Com_Printf(char *msg, ...)
+Com_Printf(const char *msg, ...)
 {
 	va_list argptr;
 	char text[1024];
