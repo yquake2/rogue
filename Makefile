@@ -132,7 +132,7 @@ override BUILDDIR := $(BUILDROOT)
 # Highest supported optimizations are -O2, higher levels
 # will likely break this crappy code.
 ifdef DEBUG
-CFLAGS ?= -O0 -g -Wall -pipe
+CFLAGS ?= -O0 -g -Wall -pipe -DDEBUG
 else
 CFLAGS ?= -O2 -Wall -pipe -fomit-frame-pointer
 endif
