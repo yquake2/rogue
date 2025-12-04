@@ -19,6 +19,8 @@
 
 # Variables
 # ---------
+# ASAN
+#   Builds with address sanitizer, includes DEBUG.
 # DEBUG
 #   Builds a debug build, forces -O0 and adds debug symbols.
 # MINGW_CHOST
@@ -32,6 +34,8 @@
 #   For reproduceable builds, look here for details:
 #   https://reproducible-builds.org/specs/source-date-epoch/
 #   If set, adds a BUILD_DATE define to CFLAGS.
+# UBSAN
+#   Builds with undefined behavior sanitizer.includes DEBUG.
 # VERBOSE
 #   Prints full compile, linker and misc commands.
 # WERR
@@ -115,6 +119,16 @@ else
 COMPILER := unknown
 endif
 
+# ASAN includes DEBUG
+ifdef ASAN
+DEBUG=1
+endif
+
+# UBSAN includes DEBUG
+ifdef UBSAN
+DEBUG=1
+endif
+
 # ----------
 
 # Set up build and bin output directories
@@ -133,6 +147,12 @@ override BUILDDIR := $(BUILDROOT)
 # will likely break this crappy code.
 ifdef DEBUG
 CFLAGS ?= -O0 -g -Wall -pipe -DDEBUG
+ifdef ASAN
+override CFLAGS += -fsanitize=address -DUSE_SANITIZER
+endif
+ifdef UBSAN
+override CFLAGS += -fsanitize=undefined -DUSE_SANITIZER
+endif
 else
 CFLAGS ?= -O2 -Wall -pipe -fomit-frame-pointer
 endif
@@ -212,6 +232,16 @@ LDFLAGS ?=
 # It's a shared library.
 override LDFLAGS += -shared
 
+# Link address sanitizer if requested.
+ifdef ASAN
+override LDFLAGS += -fsanitize=address
+endif
+
+# Link undefined behavior sanitizer if requested.
+ifdef UBSAN
+override LDFLAGS += -fsanitize=undefined
+endif
+
 # Required libraries
 ifeq ($(YQ2_OSTYPE), Darwin)
 override LDFLAGS += -arch $(YQ2_ARCH)
@@ -221,10 +251,16 @@ else
 override LDFLAGS += -lm
 endif
 
-# OSX and OpenBSD don't support --no-undefined at all.
+# ASAN and UBSAN must not be linked
+# with --no-undefined. OSX and OpenBSD
+# don't support it at all.
+ifndef ASAN
+ifndef UBSAN
 ifneq ($(YQ2_OSTYPE), Darwin)
 ifneq ($(YQ2_OSTYPE), OpenBSD)
 override LDFLAGS += -Wl,--no-undefined
+endif
+endif
 endif
 endif
 
