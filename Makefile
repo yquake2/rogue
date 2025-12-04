@@ -221,6 +221,13 @@ else
 override LDFLAGS += -lm
 endif
 
+# OSX and OpenBSD don't support --no-undefined at all.
+ifneq ($(YQ2_OSTYPE), Darwin)
+ifneq ($(YQ2_OSTYPE), OpenBSD)
+override LDFLAGS += -Wl,--no-undefined
+endif
+endif
+
 # ----------
 
 # Builds everything
