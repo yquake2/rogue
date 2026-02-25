@@ -16,6 +16,9 @@ concurrency:
 jobs:
   build_macos_aarch64:
     runs-on: macos-latest
+    permissions:
+      actions: read
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -27,7 +30,7 @@ jobs:
         brew update
         brew install make
     - name: Check out repository code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Build
       run: |
         # Public runners come with 3 CPUs.
@@ -43,7 +46,7 @@ jobs:
         cp LICENSE publish/quake2-rogue-macos-${{github.sha}}/misc/docs/LICENSE.txt
         cp README.md publish/quake2-rogue-macos-${{github.sha}}/misc/docs/README.txt
     - name: Upload testbuild package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: quake2-rogue-macos-${{github.sha}}
         path: publish/
