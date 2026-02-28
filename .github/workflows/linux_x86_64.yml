@@ -15,15 +15,22 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build_ubuntu_x86_64:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
     strategy:
       fail-fast: false
       matrix:
         include:
           - env: ubuntu
     steps:
+    - name: Install build dependencies
+      run: |
+        sudo apt update
+        sudo apt install build-essential
     - name: Check out repository code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Build
       run: |
         # Public runners come with 4 CPUs.
@@ -39,7 +46,7 @@ jobs:
         cp LICENSE publish/quake2-rogue-linux_x86_64-${{github.sha}}/misc/docs/LICENSE.txt
         cp README.md publish/quake2-rogue-linux_x86_64-${{github.sha}}/misc/docs/README.txt
     - name: Upload testbuild package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: quake2-rogue-linux_x86_64-${{github.sha}}
         path: publish/

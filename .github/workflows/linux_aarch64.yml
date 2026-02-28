@@ -14,16 +14,24 @@ concurrency:
   group: ${{github.workflow}}-${{github.event_name == 'pull_request' && github.head_ref || github.sha}}
   cancel-in-progress: true
 jobs:
-  build_ubuntu_arm:
-    runs-on: ubuntu-22.04-arm
+  build_ubuntu_aarch64:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     strategy:
       fail-fast: false
       matrix:
         include:
           - env: ubuntu
     steps:
+    - name: Install build dependencies
+      run: |
+        sudo apt update
+        sudo apt install build-essential snapd
     - name: Check out repository code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Build
       run: |
         # Public runners come with 4 CPUs.
@@ -39,8 +47,18 @@ jobs:
         cp LICENSE publish/quake2-rogue-linux_aarch64-${{github.sha}}/misc/docs/LICENSE.txt
         cp README.md publish/quake2-rogue-linux_aarch64-${{github.sha}}/misc/docs/README.txt
     - name: Upload testbuild package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: quake2-rogue-linux_aarch64-${{github.sha}}
         path: publish/
         if-no-files-found: error
+    - name: Run Cppcheck
+      run: |
+        sudo snap install cppcheck --edge
+        /snap/bin/cppcheck -j 4 --enable=all --output-format=sarif \
+          --output-file=cppcheck_results.sarif --inconclusive --library=posix \
+          -DYQ2OSTYPE=\"Linux\" src
+    - name: Upload SARIF to GitHub Code Scanning
+      uses: github/codeql-action/upload-sarif@v4
+      with:
+        sarif_file: cppcheck_results.sarif
