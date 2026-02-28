@@ -53,7 +53,7 @@ jobs:
         cp LICENSE publish/quake2-rogue-win32-${{github.sha}}/misc/docs/LICENSE.txt
         cp README.md publish/quake2-rogue-win32-${{github.sha}}/misc/docs/README.txt
     - name: Upload testbuild package
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: quake2-rogue-win32-${{github.sha}}
         path: publish/
