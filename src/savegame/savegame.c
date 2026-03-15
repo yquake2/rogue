@@ -627,7 +627,7 @@ ReadField(FILE *f, field_t *field, byte *base)
 	void *p;
 	int len;
 	int index;
-	char funcStr[2048];
+	char funcStr[128];
 
 	if (field->flags & FFL_SPAWNTEMP)
 	{
@@ -719,7 +719,7 @@ ReadField(FILE *f, field_t *field, byte *base)
 			}
 			else
 			{
-				if (len > sizeof(funcStr))
+				if (len >= sizeof(funcStr))
 				{
 					fclose(f);
 					gi.error("%s: function name is longer than buffer (%i chars)",
@@ -728,8 +728,7 @@ ReadField(FILE *f, field_t *field, byte *base)
 				}
 
 				sg_fread(funcStr, len, f);
-
-				funcStr[sizeof(funcStr) - 1] = 0;
+				funcStr[len] = 0;
 
 				if ( !(*(byte **)p = FindFunctionByName (funcStr)) )
 				{
@@ -749,7 +748,7 @@ ReadField(FILE *f, field_t *field, byte *base)
 			}
 			else
 			{
-				if (len > sizeof(funcStr))
+				if (len >= sizeof(funcStr))
 				{
 					fclose(f);
 					gi.error("%s: mmove name is longer than buffer (%i chars)",
@@ -758,8 +757,7 @@ ReadField(FILE *f, field_t *field, byte *base)
 				}
 
 				sg_fread(funcStr, len, f);
-
-				funcStr[sizeof(funcStr) - 1] = 0;
+				funcStr[len] = 0;
 
 				if ( !(*(mmove_t **)p = FindMmoveByName (funcStr)) )
 				{
