@@ -180,6 +180,28 @@ static field_t clientfields[] = {
 
 /* ========================================================= */
 
+/* TODO: Replace %u with YQ2_COM_PRIdS later */
+
+static void
+sg_fread(void *dest, size_t n, FILE *f)
+{
+	if (fread(dest, n, 1, f) != 1)
+	{
+		fclose(f);
+		gi.error("Error reading %u bytes from save file", (unsigned int)n);
+	}
+}
+
+static void
+sg_fwrite(const void *src, size_t n, FILE *f)
+{
+	if (fwrite(src, n, 1, f) != 1)
+	{
+		fclose(f);
+		gi.error("Error writing %u bytes to save file", (unsigned int)n);
+	}
+}
+
 static void
 InitAllocations(void)
 {
@@ -541,7 +563,7 @@ WriteField2(FILE *f, field_t *field, byte *base)
 			if (*(char **)p)
 			{
 				len = strlen(*(char **)p) + 1;
-				fwrite(*(char **)p, len, 1, f);
+				sg_fwrite(*(char **)p, len, f);
 			}
 
 			break;
@@ -559,7 +581,7 @@ WriteField2(FILE *f, field_t *field, byte *base)
 				}
 
 				len = strlen(func->funcStr)+1;
-				fwrite (func->funcStr, len, 1, f);
+				sg_fwrite(func->funcStr, len, f);
 			}
 
 			break;
@@ -576,7 +598,7 @@ WriteField2(FILE *f, field_t *field, byte *base)
 				}
 
 				len = strlen(mmove->mmoveStr)+1;
-				fwrite (mmove->mmoveStr, len, 1, f);
+				sg_fwrite(mmove->mmoveStr, len, f);
 			}
 
 			break;
@@ -636,11 +658,7 @@ ReadField(FILE *f, field_t *field, byte *base)
 					return;
 				}
 
-				if (fread(s, len, 1, f) != 1)
-				{
-					gi.error("%s: can't read string field", __func__);
-					return;
-				}
+				sg_fread(s, len, f);
 
 				s[len] = 0;
 				*(char **)p = s;
@@ -702,11 +720,7 @@ ReadField(FILE *f, field_t *field, byte *base)
 					return;
 				}
 
-				if (fread (funcStr, len, 1, f) != 1)
-				{
-					gi.error("%s: can't get function name", __func__);
-					return;
-				}
+				sg_fread(funcStr, len, f);
 
 				funcStr[sizeof(funcStr) - 1] = 0;
 
@@ -734,11 +748,7 @@ ReadField(FILE *f, field_t *field, byte *base)
 					return;
 				}
 
-				if (fread(funcStr, len, 1, f) != 1)
-				{
-					gi.error("%s: can't get move name", __func__);
-					return;
-				}
+				sg_fread(funcStr, len, f);
 
 				funcStr[sizeof(funcStr) - 1] = 0;
 
@@ -776,7 +786,7 @@ WriteClient(FILE *f, gclient_t *client)
 	}
 
 	/* write the block */
-	fwrite(&temp, sizeof(temp), 1, f);
+	sg_fwrite(&temp, sizeof(temp), f);
 
 	/* now write any allocated data following the edict */
 	for (field = clientfields; field->name; field++)
@@ -793,12 +803,7 @@ ReadClient(FILE *f, gclient_t *client, short save_ver)
 {
 	field_t *field;
 
-	if (fread(client, sizeof(*client), 1, f) != 1)
-	{
-		fclose(f);
-		gi.error("%s: can't read client", __func__);
-		return;
-	}
+	sg_fread(client, sizeof(*client), f);
 
 	for (field = clientfields; field->name; field++)
 	{
@@ -854,10 +859,10 @@ WriteGame(const char *filename, qboolean autosave)
 	Q_strlcpy(sv.os, YQ2OSTYPE, sizeof(sv.os) - 1);
 	Q_strlcpy(sv.arch, YQ2ARCH, sizeof(sv.arch) - 1);
 
-	fwrite(&sv, sizeof(sv), 1, f);
+	sg_fwrite(&sv, sizeof(sv), f);
 
 	game.autosaved = autosave;
-	fwrite(&game, sizeof(game), 1, f);
+	sg_fwrite(&game, sizeof(game), f);
 	game.autosaved = false;
 
 	for (i = 0; i < game.maxclients; i++)
@@ -893,12 +898,7 @@ ReadGame(const char *filename)
 	}
 
 	/* Sanity checks */
-	if (fread(&sv, sizeof(sv), 1, f) != 1)
-	{
-		fclose(f);
-		gi.error("%s: can't read save file", __func__);
-		return;
-	}
+	sg_fread(&sv, sizeof(sv), f);
 
 	static const struct {
 		const char* verstr;
@@ -993,12 +993,7 @@ ReadGame(const char *filename)
 	/* we should not trust this value from savegames */
 	int num_items = game.num_items;
 
-	if (fread(&game, sizeof(game), 1, f) != 1)
-	{
-		fclose(f);
-		gi.error("%s: can't read game", __func__);
-		return;
-	}
+	sg_fread(&game, sizeof(game), f);
 
 	/* initialize entities and clients arrays */
 	InitAllocations();
@@ -1036,7 +1031,7 @@ WriteEdict(FILE *f, edict_t *ent)
 	}
 
 	/* write the block */
-	fwrite(&temp, sizeof(temp), 1, f);
+	sg_fwrite(&temp, sizeof(temp), f);
 
 	/* now write any allocated data following the edict */
 	for (field = fields; field->name; field++)
@@ -1066,7 +1061,7 @@ WriteLevelLocals(FILE *f)
 	}
 
 	/* write the block */
-	fwrite(&temp, sizeof(temp), 1, f);
+	sg_fwrite(&temp, sizeof(temp), f);
 
 	/* now write any allocated data following the edict */
 	for (field = levelfields; field->name; field++)
@@ -1096,7 +1091,7 @@ WriteLevel(const char *filename)
 
 	/* write out edict size for checking */
 	i = sizeof(edict_t);
-	fwrite(&i, sizeof(i), 1, f);
+	sg_fwrite(&i, sizeof(i), f);
 
 	/* write out level_locals_t */
 	WriteLevelLocals(f);
@@ -1111,12 +1106,12 @@ WriteLevel(const char *filename)
 			continue;
 		}
 
-		fwrite(&i, sizeof(i), 1, f);
+		sg_fwrite(&i, sizeof(i), f);
 		WriteEdict(f, ent);
 	}
 
 	i = -1;
-	fwrite(&i, sizeof(i), 1, f);
+	sg_fwrite(&i, sizeof(i), f);
 
 	fclose(f);
 }
@@ -1134,12 +1129,7 @@ ReadEdict(FILE *f, edict_t *ent)
 {
 	field_t *field;
 
-	if (fread(ent, sizeof(*ent), 1, f) != 1)
-	{
-		fclose(f);
-		gi.error("%s: can't read edict", __func__);
-		return;
-	}
+	sg_fread(ent, sizeof(*ent), f);
 
 	for (field = fields; field->name; field++)
 	{
@@ -1158,12 +1148,7 @@ ReadLevelLocals(FILE *f)
 {
 	field_t *field;
 
-	if (fread(&level, sizeof(level), 1, f) != 1)
-	{
-		fclose(f);
-		gi.error("%s: can't read level", __func__);
-		return;
-	}
+	sg_fread(&level, sizeof(level), f);
 
 	for (field = levelfields; field->name; field++)
 	{
@@ -1205,12 +1190,7 @@ ReadLevel(const char *filename)
 	globals.num_edicts = maxclients->value + 1;
 
 	/* check edict size */
-	if (fread(&i, sizeof(i), 1, f) != 1)
-	{
-		fclose(f);
-		gi.error("%s: can't read edict size", __func__);
-		return;
-	}
+	sg_fread(&i, sizeof(i), f);
 
 	if (i != sizeof(edict_t))
 	{
@@ -1225,12 +1205,7 @@ ReadLevel(const char *filename)
 	/* load all the entities */
 	while (1)
 	{
-		if (fread(&entnum, sizeof(entnum), 1, f) != 1)
-		{
-			fclose(f);
-			gi.error("%s: failed to read entnum", __func__);
-			break;
-		}
+		sg_fread(&entnum, sizeof(entnum), f);
 
 		if ((entnum < -1) || (entnum >= game.maxentities))
 		{
