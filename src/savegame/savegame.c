@@ -481,13 +481,13 @@ WriteField1(FILE *f, field_t *field, byte *base)
 			break;
 		case F_ITEM:
 
-			if (*(edict_t **)p == NULL)
+			if (*(gitem_t **)p == NULL)
 			{
 				index = -1;
 			}
 			else
 			{
-				index = *(gitem_t **)p - itemlist;
+				index = ITEM_INDEX(*(gitem_t **)p);
 			}
 
 			*(int *)p = index;
