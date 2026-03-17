@@ -60,6 +60,22 @@ GetItemByIndex(int index)
 	return &itemlist[index];
 }
 
+int
+GetWeaponAmmoIndex(const gitem_t *weap)
+{
+	if (weap && weap->ammo)
+	{
+		const gitem_t *ammo = FindItem(weap->ammo);
+
+		if (ammo)
+		{
+			return ITEM_INDEX(ammo);
+		}
+	}
+
+	return 0;
+}
+
 gitem_t *
 FindItemByClassname(char *classname)
 {
