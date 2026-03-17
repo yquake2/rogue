@@ -239,7 +239,7 @@ Tag_DropToken(edict_t *ent, gitem_t *item)
 	if (ent->client)
 	{
 		ent->client->pers.inventory[ITEM_INDEX(item)]--;
-		ValidateSelectedItem(ent);
+		ValidateSelectedItem(ent->client);
 	}
 }
 
