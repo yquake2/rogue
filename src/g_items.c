@@ -52,7 +52,7 @@ static int quad_drop_timeout_hack;
 gitem_t *
 GetItemByIndex(int index)
 {
-	if ((index <= 0) || (index >= game.num_items))
+	if ((index <= 0) || (index >= itemlist_len))
 	{
 		return NULL;
 	}
@@ -73,7 +73,7 @@ FindItemByClassname(char *classname)
 
 	it = itemlist;
 
-	for (i = 0; i < game.num_items; i++, it++)
+	for (i = 0; i < itemlist_len; i++, it++)
 	{
 		if (!it->classname)
 		{
@@ -102,7 +102,7 @@ FindItem(char *pickup_name)
 
 	it = itemlist;
 
-	for (i = 0; i < game.num_items; i++, it++)
+	for (i = 0; i < itemlist_len; i++, it++)
 	{
 		if (!it->pickup_name)
 		{
@@ -3491,6 +3491,8 @@ gitem_t itemlist[] = {
 	{NULL}
 };
 
+const int itemlist_len = ARRLEN(itemlist) - 1;
+
 /*
  * QUAKED item_health (.3 .3 1) (-16 -16 -16) (16 16 16) TRIGGER_SPAWN
  */
@@ -3588,7 +3590,6 @@ SP_item_health_mega(edict_t *self)
 void
 InitItems(void)
 {
-	game.num_items = sizeof(itemlist) / sizeof(itemlist[0]) - 1;
 }
 
 /*
@@ -3600,7 +3601,7 @@ SetItemNames(void)
 	int i;
 	gitem_t *it;
 
-	for (i = 0; i < game.num_items; i++)
+	for (i = 0; i < itemlist_len; i++)
 	{
 		it = &itemlist[i];
 		gi.configstring(CS_ITEMS + i, it->pickup_name);
@@ -3667,7 +3668,7 @@ SP_xatrix_item(edict_t *self)
 	}
 
 	/* check item spawn functions */
-	for (i = 0, item = itemlist; i < game.num_items; i++, item++)
+	for (i = 0, item = itemlist; i < itemlist_len; i++, item++)
 	{
 		if (!item->classname)
 		{
