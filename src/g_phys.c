@@ -118,12 +118,10 @@ SV_RunThink(edict_t *ent)
 
 	ent->nextthink = 0;
 
-	if (!ent->think)
+	if (ent->think)
 	{
-		gi.error("NULL ent->think");
+		ent->think(ent);
 	}
-
-	ent->think(ent);
 
 	return false;
 }
