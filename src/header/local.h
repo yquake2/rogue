@@ -306,7 +306,9 @@ typedef struct
 	/* cross level triggers */
 	int serverflags;
 
-	/* items */
+	/* unused for savegame security and stability reasons
+	   use itemlist_len instead
+	*/
 	int num_items;
 
 	qboolean autosaved;
@@ -686,8 +688,10 @@ typedef struct
 	short save_ver;
 } field_t;
 
-extern field_t fields[];
+const field_t *FindSpawnfield(const char *key);
+
 extern gitem_t itemlist[];
+extern const int itemlist_len;
 
 /* g_cmds.c */
 void Cmd_Help_f(edict_t *ent);
@@ -708,6 +712,7 @@ void Think_Weapon(edict_t *ent);
 int ArmorIndex(edict_t *ent);
 int PowerArmorType(edict_t *ent);
 gitem_t *GetItemByIndex(int index);
+int GetWeaponAmmoIndex(const gitem_t *weap);
 qboolean Add_Ammo(edict_t *ent, gitem_t *item, int count);
 void Touch_Item(edict_t *ent, edict_t *other, cplane_t *plane,
 		csurface_t *surf);
@@ -888,7 +893,7 @@ void MoveClientToIntermission(edict_t *client);
 void G_SetStats(edict_t *ent);
 void G_SetSpectatorStats(edict_t *ent);
 void G_CheckChaseStats(edict_t *ent);
-void ValidateSelectedItem(edict_t *ent);
+void ValidateSelectedItem(gclient_t *cl);
 void DeathmatchScoreboardMessage(edict_t *client, edict_t *killer);
 void HelpComputerMessage(edict_t *client);
 void InventoryMessage(edict_t *client);
