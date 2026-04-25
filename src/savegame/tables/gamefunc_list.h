@@ -1492,4 +1492,3 @@
 {"DBall_ClientBegin", (byte *)DBall_ClientBegin},
 {"DBall_CheckDMRules", (byte *)DBall_CheckDMRules},
 {"wait_and_change_think", (byte *)wait_and_change_think},
-{0, 0}
