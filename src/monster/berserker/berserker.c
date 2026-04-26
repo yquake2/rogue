@@ -516,7 +516,7 @@ mmove_t berserk_move_death2 =
 
 void
 berserk_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
-		int damage, vec3_t point /* unused */)
+		int damage, const vec3_t point /* unused */)
 {
 	int n;
 

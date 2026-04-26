@@ -68,7 +68,7 @@ InitGameRules(void)
 	}
 }
 
-char *
+const char *
 FindSubstituteItem(edict_t *ent)
 {
 	int i;
@@ -253,7 +253,7 @@ edict_t *
 DoRandomRespawn(edict_t *ent)
 {
 	edict_t *newEnt;
-	char *classname;
+	const char *classname;
 
 	if (!ent)
 	{
@@ -309,7 +309,7 @@ PrecacheForRandomRespawn(void)
 
 void
 doppleganger_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker,
-		int damage, vec3_t point)
+		int damage, const vec3_t point)
 {
 	edict_t *sphere;
 	float dist;

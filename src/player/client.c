@@ -12,7 +12,7 @@ edict_t *pm_passent;
 
 void ClientUserinfoChanged(edict_t *ent, char *userinfo);
 void SP_misc_teleporter_dest(edict_t *ent);
-void Touch_Item(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf);
+void Touch_Item(edict_t *ent, edict_t *other, const cplane_t *plane, const csurface_t *surf);
 
 /*
  * QUAKED info_player_start (1 0 0) (-16 -16 -24) (16 16 32)
@@ -504,7 +504,7 @@ ClientObituary(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker
 void
 TossClientWeapon(edict_t *self)
 {
-	gitem_t *item;
+	const gitem_t *item;
 	edict_t *drop;
 	qboolean quad;
 	float spread;
@@ -614,7 +614,7 @@ LookAtKiller(edict_t *self, edict_t *inflictor, edict_t *attacker)
 
 void
 player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
-		int damage, vec3_t point)
+		int damage, const vec3_t point)
 {
 	int n;
 
@@ -1156,7 +1156,7 @@ SelectCoopSpawnPoint(edict_t *ent)
 {
 	int index;
 	edict_t *spot = NULL;
-	char *target;
+	const char *target;
 
 	if (!ent)
 	{
@@ -1334,7 +1334,7 @@ InitBodyQue(void)
 
 void
 body_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
-		int damage, vec3_t point)
+		int damage, const vec3_t point)
 {
 	int n;
 
@@ -1716,7 +1716,7 @@ PutClientInServer(edict_t *ent)
 
 	if (!KillBox(ent))
 	{
-	 	/* could't spawn in? */
+		/* could't spawn in? */
 	}
 
 	gi.linkentity(ent);

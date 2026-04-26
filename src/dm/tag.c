@@ -258,7 +258,7 @@ Tag_PlayerEffects(edict_t *ent)
 }
 
 void
-Tag_DogTag(edict_t *ent, edict_t *killer /* unused */, char **pic)
+Tag_DogTag(const edict_t *ent, const edict_t *killer /* unused */, char **pic)
 {
 	if (!ent || !pic)
 	{

@@ -38,7 +38,6 @@ static int sound_sight;
 static int  sound_step;
 static int  sound_step2;
 
-qboolean visible(edict_t *self, edict_t *other);
 void GunnerGrenade(edict_t *self);
 void GunnerFire(edict_t *self);
 void gunner_fire_chain(edict_t *self);
@@ -515,7 +514,7 @@ mmove_t gunner_move_death =
 void
 gunner_die(edict_t *self, edict_t *inflictor /* unused */,
 		edict_t *attacker /* unused */, int damage /* unused */,
-		vec3_t point)
+		const vec3_t point)
 {
 	int n;
 

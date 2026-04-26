@@ -539,7 +539,7 @@ monsterlost_checkhint(edict_t *self)
 				checkpoint->monster_hint_chain = NULL;
 
 				/* and clear it again */
-				
+
 				checkpoint = NULL;
 				/* since we have yet to find a valid one (or else
 				   checkpoint would be set) move the start of
@@ -694,7 +694,7 @@ monsterlost_checkhint(edict_t *self)
 							  together by target_hint_chain. these are filtered
 							  such that only nodes which are on the same chain
 							  as "monster valid" nodes
-	
+
 	   Now, we figure out which "monster valid" node we want to use. To do this, we
 	   first off make sure we have some target nodes. If we don't, there are no
 	   valid hint_path nodes for us to take. If we have some, we filter all of our
@@ -798,8 +798,8 @@ monsterlost_checkhint(edict_t *self)
 }
 
 void
-hint_path_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
-		csurface_t *surf /* unused */)
+hint_path_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */,
+		const csurface_t *surf /* unused */)
 {
 	edict_t *e, *goal;
 	edict_t *next = NULL;
@@ -1087,7 +1087,7 @@ face_wall(edict_t *self)
 }
 
 void
-badarea_touch(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
+badarea_touch(edict_t *ent, edict_t *other, const cplane_t *plane, const csurface_t *surf)
 {
 }
 

@@ -279,31 +279,31 @@ typedef struct
 
 typedef struct gitem_s
 {
-	char *classname; /* spawning name */
+	const char *classname; /* spawning name */
 	qboolean (*pickup)(struct edict_s *ent, struct edict_s *other);
-	void (*use)(struct edict_s *ent, struct gitem_s *item);
-	void (*drop)(struct edict_s *ent, struct gitem_s *item);
+	void (*use)(struct edict_s *ent, const struct gitem_s *item);
+	void (*drop)(struct edict_s *ent, const struct gitem_s *item);
 	void (*weaponthink)(struct edict_s *ent);
-	char *pickup_sound;
-	char *world_model;
+	const char *pickup_sound;
+	const char *world_model;
 	int world_model_flags;
-	char *view_model;
+	const char *view_model;
 
 	/* client side info */
-	char *icon;
-	char *pickup_name;          /* for printing on pickup */
+	const char *icon;
+	const char *pickup_name;          /* for printing on pickup */
 	int count_width;            /* number of digits to display by icon */
 
 	int quantity;               /* for ammo how much, for weapons how much is used per shot */
-	char *ammo;                 /* for weapons */
+	const char *ammo;                 /* for weapons */
 	int flags;                  /* IT_* flags */
 
-	int weapmodel;              /* weapon model index (for weapons) */
+	int weapmodel; /* weapon model index (for weapons) */
 
 	void *info;
 	int tag;
 
-	char *precaches;            /* string of all models, sounds, and images this item will use */
+	const char *precaches;            /* string of all models, sounds, and images this item will use */
 } gitem_t;
 
 /* this structure is left intact through an entire game
@@ -344,18 +344,18 @@ typedef struct
 	int framenum;
 	float time;
 
-	char level_name[MAX_QPATH];         /* the descriptive name (Outer Base, etc) */
-	char mapname[MAX_QPATH];            /* the server name (base1, etc) */
-	char nextmap[MAX_QPATH];            /* go here when fraglimit is hit */
+	char level_name[MAX_QPATH]; /* the descriptive name (Outer Base, etc) */
+	char mapname[MAX_QPATH]; /* the server name (base1, etc) */
+	char nextmap[MAX_QPATH]; /* go here when fraglimit is hit */
 
 	/* intermission state */
-	float intermissiontime;             /* time the intermission was started */
-	char *changemap;
+	float intermissiontime; /* time the intermission was started */
+	const char *changemap;
 	int exitintermission;
 	vec3_t intermission_origin;
 	vec3_t intermission_angle;
 
-	edict_t *sight_client;			     /* changed once each frame for coop games */
+	edict_t *sight_client; /* changed once each frame for coop games */
 
 	edict_t *sight_entity;
 	int sight_entity_framenum;
@@ -385,7 +385,7 @@ typedef struct
 } level_locals_t;
 
 /* spawn_temp_t is only used to hold entity field values that
-   can be set from the editor, but aren't actualy present/
+   can be set from the editor, but aren't actualy present
    in edict_t during gameplay */
 typedef struct
 {
@@ -704,8 +704,8 @@ typedef enum
 
 typedef struct
 {
-	char *name;
-	int ofs;
+	const char *name;
+	size_t ofs;
 	fieldtype_t type;
 	int flags;
 	short save_ver;
@@ -720,32 +720,33 @@ extern const int itemlist_len;
 void Cmd_Help_f(edict_t *ent);
 
 /* g_items.c */
-void PrecacheItem(gitem_t *it);
+void PrecacheItem(const gitem_t *it);
 void InitItems(void);
 void SetItemNames(void);
-gitem_t *FindItem(char *pickup_name);
-gitem_t *FindItemByClassname(char *classname);
+gitem_t *FindItem(const char *pickup_name);
+gitem_t *FindItemByClassname(const char *classname);
 
 #define ITEM_INDEX(x) ((x) - itemlist)
-edict_t *Drop_Item(edict_t *ent, gitem_t *item);
+
+edict_t *Drop_Item(edict_t *ent, const gitem_t *item);
 void SetRespawn(edict_t *ent, float delay);
 void ChangeWeapon(edict_t *ent);
 void SpawnItem(edict_t *ent, gitem_t *item);
 void Think_Weapon(edict_t *ent);
-int ArmorIndex(edict_t *ent);
-int PowerArmorType(edict_t *ent);
+int ArmorIndex(const edict_t *ent);
+int PowerArmorType(const edict_t *ent);
 gitem_t *GetItemByIndex(int index);
 int GetWeaponAmmoIndex(const gitem_t *weap);
-qboolean Add_Ammo(edict_t *ent, gitem_t *item, int count);
-void Touch_Item(edict_t *ent, edict_t *other, cplane_t *plane,
-		csurface_t *surf);
+qboolean Add_Ammo(edict_t *ent, const gitem_t *item, int count);
+void Touch_Item(edict_t *ent, edict_t *other, const cplane_t *plane,
+		const csurface_t *surf);
 
 /* g_utils.c */
 qboolean KillBox(edict_t *ent);
-void G_ProjectSource(vec3_t point, vec3_t distance, vec3_t forward,
-		vec3_t right, vec3_t result);
-edict_t *G_Find(edict_t *from, int fieldofs, char *match);
-edict_t *findradius(edict_t *from, vec3_t org, float rad);
+void G_ProjectSource(const vec3_t point, const vec3_t distance, const vec3_t forward,
+		const vec3_t right, vec3_t result);
+edict_t *G_Find(edict_t *from, int fieldofs, const char *match);
+edict_t *findradius(edict_t *from, const vec3_t org, float rad);
 edict_t *G_PickTarget(char *targetname);
 void G_UseTargets(edict_t *ent, edict_t *activator);
 void G_SetMovedir(vec3_t angles, vec3_t movedir);
@@ -758,28 +759,30 @@ void G_FreeEdict(edict_t *e);
 void G_TouchTriggers(edict_t *ent);
 void G_TouchSolids(edict_t *ent);
 
-char *G_CopyString(char *in);
+char *G_CopyString(const char *in);
 
 float *tv(float x, float y, float z);
 char *vtos(vec3_t v);
 void get_normal_vector(const cplane_t *p, vec3_t normal);
 
 float vectoyaw(vec3_t vec);
-void vectoangles(vec3_t vec, vec3_t angles);
+void vectoangles(const vec3_t value, vec3_t angles);
 
-void G_ProjectSource2(vec3_t point, vec3_t distance, vec3_t forward, vec3_t right,
-		vec3_t up, vec3_t result);
+void G_ProjectSource2(const vec3_t point, const vec3_t distance, const vec3_t forward, const vec3_t right,
+		const vec3_t up, vec3_t result);
 float vectoyaw2(vec3_t vec);
 void vectoangles2(vec3_t vec, vec3_t angles);
-edict_t *findradius2(edict_t *from, vec3_t org, float rad);
+edict_t *findradius2(edict_t *from, const vec3_t org, float rad);
 
 /* g_combat.c */
-qboolean OnSameTeam(edict_t *ent1, edict_t *ent2);
+qboolean OnSameTeam(const edict_t *ent1, const edict_t *ent2);
 qboolean CanDamage(edict_t *targ, edict_t *inflictor);
-void T_Damage(edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
-		vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod);
-void T_RadiusDamage(edict_t *inflictor, edict_t *attacker, float damage, edict_t *ignore,
-		float radius, int mod);
+void T_Damage(edict_t *targ, edict_t *inflictor, edict_t *attacker,
+		vec3_t dir, vec3_t point, const vec3_t normal, int damage,
+		int knockback, int dflags, int mod);
+void T_RadiusDamage(edict_t *inflictor, edict_t *attacker,
+		float damage, const edict_t *ignore, float radius,
+		int mod);
 
 void T_RadiusNukeDamage(edict_t *inflictor, edict_t *attacker, float damage,
 		edict_t *ignore, float radius, int mod);
@@ -842,14 +845,13 @@ void stationarymonster_start(edict_t *self);
 void monster_done_dodge(edict_t *self);
 
 /* g_misc.c */
-void ThrowHead(edict_t *self, char *gibname, int damage, int type);
+void ThrowHead(edict_t *self, const char *gibname, int damage, gibtype_t type);
 void ThrowClientHead(edict_t *self, int damage);
-void ThrowGib(edict_t *self, char *gibname, int damage, int type);
+void ThrowGib(edict_t *self, const char *gibname, int damage, gibtype_t type);
 void BecomeExplosion1(edict_t *self);
 
 /* g_ai.c */
 void AI_SetSightClient(void);
-
 void ai_stand(edict_t *self, float dist);
 void ai_move(edict_t *self, float dist);
 void ai_walk(edict_t *self, float dist);
@@ -860,8 +862,8 @@ int range(edict_t *self, edict_t *other);
 
 void FoundTarget(edict_t *self);
 qboolean infront(edict_t *self, edict_t *other);
-qboolean visible(edict_t *self, edict_t *other);
-qboolean FacingIdeal(edict_t *self);
+qboolean visible(const edict_t *self, const edict_t *other);
+qboolean FacingIdeal(const edict_t *self);
 
 /* g_weapon.c */
 void ThrowDebris(edict_t *self, char *modelname, float speed, vec3_t origin);
@@ -877,10 +879,11 @@ void fire_grenade(edict_t *self, vec3_t start, vec3_t aimdir, int damage,
 void fire_grenade2(edict_t *self, vec3_t start, vec3_t aimdir, int damage,
 		int speed, float timer, float damage_radius, qboolean held);
 void fire_rocket(edict_t *self, vec3_t start, vec3_t dir, int damage,
-		int speed, float damage_radius, int radius_damage);
+		int speed, float damage_radius,
+		int radius_damage);
 void fire_rail(edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick);
-void fire_bfg(edict_t *self, vec3_t start, vec3_t dir,
-		int damage, int speed, float damage_radius);
+void fire_bfg(edict_t *self, vec3_t start, vec3_t dir, int damage,
+		int speed, float damage_radius);
 
 /* g_ptrail.c */
 void PlayerTrail_Init(void);
@@ -892,7 +895,7 @@ edict_t *PlayerTrail_LastSpot(void);
 
 /* g_client.c */
 void respawn(edict_t *ent);
-void BeginIntermission(edict_t *targ);
+void BeginIntermission(const edict_t *targ);
 void PutClientInServer(edict_t *ent);
 void InitClientPersistant(gclient_t *client);
 void InitClientResp(gclient_t *client);
@@ -902,7 +905,7 @@ void ClientBeginServerFrame(edict_t *ent);
 /* g_player.c */
 void player_pain(edict_t *self, edict_t *other, float kick, int damage);
 void player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
-		int damage, vec3_t point);
+		int damage, const vec3_t point);
 
 /* g_svcmds.c */
 void ServerCommand(void);
@@ -915,14 +918,37 @@ void ClientEndServerFrame(edict_t *ent);
 void MoveClientToIntermission(edict_t *client);
 void G_SetStats(edict_t *ent);
 void G_SetSpectatorStats(edict_t *ent);
-void G_CheckChaseStats(edict_t *ent);
+void G_CheckChaseStats(const edict_t *ent);
 void ValidateSelectedItem(gclient_t *cl);
-void DeathmatchScoreboardMessage(edict_t *client, edict_t *killer);
+void DeathmatchScoreboardMessage(const edict_t *ent, const edict_t *killer);
 void HelpComputerMessage(edict_t *client);
 void InventoryMessage(edict_t *client);
 
 /* g_pweapon.c */
 void PlayerNoise(edict_t *who, vec3_t where, int type);
+qboolean Pickup_Weapon(edict_t *ent, edict_t *other);
+void Use_Weapon(edict_t *ent, const gitem_t *item);
+void Drop_Weapon(edict_t *ent, const gitem_t *item);
+
+void Weapon_Blaster(edict_t *ent);
+void Weapon_Shotgun(edict_t *ent);
+void Weapon_SuperShotgun(edict_t *ent);
+void Weapon_Machinegun(edict_t *ent);
+void Weapon_Chaingun(edict_t *ent);
+void Weapon_HyperBlaster(edict_t *ent);
+void Weapon_RocketLauncher(edict_t *ent);
+void Weapon_Grenade(edict_t *ent);
+void Weapon_GrenadeLauncher(edict_t *ent);
+void Weapon_Railgun(edict_t *ent);
+void Weapon_BFG(edict_t *ent);
+void Weapon_ChainFist(edict_t *ent);
+void Weapon_Disintegrator(edict_t *ent);
+void Weapon_ETF_Rifle(edict_t *ent);
+void Weapon_Heatbeam(edict_t *ent);
+void Weapon_Prox(edict_t *ent);
+void Weapon_Tesla(edict_t *ent);
+void Weapon_ProxLauncher(edict_t *ent);
+void Use_Quad(edict_t *ent, const gitem_t *item);
 
 /* m_move.c */
 qboolean M_CheckBottom(edict_t *ent);
@@ -1057,7 +1083,8 @@ typedef struct
 	qboolean connected;             /* a loadgame will leave valid entities that
 	                                   just don't have a connection yet */
 
-	/* values saved and restored from edicts when changing levels */
+	/* values saved and restored
+	   from edicts when changing levels */
 	int health;
 	int max_health;
 	int savedFlags;
@@ -1073,16 +1100,16 @@ typedef struct
 	int max_cells;
 	int max_slugs;
 
-	gitem_t *weapon;
-	gitem_t *lastweapon;
+	const gitem_t *weapon;
+	const gitem_t *lastweapon;
 
-	int power_cubes;            /* used for tracking the cubes in coop games */
-	int score;                  /* for calculating total unit score in coop games */
+	int power_cubes; /* used for tracking the cubes in coop games */
+	int score; /* for calculating total unit score in coop games */
 
 	int game_helpchanged;
 	int helpchanged;
 
-	qboolean spectator;         /* client is a spectator */
+	qboolean spectator; /* client is a spectator */
 
 	int max_tesla;
 	int max_prox;
@@ -1103,7 +1130,8 @@ typedef struct
 } client_respawn_t;
 
 /* this structure is cleared on each
-   PutClientInServer(), except for 'client->pers' */
+   PutClientInServer(), except for
+   'client->pers' */
 struct gclient_s
 {
 	/* known to server */
@@ -1128,7 +1156,7 @@ struct gclient_s
 
 	qboolean weapon_thunk;
 
-	gitem_t *newweapon;
+	const gitem_t *newweapon;
 
 	/* sum up damage over an entire frame, so
 	   shotgun blasts give a single big kick */
@@ -1234,14 +1262,14 @@ struct edict_s
 
 	/* only used locally in game, not by server */
 	char *message;
-	char *classname;
+	const char *classname;
 	int spawnflags;
 
 	float timestamp;
 
 	float angle;					/* set in qe3, -1 = up, -2 = down */
 	char *target;
-	char *targetname;
+	const char *targetname;
 	char *killtarget;
 	char *team;
 	char *pathtarget;
@@ -1266,15 +1294,15 @@ struct edict_s
 	float ideal_yaw;
 
 	float nextthink;
-	void (*prethink) (edict_t *ent);
+	void (*prethink)(edict_t *ent);
 	void (*think)(edict_t *self);
 	void (*blocked)(edict_t *self, edict_t *other);         /* move to moveinfo? */
-	void (*touch)(edict_t *self, edict_t *other, cplane_t *plane,
-			csurface_t *surf);
+	void (*touch)(edict_t *self, edict_t *other, const cplane_t *plane,
+			const csurface_t *surf);
 	void (*use)(edict_t *self, edict_t *other, edict_t *activator);
 	void (*pain)(edict_t *self, edict_t *other, float kick, int damage);
 	void (*die)(edict_t *self, edict_t *inflictor, edict_t *attacker,
-			int damage, vec3_t point);
+			int damage, const vec3_t point);
 
 	float touch_debounce_time;
 	float pain_debounce_time;
@@ -1290,7 +1318,7 @@ struct edict_s
 	float show_hostile;
 	float powerarmor_time;
 
-	char *map;                  /* target_changelevel */
+	const char *map;                  /* target_changelevel */
 
 	int viewheight;             /* height above origin where eyesight is determined */
 	int takedamage;
@@ -1333,7 +1361,7 @@ struct edict_s
 	int light_level;
 	int style;                  /* also used as areaportal number */
 
-	gitem_t *item;              /* for bonus items */
+	const gitem_t *item;              /* for bonus items */
 
 	/* common data blocks */
 	moveinfo_t moveinfo;
@@ -1373,7 +1401,7 @@ typedef struct dm_game_rs
 	void (*PlayerDeath)(edict_t *targ, edict_t *inflictor, edict_t *attacker);
 	void (*Score)(edict_t *attacker, edict_t *victim, int scoreChange);
 	void (*PlayerEffects)(edict_t *ent);
-	void (*DogTag)(edict_t *ent, edict_t *killer, char **pic);
+	void (*DogTag)(const edict_t *ent, const edict_t *killer, char **pic);
 	void (*PlayerDisconnect)(edict_t *ent);
 	int (*ChangeDamage)(edict_t *targ, edict_t *attacker, int damage, int mod);
 	int (*ChangeKnockback)(edict_t *targ, edict_t *attacker, int knockback, int mod);
@@ -1389,5 +1417,15 @@ int DBall_ChangeKnockback(edict_t *targ, edict_t *attacker, int knockback, int m
 int DBall_ChangeDamage(edict_t *targ, edict_t *attacker, int damage, int mod);
 void DBall_PostInitSetup(void);
 int DBall_CheckDMRules(void);
+
+/*
+ * Uncomment for check that exported functions declarations are same as in
+ * implementation. (-Wmissing-prototypes )
+ *
+ */
+#if DEBUG
+#include "../savegame/savegame.h"
+#include "../savegame/tables/gamefunc_decs.h"
+#endif
 
 #endif /* ROGUE_LOCAL_H */

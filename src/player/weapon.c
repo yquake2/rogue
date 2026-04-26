@@ -1,4 +1,23 @@
-/* =======================================================================
+/*
+ * Copyright (C) 1997-2001 Id Software, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
+ * =======================================================================
  *
  * Player weapons.
  *
@@ -32,7 +51,7 @@ static byte is_silenced;
 void weapon_grenade_fire(edict_t *ent, qboolean held);
 
 byte
-P_DamageModifier(edict_t *ent)
+P_DamageModifier(const edict_t *ent)
 {
 	is_quad = 0;
 	damage_multiplier = 1;
@@ -67,12 +86,12 @@ P_DamageModifier(edict_t *ent)
 }
 
 void
-P_ProjectSource(edict_t *ent, vec3_t distance, vec3_t forward,
-		vec3_t right, vec3_t result)
+P_ProjectSource(const edict_t *ent, const vec3_t distance,
+		vec3_t forward, const vec3_t right, vec3_t result)
 {
-	gclient_t *client = ent->client;
-	float     *point  = ent->s.origin;
-	vec3_t     _distance;
+	const gclient_t *client = ent->client;
+	const float *point  = ent->s.origin;
+	vec3_t _distance;
 
 	if (!client)
 	{
@@ -108,12 +127,12 @@ P_ProjectSource(edict_t *ent, vec3_t distance, vec3_t forward,
 	}
 }
 
-void
-P_ProjectSource2(edict_t *ent, vec3_t point, vec3_t distance, vec3_t forward,
-		vec3_t right, vec3_t up, vec3_t result)
+static void
+P_ProjectSource2(const edict_t *ent, const vec3_t point, const vec3_t distance,
+		vec3_t forward, const vec3_t right, const vec3_t up, vec3_t result)
 {
-	gclient_t *client = ent->client;
-	vec3_t     _distance;
+	const gclient_t *client = ent->client;
+	vec3_t _distance;
 
 	if (!client)
 	{
@@ -175,8 +194,8 @@ PlayerNoise_Spawn(edict_t *who, int type)
 
 	noise->classname = "player_noise";
 	noise->spawnflags = type;
-	VectorSet (noise->mins, -8, -8, -8);
-	VectorSet (noise->maxs, 8, 8, 8);
+	VectorSet(noise->mins, -8, -8, -8);
+	VectorSet(noise->maxs, 8, 8, 8);
 	noise->owner = who;
 	noise->svflags = SVF_NOCLIENT;
 
@@ -459,7 +478,7 @@ ChangeWeapon(edict_t *ent)
 
 	if (!ent->client->pers.weapon)
 	{
-	 	/* dead */
+		/* dead */
 		ent->client->ps.gunindex = 0;
 		return;
 	}
@@ -607,7 +626,7 @@ Change_Weap_Animation(edict_t *ent)
  * Make the weapon ready if there is ammo
  */
 void
-Use_Weapon(edict_t *ent, gitem_t *item)
+Use_Weapon(edict_t *ent, const gitem_t *item)
 {
 	int ammo_index;
 	gitem_t *ammo_item;
@@ -647,7 +666,7 @@ Use_Weapon(edict_t *ent, gitem_t *item)
 }
 
 void
-Drop_Weapon(edict_t *ent, gitem_t *item)
+Drop_Weapon(edict_t *ent, const gitem_t *item)
 {
 	int index;
 

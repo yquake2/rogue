@@ -1,4 +1,22 @@
 /*
+ * Copyright (C) 1997-2001 Id Software, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
  * =======================================================================
  *
  * Item handling and item definitions.
@@ -11,29 +29,6 @@
 #define HEALTH_IGNORE_MAX 1
 #define HEALTH_TIMED 2
 
-qboolean Pickup_Weapon(edict_t *ent, edict_t *other);
-void Use_Weapon(edict_t *ent, gitem_t *inv);
-void Drop_Weapon(edict_t *ent, gitem_t *inv);
-
-void Weapon_Blaster(edict_t *ent);
-void Weapon_Shotgun(edict_t *ent);
-void Weapon_SuperShotgun(edict_t *ent);
-void Weapon_Machinegun(edict_t *ent);
-void Weapon_Chaingun(edict_t *ent);
-void Weapon_HyperBlaster(edict_t *ent);
-void Weapon_RocketLauncher(edict_t *ent);
-void Weapon_Grenade(edict_t *ent);
-void Weapon_GrenadeLauncher(edict_t *ent);
-void Weapon_Railgun(edict_t *ent);
-void Weapon_BFG(edict_t *ent);
-void Weapon_ChainFist(edict_t *ent);
-void Weapon_Disintegrator(edict_t *ent);
-void Weapon_ETF_Rifle(edict_t *ent);
-void Weapon_Heatbeam(edict_t *ent);
-void Weapon_Prox(edict_t *ent);
-void Weapon_Tesla(edict_t *ent);
-void Weapon_ProxLauncher(edict_t *ent);
-
 gitem_armor_t jacketarmor_info = {25, 50, .30, .00, ARMOR_JACKET};
 gitem_armor_t combatarmor_info = {50, 100, .60, .30, ARMOR_COMBAT};
 gitem_armor_t bodyarmor_info = {100, 200, .80, .60, ARMOR_BODY};
@@ -44,7 +39,6 @@ int body_armor_index;
 static int power_screen_index;
 static int power_shield_index;
 
-void Use_Quad(edict_t *ent, gitem_t *item);
 static int quad_drop_timeout_hack;
 
 /* ====================================================================== */
@@ -77,7 +71,7 @@ GetWeaponAmmoIndex(const gitem_t *weap)
 }
 
 gitem_t *
-FindItemByClassname(char *classname)
+FindItemByClassname(const char *classname)
 {
 	int i;
 	gitem_t *it;
@@ -106,7 +100,7 @@ FindItemByClassname(char *classname)
 }
 
 gitem_t *
-FindItem(char *pickup_name)
+FindItem(const char *pickup_name)
 {
 	int i;
 	gitem_t *it;
@@ -209,7 +203,7 @@ Pickup_Powerup(edict_t *ent, edict_t *other)
 {
 	int quantity;
 
-    if (!ent || !other)
+	if (!ent || !other)
 	{
 		return false;
 	}
@@ -241,12 +235,13 @@ Pickup_Powerup(edict_t *ent, edict_t *other)
 }
 
 void
-Drop_General(edict_t *ent, gitem_t *item)
+Drop_General(edict_t *ent, const gitem_t *item)
 {
 	if (!ent || !item)
 	{
 		return;
 	}
+
 	Drop_Item(ent, item);
 	ent->client->pers.inventory[ITEM_INDEX(item)]--;
 	ValidateSelectedItem(ent->client);
@@ -283,7 +278,7 @@ Pickup_Adrenaline(edict_t *ent, edict_t *other)
 qboolean
 Pickup_AncientHead(edict_t *ent, edict_t *other)
 {
- 	if (!ent || !other)
+	if (!ent || !other)
 	{
 		return false;
 	}
@@ -301,13 +296,13 @@ Pickup_AncientHead(edict_t *ent, edict_t *other)
 qboolean
 Pickup_Bandolier(edict_t *ent, edict_t *other)
 {
- 	if (!ent || !other)
+	gitem_t *item;
+	int index;
+
+	if (!ent || !other)
 	{
 		return false;
 	}
-
-	gitem_t *item;
-	int index;
 
 	if (other->client->pers.max_bullets < 250)
 	{
@@ -386,7 +381,7 @@ Pickup_Pack(edict_t *ent, edict_t *other)
 	gitem_t *item;
 	int index;
 
- 	if (!ent || !other)
+	if (!ent || !other)
 	{
 		return false;
 	}
@@ -598,7 +593,7 @@ Pickup_Nuke(edict_t *ent, edict_t *other)
 }
 
 void
-Use_IR(edict_t *ent, gitem_t *item)
+Use_IR(edict_t *ent, const gitem_t *item)
 {
 	if (!ent || !item)
 	{
@@ -621,7 +616,7 @@ Use_IR(edict_t *ent, gitem_t *item)
 }
 
 void
-Use_Double(edict_t *ent, gitem_t *item)
+Use_Double(edict_t *ent, const gitem_t *item)
 {
 	ent->client->pers.inventory[ITEM_INDEX(item)]--;
 	ValidateSelectedItem(ent->client);
@@ -639,7 +634,7 @@ Use_Double(edict_t *ent, gitem_t *item)
 }
 
 void
-Use_Compass(edict_t *ent, gitem_t *item)
+Use_Compass(edict_t *ent, const gitem_t *item)
 {
 	int ang;
 
@@ -660,7 +655,7 @@ Use_Compass(edict_t *ent, gitem_t *item)
 }
 
 void
-Use_Nuke(edict_t *ent, gitem_t *item)
+Use_Nuke(edict_t *ent, const gitem_t *item)
 {
 	vec3_t forward, right, start;
 	float speed;
@@ -681,7 +676,7 @@ Use_Nuke(edict_t *ent, gitem_t *item)
 }
 
 void
-Use_Doppleganger(edict_t *ent, gitem_t *item)
+Use_Doppleganger(edict_t *ent, const gitem_t *item)
 {
 	vec3_t forward, right;
 	vec3_t createPt, spawnPt;
@@ -789,7 +784,7 @@ Pickup_Sphere(edict_t *ent, edict_t *other)
 }
 
 void
-Use_Defender(edict_t *ent, gitem_t *item)
+Use_Defender(edict_t *ent, const gitem_t *item)
 {
 	if (!ent || !item)
 	{
@@ -809,7 +804,7 @@ Use_Defender(edict_t *ent, gitem_t *item)
 }
 
 void
-Use_Hunter(edict_t *ent, gitem_t *item)
+Use_Hunter(edict_t *ent, const gitem_t *item)
 {
 	if (!ent || !item)
 	{
@@ -829,7 +824,7 @@ Use_Hunter(edict_t *ent, gitem_t *item)
 }
 
 void
-Use_Vengeance(edict_t *ent, gitem_t *item)
+Use_Vengeance(edict_t *ent, const gitem_t *item)
 {
 	if (!ent || !item)
 	{
@@ -851,7 +846,7 @@ Use_Vengeance(edict_t *ent, gitem_t *item)
 /* ====================================================================== */
 
 void
-Use_Quad(edict_t *ent, gitem_t *item)
+Use_Quad(edict_t *ent, const gitem_t *item)
 {
 	int timeout;
 
@@ -889,9 +884,9 @@ Use_Quad(edict_t *ent, gitem_t *item)
 /* ====================================================================== */
 
 void
-Use_Breather(edict_t *ent, gitem_t *item)
+Use_Breather(edict_t *ent, const gitem_t *item)
 {
-	if (!ent || !item)
+	if (!ent || !item || !ent->client)
 	{
 		return;
 	}
@@ -912,9 +907,9 @@ Use_Breather(edict_t *ent, gitem_t *item)
 /* ====================================================================== */
 
 void
-Use_Envirosuit(edict_t *ent, gitem_t *item)
+Use_Envirosuit(edict_t *ent, const gitem_t *item)
 {
-	if (!ent || !item)
+	if (!ent || !item || !ent->client)
 	{
 		return;
 	}
@@ -935,7 +930,7 @@ Use_Envirosuit(edict_t *ent, gitem_t *item)
 /* ====================================================================== */
 
 void
-Use_Invulnerability(edict_t *ent, gitem_t *item)
+Use_Invulnerability(edict_t *ent, const gitem_t *item)
 {
 	if (!ent || !item)
 	{
@@ -960,7 +955,7 @@ Use_Invulnerability(edict_t *ent, gitem_t *item)
 /* ====================================================================== */
 
 void
-Use_Silencer(edict_t *ent, gitem_t *item)
+Use_Silencer(edict_t *ent, const gitem_t *item)
 {
 	if (!ent || !item)
 	{
@@ -1016,21 +1011,15 @@ Pickup_Key(edict_t *ent, edict_t *other)
 /* ====================================================================== */
 
 qboolean
-Add_Ammo(edict_t *ent, gitem_t *item, int count)
+Add_Ammo(edict_t *ent, const gitem_t *item, int count)
 {
 	int index;
 	int max;
 
-	if (!ent || !item)
+	if (!ent || !item || !ent->client)
 	{
 		return false;
 	}
-
-	if (!ent->client)
-	{
-		return false;
-	}
-
 
 	if (item->tag == AMMO_BULLETS)
 	{
@@ -1149,7 +1138,7 @@ Pickup_Ammo(edict_t *ent, edict_t *other)
 }
 
 void
-Drop_Ammo(edict_t *ent, gitem_t *item)
+Drop_Ammo(edict_t *ent, const gitem_t *item)
 {
 	edict_t *dropped;
 	int index;
@@ -1261,14 +1250,9 @@ Pickup_Health(edict_t *ent, edict_t *other)
 /* ====================================================================== */
 
 int
-ArmorIndex(edict_t *ent)
+ArmorIndex(const edict_t *ent)
 {
-	if (!ent)
-	{
-		return 0;
-	}
-
-	if (!ent->client)
+	if (!ent || !ent->client)
 	{
 		return 0;
 	}
@@ -1400,7 +1384,7 @@ Pickup_Armor(edict_t *ent, edict_t *other)
 /* ====================================================================== */
 
 int
-PowerArmorType(edict_t *ent)
+PowerArmorType(const edict_t *ent)
 {
 	if (!ent)
 	{
@@ -1431,9 +1415,12 @@ PowerArmorType(edict_t *ent)
 }
 
 void
-Use_PowerArmor(edict_t *ent, gitem_t *item)
+Use_PowerArmor(edict_t *ent, const gitem_t *item)
 {
-	int index;
+	if (!ent || !item)
+	{
+		return;
+	}
 
 	if (ent->flags & FL_POWER_ARMOR)
 	{
@@ -1442,6 +1429,8 @@ Use_PowerArmor(edict_t *ent, gitem_t *item)
 	}
 	else
 	{
+		int index;
+
 		index = ITEM_INDEX(FindItem("cells"));
 
 		if (!ent->client->pers.inventory[index])
@@ -1487,7 +1476,7 @@ Pickup_PowerArmor(edict_t *ent, edict_t *other)
 }
 
 void
-Drop_PowerArmor(edict_t *ent, gitem_t *item)
+Drop_PowerArmor(edict_t *ent, const gitem_t *item)
 {
 	if (!ent || !item)
 	{
@@ -1506,7 +1495,8 @@ Drop_PowerArmor(edict_t *ent, gitem_t *item)
 /* ====================================================================== */
 
 void
-Touch_Item(edict_t *ent, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
+Touch_Item(edict_t *ent, edict_t *other, const cplane_t *plane /* unused */,
+	const csurface_t *surf /* unused */)
 {
 	qboolean taken;
 
@@ -1612,7 +1602,8 @@ Touch_Item(edict_t *ent, edict_t *other, cplane_t *plane /* unused */, csurface_
 		return;
 	}
 
-	if (!((coop->value) && (ent->item->flags & IT_STAY_COOP)) ||
+	if (!((coop->value) &&
+		  (ent->item->flags & IT_STAY_COOP)) ||
 		(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)))
 	{
 		if (ent->flags & FL_RESPAWN)
@@ -1629,7 +1620,7 @@ Touch_Item(edict_t *ent, edict_t *other, cplane_t *plane /* unused */, csurface_
 /* ====================================================================== */
 
 void
-drop_temp_touch(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
+drop_temp_touch(edict_t *ent, edict_t *other, const cplane_t *plane, const csurface_t *surf)
 {
 	if (!ent || !other)
 	{
@@ -1641,6 +1632,10 @@ drop_temp_touch(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 		return;
 	}
 
+	/* plane and surf are unused in Touch_Item
+	   but since the function is part of the
+	   game <-> client interface dropping
+	   them is too much pain. */
 	Touch_Item(ent, other, plane, surf);
 }
 
@@ -1662,11 +1657,10 @@ drop_make_touchable(edict_t *ent)
 }
 
 edict_t *
-Drop_Item(edict_t *ent, gitem_t *item)
+Drop_Item(edict_t *ent, const gitem_t *item)
 {
 	edict_t *dropped;
 	vec3_t forward, right;
-	vec3_t offset;
 
 	if (!ent || !item)
 	{
@@ -1690,6 +1684,7 @@ Drop_Item(edict_t *ent, gitem_t *item)
 
 	if (ent->client)
 	{
+		vec3_t offset;
 		trace_t trace;
 
 		AngleVectors(ent->client->v_angle, forward, right, NULL);
@@ -1746,14 +1741,14 @@ Use_Item(edict_t *ent, edict_t *other /* unused */, edict_t *activator /* unused
 void
 droptofloor(edict_t *ent)
 {
+	trace_t tr;
+	vec3_t dest;
+	const float *v;
+
 	if (!ent)
 	{
 		return;
 	}
-
-	trace_t tr;
-	vec3_t dest;
-	float *v;
 
 	v = tv(-15, -15, -15);
 	VectorCopy(v, ent->mins);
@@ -1828,12 +1823,10 @@ droptofloor(edict_t *ent)
  * and for each item in each client's inventory.
  */
 void
-PrecacheItem(gitem_t *it)
+PrecacheItem(const gitem_t *it)
 {
-	char *s, *start;
+	const char *s;
 	char data[MAX_QPATH];
-	int len;
-	gitem_t *ammo;
 
 	if (!it)
 	{
@@ -1863,6 +1856,8 @@ PrecacheItem(gitem_t *it)
 	/* parse everything for its ammo */
 	if (it->ammo && it->ammo[0])
 	{
+		const gitem_t *ammo;
+
 		ammo = FindItem(it->ammo);
 
 		if (ammo != it)
@@ -1881,6 +1876,9 @@ PrecacheItem(gitem_t *it)
 
 	while (*s)
 	{
+		const char *start;
+		int len;
+
 		start = s;
 
 		while (*s && *s != ' ')
@@ -1893,6 +1891,7 @@ PrecacheItem(gitem_t *it)
 		if ((len >= MAX_QPATH) || (len < 5))
 		{
 			gi.error("PrecacheItem: %s has bad precache string", it->classname);
+			return;
 		}
 
 		memcpy(data, start, len);
@@ -2360,7 +2359,6 @@ gitem_t itemlist[] = {
 		WEAP_MACHINEGUN,
 		NULL,
 		0,
-
 		"weapons/machgf1b.wav weapons/machgf2b.wav weapons/machgf3b.wav weapons/machgf4b.wav weapons/machgf5b.wav"
 	},
 
@@ -2383,7 +2381,6 @@ gitem_t itemlist[] = {
 		WEAP_CHAINGUN,
 		NULL,
 		0,
-
 		"weapons/chngnu1a.wav weapons/chngnl1a.wav weapons/machgf3b.wav` weapons/chngnd1a.wav"
 	},
 
@@ -2428,7 +2425,6 @@ gitem_t itemlist[] = {
 		WEAP_GRENADES,
 		NULL,
 		AMMO_GRENADES,
-
 		"weapons/hgrent1a.wav weapons/hgrena1b.wav weapons/hgrenc1b.wav weapons/hgrenb1a.wav weapons/hgrenb2a.wav "
 	},
 
@@ -2451,7 +2447,6 @@ gitem_t itemlist[] = {
 		WEAP_GRENADELAUNCHER,
 		NULL,
 		0,
-
 		"models/objects/grenade/tris.md2 weapons/grenlf1a.wav weapons/grenlr1b.wav weapons/grenlb1b.wav"
 	},
 
@@ -2496,7 +2491,6 @@ gitem_t itemlist[] = {
 		WEAP_ROCKETLAUNCHER,
 		NULL,
 		0,
-
 		"models/objects/rocket/tris.md2 weapons/rockfly.wav weapons/rocklf1a.wav weapons/rocklr1b.wav models/objects/debris2/tris.md2"
 	},
 
@@ -2519,7 +2513,6 @@ gitem_t itemlist[] = {
 		WEAP_HYPERBLASTER,
 		NULL,
 		0,
-
 		"weapons/hyprbu1a.wav weapons/hyprbl1a.wav weapons/hyprbf1a.wav weapons/hyprbd1a.wav misc/lasfly.wav"
 	},
 
@@ -2586,7 +2579,6 @@ gitem_t itemlist[] = {
 		WEAP_BFG,
 		NULL,
 		0,
-
 		"sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
 	},
 
@@ -3499,7 +3491,6 @@ gitem_t itemlist[] = {
 		0,
 		NULL,
 		0,
-
 		"items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav"
 	},
 

@@ -393,8 +393,8 @@ mutant_melee(edict_t *self)
 }
 
 void
-mutant_jump_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
-		csurface_t *surf /* unused */)
+mutant_jump_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */,
+		const csurface_t *surf /* unused */)
 {
 	if (!self || !other)
 	{
@@ -756,7 +756,7 @@ mmove_t mutant_move_death2 = {
 
 void
 mutant_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unsued */,
-		int damage, vec3_t point /* unused */)
+		int damage, const vec3_t point /* unused */)
 {
 	int n;
 
