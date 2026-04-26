@@ -1331,9 +1331,9 @@ spawngrow_think(edict_t *self)
 
 	for (i = 0; i < 2; i++)
 	{
-		self->s.angles[0] = rand() % 360;
-		self->s.angles[1] = rand() % 360;
-		self->s.angles[2] = rand() % 360;
+		self->s.angles[0] = randk() % 360;
+		self->s.angles[1] = randk() % 360;
+		self->s.angles[2] = randk() % 360;
 	}
 
 	if ((level.time < self->wait) && (self->s.frame < 2))
@@ -1374,9 +1374,9 @@ SpawnGrow_Spawn(vec3_t startpos, int size)
 
 	for (i = 0; i < 2; i++)
 	{
-		ent->s.angles[0] = rand() % 360;
-		ent->s.angles[1] = rand() % 360;
-		ent->s.angles[2] = rand() % 360;
+		ent->s.angles[0] = randk() % 360;
+		ent->s.angles[1] = randk() % 360;
+		ent->s.angles[2] = randk() % 360;
 	}
 
 	ent->solid = SOLID_NOT;

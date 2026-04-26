@@ -698,17 +698,17 @@ Widow2Crunch(edict_t *self)
 
 	if (self->s.frame != FRAME_tongs07)
 	{
-		fire_hit(self, aim, 20 + (rand() % 6), 0);
+		fire_hit(self, aim, 20 + (randk() % 6), 0);
 	}
 	else
 	{
 		if (self->enemy->groundentity)
 		{
-			fire_hit(self, aim, (20 + (rand() % 6)), 500);
+			fire_hit(self, aim, (20 + (randk() % 6)), 500);
 		}
 		else /* not as much kick if they're in the air .. makes it harder to land on her head */
 		{
-			fire_hit(self, aim, (20 + (rand() % 6)), 250);
+			fire_hit(self, aim, (20 + (randk() % 6)), 250);
 		}
 	}
 }
@@ -1366,7 +1366,7 @@ Widow2_CheckAttack(edict_t *self)
 			if (widow2_tongue_attack_ok(spot1, spot2, 256))
 			{
 				/* be nice in easy mode */
-				if ((skill->value == SKILL_EASY) && (rand() & 3))
+				if ((skill->value == SKILL_EASY) && (randk() & 3))
 				{
 					return false;
 				}
@@ -1782,11 +1782,11 @@ WidowExplode(edict_t *self)
 
 	self->think = WidowExplode;
 	VectorCopy(self->s.origin, org);
-	org[2] += 24 + (rand() & 15);
+	org[2] += 24 + (randk() & 15);
 
 	if (self->count < 8)
 	{
-		org[2] += 24 + (rand() & 31);
+		org[2] += 24 + (randk() & 31);
 	}
 
 	switch (self->count)

@@ -774,7 +774,7 @@ player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 			/* play sound at end of server frame */
 			if (!self->sounds)
 			{
-				self->sounds = gi.soundindex(va("*death%i.wav", (rand() % 4) + 1));
+				self->sounds = gi.soundindex(va("*death%i.wav", (randk() % 4) + 1));
 			}
 		}
 	}
@@ -980,7 +980,7 @@ SelectRandomDeathmatchSpawnPoint(void)
 		count -= 2;
 	}
 
-	selection = rand() % count;
+	selection = randk() % count;
 
 	spot = NULL;
 

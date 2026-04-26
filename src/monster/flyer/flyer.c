@@ -920,7 +920,7 @@ flyer_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 		return; /* no pain anims in nightmare */
 	}
 
-	n = rand() % 3;
+	n = randk() % 3;
 
 	if (n == 0)
 	{

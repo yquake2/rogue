@@ -800,7 +800,7 @@ Weapon_Generic(edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST, int F
 				{
 					if (ent->client->ps.gunframe == pause_frames[n])
 					{
-						if (rand() & 15)
+						if (randk() & 15)
 						{
 							return;
 						}
@@ -1013,7 +1013,7 @@ Throw_Generic(edict_t *ent, int FRAME_FIRE_LAST, int FRAME_IDLE_LAST, int FRAME_
 			{
 				if (ent->client->ps.gunframe == pause_frames[n])
 				{
-					if (rand() & 15)
+					if (randk() & 15)
 					{
 						return;
 					}
@@ -2231,14 +2231,14 @@ Weapon_ChainFist(edict_t *ent)
 	}
 
 	/* holds for idle sequence */
-	else if ((ent->client->ps.gunframe == 42) && (rand() & 7))
+	else if ((ent->client->ps.gunframe == 42) && (randk() & 7))
 	{
 		if ((ent->client->pers.hand != CENTER_HANDED) && (random() < 0.4))
 		{
 			chainfist_smoke(ent);
 		}
 	}
-	else if ((ent->client->ps.gunframe == 51) && (rand() & 7))
+	else if ((ent->client->ps.gunframe == 51) && (randk() & 7))
 	{
 		if ((ent->client->pers.hand != CENTER_HANDED) && (random() < 0.4))
 		{
