@@ -1049,11 +1049,11 @@ widow_attack_kick(edict_t *self)
 
 	if (self->enemy->groundentity)
 	{
-		fire_hit(self, aim, (50 + (rand() % 6)), 500);
+		fire_hit(self, aim, (50 + (randk() % 6)), 500);
 	}
 	else  /* not as much kick if they're in the air .. makes it harder to land on her head */
 	{
-		fire_hit(self, aim, (50 + (rand() % 6)), 250);
+		fire_hit(self, aim, (50 + (randk() % 6)), 250);
 	}
 }
 
@@ -1688,7 +1688,7 @@ Widow_CheckAttack(edict_t *self)
 	if (real_enemy_range <= (MELEE_DISTANCE + 20))
 	{
 		/* don't always melee in easy mode */
-		if ((skill->value == SKILL_EASY) && (rand() & 3))
+		if ((skill->value == SKILL_EASY) && (randk() & 3))
 		{
 			return false;
 		}
