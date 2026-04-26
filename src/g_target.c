@@ -71,7 +71,7 @@ Use_Target_Speaker(edict_t *ent, edict_t *other /* unused */, edict_t *activator
 
 	if (ent->spawnflags & 3)
 	{
-	 	/* looping sound toggles */
+		/* looping sound toggles */
 		if (ent->s.sound)
 		{
 			ent->s.sound = 0; /* turn it off */
@@ -83,7 +83,7 @@ Use_Target_Speaker(edict_t *ent, edict_t *other /* unused */, edict_t *activator
 	}
 	else
 	{
-	 	/* normal sound */
+		/* normal sound */
 		if (ent->spawnflags & 4)
 		{
 			chan = CHAN_VOICE | CHAN_RELIABLE;
@@ -238,7 +238,7 @@ SP_target_help(edict_t *ent)
 
 	if (deathmatch->value)
 	{
-	 	/* auto-remove for deathmatch */
+		/* auto-remove for deathmatch */
 		G_FreeEdict(ent);
 		return;
 	}
@@ -287,7 +287,7 @@ SP_target_secret(edict_t *ent)
 
 	if (deathmatch->value)
 	{
-	 	/* auto-remove for deathmatch */
+		/* auto-remove for deathmatch */
 		G_FreeEdict(ent);
 		return;
 	}
@@ -349,7 +349,7 @@ SP_target_goal(edict_t *ent)
 
 	if (deathmatch->value)
 	{
-	 	/* auto-remove for deathmatch */
+		/* auto-remove for deathmatch */
 		G_FreeEdict(ent);
 		return;
 	}

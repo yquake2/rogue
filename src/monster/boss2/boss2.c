@@ -18,7 +18,7 @@ void boss2_dead(edict_t *self);
 void boss2_attack(edict_t *self);
 void boss2_attack_mg(edict_t *self);
 void boss2_reattack_mg(edict_t *self);
-void boss2_die(edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point);
+void boss2_die(edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, const vec3_t point);
 
 static int sound_pain1;
 static int sound_pain2;
@@ -697,7 +697,7 @@ boss2_dead(edict_t *self)
 
 void
 boss2_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
-		int damage /* unused */, vec3_t point /* unused */)
+		int damage /* unused */, const vec3_t point /* unused */)
 {
 	if (!self)
 	{
