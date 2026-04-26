@@ -1,4 +1,23 @@
-/* =======================================================================
+/*
+ * Copyright (C) 1997-2001 Id Software, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
+ * =======================================================================
  *
  * Main header file for the game module.
  *
@@ -123,8 +142,11 @@ typedef enum
 #define RANGE_FAR 3
 
 /* gib types */
-#define GIB_ORGANIC 0
-#define GIB_METALLIC 1
+typedef enum
+{
+	GIB_ORGANIC,
+	GIB_METALLIC
+} gibtype_t;
 
 /* monster ai flags */
 #define AI_STAND_GROUND 0x00000001
@@ -224,6 +246,7 @@ typedef struct
 	int armor;
 } gitem_armor_t;
 
+/* gitem_t->flags */
 #define IT_WEAPON 0x00000001                /* use makes active weapon */
 #define IT_AMMO 0x00000002
 #define IT_ARMOR 0x00000004
@@ -1004,6 +1027,14 @@ void Widowlegs_Spawn(vec3_t startpos, vec3_t angles);
 
 /* p_client.c */
 void RemoveAttackingPainDaemons(edict_t *self);
+
+/* savegame */
+void InitGame(void);
+void ReadLevel(const char *filename);
+void WriteLevel(const char *filename);
+void ReadGame(const char *filename);
+void WriteGame(const char *filename, qboolean autosave);
+void SpawnEntities(const char *mapname, char *entities, const char *spawnpoint);
 
 /* ============================================================================ */
 
