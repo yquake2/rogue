@@ -1037,6 +1037,7 @@ void Tag_DropToken(edict_t *ent, gitem_t *item);
 void fire_doppleganger(edict_t *ent, vec3_t start, vec3_t aimdir);
 
 /* g_spawn.c */
+char *ED_NewString(const char *string);
 edict_t *CreateMonster(vec3_t origin, vec3_t angles, char *classname);
 edict_t *CreateFlyMonster(vec3_t origin, vec3_t angles, vec3_t mins,
 		vec3_t maxs, char *classname);

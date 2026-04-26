@@ -296,7 +296,7 @@ Pickup_AncientHead(edict_t *ent, edict_t *other)
 qboolean
 Pickup_Bandolier(edict_t *ent, edict_t *other)
 {
-	gitem_t *item;
+	const gitem_t *item;
 	int index;
 
 	if (!ent || !other)
