@@ -29,8 +29,6 @@
 
 #define LEAD_TARGET 1
 
-qboolean visible(edict_t *self, edict_t *other);
-
 void chick_stand(edict_t *self);
 void chick_run(edict_t *self);
 void chick_reslash(edict_t *self);
@@ -520,7 +518,7 @@ mmove_t chick_move_death1 =
 void
 chick_die(edict_t *self, edict_t *inflictor /* unused */,
 		edict_t *attacker /* unused */, int damage,
-		vec3_t point /*unused */)
+		const vec3_t point /*unused */)
 {
 	int n;
 
@@ -562,7 +560,7 @@ chick_die(edict_t *self, edict_t *inflictor /* unused */,
 	self->deadflag = DEAD_DEAD;
 	self->takedamage = DAMAGE_YES;
 
-	n = rand() % 2;
+	n = randk() % 2;
 
 	if (n == 0)
 	{
@@ -605,7 +603,7 @@ ChickSlash(edict_t *self)
 
 	VectorSet(aim, MELEE_DISTANCE, self->mins[0], 10);
 	gi.sound(self, CHAN_WEAPON, sound_melee_swing, 1, ATTN_NORM, 0);
-	fire_hit(self, aim, (10 + (rand() % 6)), 100);
+	fire_hit(self, aim, (10 + (randk() % 6)), 100);
 }
 
 void

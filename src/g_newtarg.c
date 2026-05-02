@@ -353,9 +353,9 @@ blacklight_think(edict_t *self)
 		return;
 	}
 
-	self->s.angles[0] = rand() % 360;
-	self->s.angles[1] = rand() % 360;
-	self->s.angles[2] = rand() % 360;
+	self->s.angles[0] = randk() % 360;
+	self->s.angles[1] = randk() % 360;
+	self->s.angles[2] = randk() % 360;
 	self->nextthink = level.time + 0.1;
 }
 
@@ -398,9 +398,9 @@ orb_think(edict_t *self)
 		return;
 	}
 
-	self->s.angles[0] = rand() % 360;
-	self->s.angles[1] = rand() % 360;
-	self->s.angles[2] = rand() % 360;
+	self->s.angles[0] = randk() % 360;
+	self->s.angles[1] = randk() % 360;
+	self->s.angles[2] = randk() % 360;
 	self->nextthink = level.time + 0.1;
 }
 

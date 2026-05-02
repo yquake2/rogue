@@ -1,4 +1,24 @@
-/* =======================================================================
+/*
+ * Copyright (C) 1997-2001 Id Software, Inc.
+ * Copyright (c) ZeniMax Media Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
+ * =======================================================================
  *
  * Interface between client <-> game and client calculations.
  *
@@ -8,11 +28,11 @@
 #include "../header/local.h"
 #include "../monster/misc/player.h"
 
-edict_t *pm_passent;
+static edict_t *pm_passent;
 
 void ClientUserinfoChanged(edict_t *ent, char *userinfo);
 void SP_misc_teleporter_dest(edict_t *ent);
-void Touch_Item(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf);
+void Touch_Item(edict_t *ent, edict_t *other, const cplane_t *plane, const csurface_t *surf);
 
 /*
  * QUAKED info_player_start (1 0 0) (-16 -16 -24) (16 16 32)
@@ -110,12 +130,13 @@ SP_info_player_intermission(edict_t *ent)
 /* ======================================================================= */
 
 void
-player_pain(edict_t *self, edict_t *other, float kick, int damage)
+player_pain(edict_t *self /* unused */, edict_t *other /* unused */,
+		float kick /* unused */, int damage /* unused */)
 {
 }
 
-qboolean
-IsFemale(edict_t *ent)
+static qboolean
+IsFemale(const edict_t *ent)
 {
 	char *info;
 
@@ -130,6 +151,11 @@ IsFemale(edict_t *ent)
 	}
 
 	info = Info_ValueForKey(ent->client->pers.userinfo, "gender");
+
+	if (strstr(info, "crakhor"))
+	{
+		return true;
+	}
 
 	if ((info[0] == 'f') || (info[0] == 'F'))
 	{
@@ -139,8 +165,8 @@ IsFemale(edict_t *ent)
 	return false;
 }
 
-qboolean
-IsNeutral(edict_t *ent)
+static qboolean
+IsNeutral(const edict_t *ent)
 {
 	char *info;
 
@@ -155,6 +181,11 @@ IsNeutral(edict_t *ent)
 	}
 
 	info = Info_ValueForKey(ent->client->pers.userinfo, "gender");
+
+	if (strstr(info, "crakhor"))
+	{
+		return false;
+	}
 
 	if ((info[0] != 'f') && (info[0] != 'F') && (info[0] != 'm') &&
 		(info[0] != 'M'))
@@ -165,15 +196,11 @@ IsNeutral(edict_t *ent)
 	return false;
 }
 
-void
-ClientObituary(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker)
+static void
+ClientObituary(edict_t *self, const edict_t *inflictor /* unused */,
+		edict_t *attacker)
 {
-	int mod;
-	char *message;
-	char *message2;
-	qboolean ff;
-
-	if (!self || !attacker)
+	if (!self || !attacker || !inflictor)
 	{
 		return;
 	}
@@ -185,6 +212,10 @@ ClientObituary(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker
 
 	if (deathmatch->value || coop->value)
 	{
+		char *message, *message2;
+		qboolean ff;
+		int mod;
+
 		ff = meansOfDeath & MOD_FRIENDLY_FIRE;
 		mod = meansOfDeath & ~MOD_FRIENDLY_FIRE;
 		message = NULL;
@@ -312,7 +343,9 @@ ClientObituary(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker
 
 		if (message)
 		{
-			gi.bprintf(PRINT_MEDIUM, "%s %s.\n", self->client->pers.netname, message);
+			gi.bprintf(PRINT_MEDIUM, "%s %s.\n",
+					self->client->pers.netname,
+					message);
 
 			if (deathmatch->value)
 			{
@@ -325,7 +358,7 @@ ClientObituary(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker
 
 		self->enemy = attacker;
 
-		if (attacker->client)
+		if (attacker && attacker->client)
 		{
 			switch (mod)
 			{
@@ -504,7 +537,7 @@ ClientObituary(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker
 void
 TossClientWeapon(edict_t *self)
 {
-	gitem_t *item;
+	const gitem_t *item;
 	edict_t *drop;
 	qboolean quad;
 	float spread;
@@ -614,7 +647,7 @@ LookAtKiller(edict_t *self, edict_t *inflictor, edict_t *attacker)
 
 void
 player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
-		int damage, vec3_t point)
+		int damage, const vec3_t point)
 {
 	int n;
 
@@ -774,7 +807,7 @@ player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 			/* play sound at end of server frame */
 			if (!self->sounds)
 			{
-				self->sounds = gi.soundindex(va("*death%i.wav", (rand() % 4) + 1));
+				self->sounds = gi.soundindex(va("*death%i.wav", (randk() % 4) + 1));
 			}
 		}
 	}
@@ -980,7 +1013,7 @@ SelectRandomDeathmatchSpawnPoint(void)
 		count -= 2;
 	}
 
-	selection = rand() % count;
+	selection = randk() % count;
 
 	spot = NULL;
 
@@ -1045,8 +1078,8 @@ SelectDeathmatchSpawnPoint(void)
 	}
 }
 
-edict_t *
-SelectLavaCoopSpawnPoint(edict_t *ent)
+static edict_t *
+SelectLavaCoopSpawnPoint(const edict_t *ent)
 {
 	int index;
 	edict_t *spot = NULL;
@@ -1151,12 +1184,11 @@ SelectLavaCoopSpawnPoint(edict_t *ent)
 	return NULL;
 }
 
-edict_t *
-SelectCoopSpawnPoint(edict_t *ent)
+static edict_t *
+SelectCoopSpawnPoint(const edict_t *ent)
 {
 	int index;
 	edict_t *spot = NULL;
-	char *target;
 
 	if (!ent)
 	{
@@ -1181,6 +1213,8 @@ SelectCoopSpawnPoint(edict_t *ent)
 	/* assume there are four coop spots at each spawnpoint */
 	while (1)
 	{
+		const char *target;
+
 		spot = G_Find(spot, FOFS(classname), "info_player_coop");
 
 		if (!spot)
@@ -1197,7 +1231,8 @@ SelectCoopSpawnPoint(edict_t *ent)
 
 		if (Q_stricmp(game.spawnpoint, target) == 0)
 		{
-			/* this is a coop spawn point for one of the clients here */
+			/* this is a coop spawn point
+			   for one of the clients here */
 			index--;
 
 			if (!index)
@@ -1333,11 +1368,10 @@ InitBodyQue(void)
 }
 
 void
-body_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
-		int damage, vec3_t point)
+body_die(edict_t *self, edict_t *inflictor /* unused */,
+		edict_t *attacker /* unused */, int damage,
+		const vec3_t point /* unused */)
 {
-	int n;
-
 	if (!self)
 	{
 		return;
@@ -1345,7 +1379,10 @@ body_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* un
 
 	if (self->health < -40)
 	{
-		gi.sound(self, CHAN_BODY, gi.soundindex( "misc/udeath.wav"), 1, ATTN_NORM, 0);
+		int n;
+
+		gi.sound(self, CHAN_BODY, gi.soundindex(
+						"misc/udeath.wav"), 1, ATTN_NORM, 0);
 
 		for (n = 0; n < 4; n++)
 		{
@@ -1437,18 +1474,18 @@ respawn(edict_t *self)
 void
 spectator_respawn(edict_t *ent)
 {
-	int i, numspec;
-
 	if (!ent)
 	{
 		return;
 	}
 
-	/* if the user wants to become a spectator, make sure
-	   he doesn't exceed max_spectators */
+	/* if the user wants to become a spectator,
+	   make sure he doesn't exceed max_spectators */
 	if (ent->client->pers.spectator)
 	{
-		char *value = Info_ValueForKey(ent->client->pers.userinfo, "spectator");
+		int i, numspec;
+
+		const char *value = Info_ValueForKey(ent->client->pers.userinfo, "spectator");
 
 		if (*spectator_password->string &&
 			strcmp(spectator_password->string, "none") &&
@@ -1475,6 +1512,8 @@ spectator_respawn(edict_t *ent)
 		{
 			gi.cprintf(ent, PRINT_HIGH, "Server spectator limit is full.");
 			ent->client->pers.spectator = false;
+
+			/* reset his spectator var */
 			gi.WriteByte(svc_stufftext);
 			gi.WriteString("spectator 0\n");
 			gi.unicast(ent, true);
@@ -1483,7 +1522,9 @@ spectator_respawn(edict_t *ent)
 	}
 	else
 	{
-		char *value = Info_ValueForKey(ent->client->pers.userinfo, "password");
+		/* he was a spectator and wants to join the
+		   game he must have the right password */
+		const char *value = Info_ValueForKey(ent->client->pers.userinfo, "password");
 
 		if (*password->string && strcmp(password->string, "none") &&
 			strcmp(password->string, value))
@@ -1521,19 +1562,21 @@ spectator_respawn(edict_t *ent)
 
 	if (ent->client->pers.spectator)
 	{
-		gi.bprintf(PRINT_HIGH, "%s has moved to the sidelines\n", ent->client->pers.netname);
+		gi.bprintf(PRINT_HIGH, "%s has moved to the sidelines\n",
+				ent->client->pers.netname);
 	}
 	else
 	{
-		gi.bprintf(PRINT_HIGH, "%s joined the game\n", ent->client->pers.netname);
+		gi.bprintf(PRINT_HIGH, "%s joined the game\n",
+				ent->client->pers.netname);
 	}
 }
 
 /* ============================================================== */
 
 /*
- * Called when a player connects to a
- * server or respawns in a deathmatch.
+ * Called when a player connects to
+ * a server or respawns in a deathmatch.
  */
 void
 PutClientInServer(edict_t *ent)
@@ -1716,7 +1759,7 @@ PutClientInServer(edict_t *ent)
 
 	if (!KillBox(ent))
 	{
-	 	/* could't spawn in? */
+		/* could't spawn in? */
 	}
 
 	gi.linkentity(ent);
@@ -1729,7 +1772,7 @@ PutClientInServer(edict_t *ent)
 		   the player has the nuke key. (not in DM) */
 		if (!(deathmatch->value))
 		{
-			gitem_t *item;
+			const gitem_t *item;
 
 			item = FindItem("Antimatter Bomb");
 			client->pers.selected_item = ITEM_INDEX(item);
@@ -1792,8 +1835,6 @@ ClientBeginDeathmatch(edict_t *ent)
 void
 ClientBegin(edict_t *ent)
 {
-	int i;
-
 	if (!ent)
 	{
 		return;
@@ -1811,6 +1852,8 @@ ClientBegin(edict_t *ent)
 	   just take it, otherwise spawn one from scratch */
 	if (ent->inuse == true)
 	{
+		int i;
+
 		/* the client has cleared the client side viewangles upon
 		   connecting to the server, which is different than the
 		   state when the game is saved, so we need to compensate
@@ -1845,7 +1888,8 @@ ClientBegin(edict_t *ent)
 			gi.WriteByte(MZ_LOGIN);
 			gi.multicast(ent->s.origin, MULTICAST_PVS);
 
-			gi.bprintf(PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
+			gi.bprintf(PRINT_HIGH, "%s entered the game\n",
+					ent->client->pers.netname);
 		}
 	}
 
@@ -1854,8 +1898,7 @@ ClientBegin(edict_t *ent)
 }
 
 /*
- * called whenever the player updates a userinfo variable.
- *
+ * Called whenever the player updates a userinfo variable.
  * The game can override any of the settings in place
  * (forcing skins or names, etc) before copying it off.
  */
@@ -1878,8 +1921,7 @@ ClientUserinfoChanged(edict_t *ent, char *userinfo)
 
 	/* set name */
 	s = Info_ValueForKey(userinfo, "name");
-	strncpy(ent->client->pers.netname, s, sizeof(ent->client->pers.netname) -
-			1);
+	Q_strlcpy(ent->client->pers.netname, s, sizeof(ent->client->pers.netname));
 
 	/* set spectator */
 	s = Info_ValueForKey(userinfo, "spectator");
@@ -1937,9 +1979,8 @@ ClientUserinfoChanged(edict_t *ent, char *userinfo)
  * Called when a player begins connecting to the server.
  * The game can refuse entrance to a client by returning false.
  * If the client is allowed, the connection process will continue
- * and eventually get to ClientBegin()
- * Changing levels will NOT cause this to be called again, but
- * loadgames will.
+ * and eventually get to ClientBegin(). Changing levels will NOT
+ * cause this to be called again, but loadgames will.
  */
 qboolean
 ClientConnect(edict_t *ent, char *userinfo)
@@ -1971,7 +2012,8 @@ ClientConnect(edict_t *ent, char *userinfo)
 			strcmp(spectator_password->string, "none") &&
 			strcmp(spectator_password->string, value))
 		{
-			Info_SetValueForKey(userinfo, "rejmsg", "Spectator password required or incorrect.");
+			Info_SetValueForKey(userinfo, "rejmsg",
+					"Spectator password required or incorrect.");
 			return false;
 		}
 
@@ -1986,7 +2028,8 @@ ClientConnect(edict_t *ent, char *userinfo)
 
 		if (numspec >= maxspectators->value)
 		{
-			Info_SetValueForKey(userinfo, "rejmsg", "Server spectator limit is full.");
+			Info_SetValueForKey(userinfo, "rejmsg",
+					"Server spectator limit is full.");
 			return false;
 		}
 	}
@@ -1998,7 +2041,8 @@ ClientConnect(edict_t *ent, char *userinfo)
 		if (*password->string && strcmp(password->string, "none") &&
 			strcmp(password->string, value))
 		{
-			Info_SetValueForKey(userinfo, "rejmsg", "Password required or incorrect.");
+			Info_SetValueForKey(userinfo, "rejmsg",
+					"Password required or incorrect.");
 			return false;
 		}
 	}
@@ -2092,7 +2136,11 @@ ClientDisconnect(edict_t *ent)
 
 /* ============================================================== */
 
-trace_t
+/*
+ * pmove doesn't need to know
+ * about passent and contentmask
+ */
+static trace_t
 PM_trace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end)
 {
 	if (pm_passent->health > 0)
@@ -2388,8 +2436,9 @@ ClientThink(edict_t *ent, usercmd_t *ucmd)
 }
 
 /*
- * This will be called once for each server frame,
- * before running any other entities in the world.
+ * This will be called once for each server
+ * frame, before running any other entities
+ * in the world.
  */
 void
 ClientBeginServerFrame(edict_t *ent)

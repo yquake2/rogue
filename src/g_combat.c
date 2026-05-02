@@ -1,4 +1,22 @@
 /*
+ * Copyright (C) 1997-2001 Id Software, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
  * =======================================================================
  *
  * Combat code like damage, death and so on.
@@ -119,11 +137,11 @@ CanDamage(edict_t *targ, edict_t *inflictor)
 	return false;
 }
 
-void
+static void
 Killed(edict_t *targ, edict_t *inflictor, edict_t *attacker,
-		int damage, vec3_t point)
+		int damage, const vec3_t point)
 {
-    if (!targ || !inflictor || !attacker)
+	if (!targ || !inflictor || !attacker)
 	{
 		return;
 	}
@@ -205,8 +223,10 @@ Killed(edict_t *targ, edict_t *inflictor, edict_t *attacker,
 	}
 
 	if ((targ->movetype == MOVETYPE_PUSH) ||
-		(targ->movetype == MOVETYPE_STOP) || (targ->movetype == MOVETYPE_NONE))
+		(targ->movetype == MOVETYPE_STOP) ||
+		(targ->movetype == MOVETYPE_NONE))
 	{
+		/* doors, triggers, etc */
 		targ->die(targ, inflictor, attacker, damage, point);
 		return;
 	}
@@ -220,8 +240,8 @@ Killed(edict_t *targ, edict_t *inflictor, edict_t *attacker,
 	targ->die(targ, inflictor, attacker, damage, point);
 }
 
-void
-SpawnDamage(int type, vec3_t origin, vec3_t normal, int damage)
+static void
+SpawnDamage(int type, const vec3_t origin, const vec3_t normal)
 {
 	gi.WriteByte(svc_temp_entity);
 	gi.WriteByte(type);
@@ -231,10 +251,7 @@ SpawnDamage(int type, vec3_t origin, vec3_t normal, int damage)
 }
 
 /*
- * ============
- * T_Damage
- *
- * targ		entity that is being damaged
+ * targ			entity that is being damaged
  * inflictor	entity that is causing the damage
  * attacker	entity that caused the inflictor to damage targ
  *  example: targ=monster, inflictor=rocket, attacker=player
@@ -254,8 +271,8 @@ SpawnDamage(int type, vec3_t origin, vec3_t normal, int damage)
  *  DAMAGE_NO_PROTECTION	kills godmode, armor, everything
  * ============
  */
-int
-CheckPowerArmor(edict_t *ent, vec3_t point, vec3_t normal,
+static int
+CheckPowerArmor(edict_t *ent, const vec3_t point, const vec3_t normal,
 		int damage, int dflags)
 {
 	gclient_t *client;
@@ -362,7 +379,7 @@ CheckPowerArmor(edict_t *ent, vec3_t point, vec3_t normal,
 		save = damage;
 	}
 
-	SpawnDamage(pa_te_type, point, normal, save);
+	SpawnDamage(pa_te_type, point, normal);
 	ent->powerarmor_time = level.time + 0.2;
 
 	if (dflags & DAMAGE_NO_REG_ARMOR)
@@ -386,14 +403,14 @@ CheckPowerArmor(edict_t *ent, vec3_t point, vec3_t normal,
 	return save;
 }
 
-int
-CheckArmor(edict_t *ent, vec3_t point, vec3_t normal,
-		int damage, int te_sparks, int dflags)
+static int
+CheckArmor(edict_t *ent, vec3_t point, const vec3_t normal, int damage,
+		int te_sparks, int dflags)
 {
 	gclient_t *client;
 	int save;
 	int index;
-	gitem_t *armor;
+	const gitem_t *armor;
 
 	if (!ent)
 	{
@@ -446,7 +463,7 @@ CheckArmor(edict_t *ent, vec3_t point, vec3_t normal,
 	}
 
 	client->pers.inventory[index] -= save;
-	SpawnDamage(te_sparks, point, normal, save);
+	SpawnDamage(te_sparks, point, normal);
 
 	return save;
 }
@@ -456,7 +473,7 @@ M_ReactToDamage(edict_t *targ, edict_t *attacker, edict_t *inflictor)
 {
 	qboolean new_tesla;
 
-    if (!targ || !attacker || !inflictor)
+	if (!targ || !attacker || !inflictor)
 	{
 		return;
 	}
@@ -644,7 +661,7 @@ apply_knockback(edict_t *targ, vec3_t dir, float knockback, float scale)
 
 void
 T_Damage(edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
-		vec3_t point, vec3_t normal, int damage, int knockback, int dflags,
+		vec3_t point, const vec3_t normal, int damage, int knockback, int dflags,
 		int mod)
 {
 	gclient_t *client;
@@ -772,7 +789,7 @@ T_Damage(edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 	{
 		take = 0;
 		save = damage;
-		SpawnDamage(te_sparks, point, normal, save);
+		SpawnDamage(te_sparks, point, normal);
 	}
 
 	/* check for invincibility */
@@ -831,22 +848,22 @@ T_Damage(edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		/* need more blood for chainfist. */
 		if (targ->flags & FL_MECHANICAL)
 		{
-			SpawnDamage(TE_ELECTRIC_SPARKS, point, normal, take);
+			SpawnDamage(TE_ELECTRIC_SPARKS, point, normal);
 		}
 		else if ((targ->svflags & SVF_MONSTER) || (client))
 		{
 			if (mod == MOD_CHAINFIST)
 			{
-				SpawnDamage(TE_MOREBLOOD, point, normal, 255);
+				SpawnDamage(TE_MOREBLOOD, point, normal);
 			}
 			else
 			{
-				SpawnDamage(TE_BLOOD, point, normal, take);
+				SpawnDamage(TE_BLOOD, point, normal);
 			}
 		}
 		else
 		{
-			SpawnDamage(te_sparks, point, normal, take);
+			SpawnDamage(te_sparks, point, normal);
 		}
 
 		targ->health = targ->health - take;
@@ -932,7 +949,7 @@ T_Damage(edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 
 void
 T_RadiusDamage(edict_t *inflictor, edict_t *attacker, float damage,
-		edict_t *ignore, float radius, int mod)
+		const edict_t *ignore, float radius, int mod)
 {
 	float points;
 	edict_t *ent = NULL;

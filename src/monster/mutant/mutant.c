@@ -34,7 +34,7 @@ mutant_step(edict_t *self)
 		return;
 	}
 
-	n = (rand() + 1) % 3;
+	n = (randk() + 1) % 3;
 
 	if (n == 0)
 	{
@@ -313,7 +313,7 @@ mutant_hit_left(edict_t *self)
 
 	VectorSet(aim, MELEE_DISTANCE, self->mins[0], 8);
 
-	if (fire_hit(self, aim, (10 + (rand() % 5)), 100))
+	if (fire_hit(self, aim, (10 + (randk() % 5)), 100))
 	{
 		gi.sound(self, CHAN_WEAPON, sound_hit, 1, ATTN_NORM, 0);
 	}
@@ -335,7 +335,7 @@ mutant_hit_right(edict_t *self)
 
 	VectorSet(aim, MELEE_DISTANCE, self->maxs[0], 8);
 
-	if (fire_hit(self, aim, (10 + (rand() % 5)), 100))
+	if (fire_hit(self, aim, (10 + (randk() % 5)), 100))
 	{
 		gi.sound(self, CHAN_WEAPON, sound_hit2, 1, ATTN_NORM, 0);
 	}
@@ -393,8 +393,8 @@ mutant_melee(edict_t *self)
 }
 
 void
-mutant_jump_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
-		csurface_t *surf /* unused */)
+mutant_jump_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */,
+		const csurface_t *surf /* unused */)
 {
 	if (!self || !other)
 	{
@@ -756,7 +756,7 @@ mmove_t mutant_move_death2 = {
 
 void
 mutant_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unsued */,
-		int damage, vec3_t point /* unused */)
+		int damage, const vec3_t point /* unused */)
 {
 	int n;
 

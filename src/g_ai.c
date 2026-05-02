@@ -358,7 +358,7 @@ range(edict_t *self, edict_t *other)
 	vec3_t v;
 	float len;
 
- 	if (!self || !other)
+	if (!self || !other)
 	{
 		return 0;
 	}
@@ -389,7 +389,7 @@ range(edict_t *self, edict_t *other)
  * to self, even if not infront
  */
 qboolean
-visible(edict_t *self, edict_t *other)
+visible(const edict_t *self, const edict_t *other)
 {
 	vec3_t spot1;
 	vec3_t spot2;
@@ -798,7 +798,7 @@ FindTarget(edict_t *self)
 /* ============================================================================= */
 
 qboolean
-FacingIdeal(edict_t *self)
+FacingIdeal(const edict_t *self)
 {
 	float delta;
 
@@ -899,7 +899,7 @@ M_CheckAttack(edict_t *self)
 	if (enemy_range == RANGE_MELEE)
 	{
 		/* don't always melee in easy mode */
-		if ((skill->value == SKILL_EASY) && (rand() & 3))
+		if ((skill->value == SKILL_EASY) && (randk() & 3))
 		{
 			/* fix for melee only monsters & strafing */
 			self->monsterinfo.attack_state = AS_STRAIGHT;
@@ -1292,7 +1292,7 @@ ai_checkattack(edict_t *self, float dist)
 		VectorCopy(self->enemy->s.origin, self->monsterinfo.blind_fire_target);
 		self->monsterinfo.blind_fire_delay = 0;
 	}
-	
+
 	if (coop && coop->value && (self->monsterinfo.search_time < level.time))
 	{
 		if (FindTarget(self))

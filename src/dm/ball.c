@@ -26,7 +26,7 @@ extern void SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles);
 extern float PlayersRangeFromSpot(edict_t *spot);
 
 void DBall_BallDie(edict_t *self, edict_t *inflictor, edict_t *attacker,
-		int damage, vec3_t point);
+		int damage, const vec3_t point);
 void DBall_BallRespawn(edict_t *self);
 
 int
@@ -327,8 +327,8 @@ DBall_ChangeKnockback(edict_t *targ, edict_t *attacker, int knockback, int mod)
 }
 
 void
-DBall_GoalTouch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
-		csurface_t *surf /* unused */)
+DBall_GoalTouch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */,
+		const csurface_t *surf /* unused */)
 {
 	int team_score;
 	int scorechange;
@@ -466,7 +466,7 @@ PickBallStart(edict_t *ent)
 }
 
 void
-DBall_BallTouch(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
+DBall_BallTouch(edict_t *ent, edict_t *other, const cplane_t *plane, const csurface_t *surf)
 {
 	vec3_t dir;
 	float dot;
@@ -515,7 +515,7 @@ DBall_BallPain(edict_t *self, edict_t *other, float kick, int damage)
 
 void
 DBall_BallDie(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
-		int damage, vec3_t point)
+		int damage, const vec3_t point)
 {
 	if (!self)
 	{
@@ -580,8 +580,8 @@ DBall_BallRespawn(edict_t *self)
 }
 
 void
-DBall_SpeedTouch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
-		csurface_t *surf /* unused */)
+DBall_SpeedTouch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */,
+		const csurface_t *surf /* unused */)
 {
 	float dot;
 	vec3_t vel;
