@@ -1,3 +1,13 @@
+Ground Zero 2.15 to 2.16
+- Fix crash in Tag DM game when respawning after death. (by
+  BjossiAlfreds)
+- Several improvements to the build system, most notably separate dirs
+  for debug and release builds. (by BjossiAlfreds)
+- Huge stability and robustness improvements to the savegame system. (by
+  BjossiAlfreds)
+- A lot of smaller bug fixes, code cleanups and robustness improvements.
+  (by 0lvin, ABalfoort and BjossiAlfreds)
+
 Ground Zero 2.14 to 2.15
 - Fix monsters acting confused while following combat points. (by
   BjossiAlfreds)
