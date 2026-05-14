@@ -1249,13 +1249,12 @@ SelectCoopSpawnPoint(const edict_t *ent)
  * Chooses a player start, deathmatch start, coop start, etc
  */
 void
-SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles)
+SelectSpawnPoint(const edict_t *ent, vec3_t origin, vec3_t angles)
 {
 	edict_t *spot = NULL;
-	edict_t *coopspot = NULL;
-	int index;
-	int counter = 0;
-	vec3_t d;
+
+	VectorClear(origin);
+	VectorClear(angles);
 
 	if (!ent)
 	{
@@ -1303,6 +1302,7 @@ SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles)
 			if (!spot)
 			{
 				gi.error("Couldn't find spawn point %s\n", game.spawnpoint);
+				return;
 			}
 		}
 	}
@@ -1314,12 +1314,19 @@ SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles)
 	   client) use one in 550 units radius. */
 	if (coop->value)
 	{
+		int index;
+
 		index = ent->client - game.clients;
 
 		if (Q_stricmp(spot->classname, "info_player_start") == 0 && index != 0)
 		{
-			while(counter < 3)
+			int counter = 0;
+
+			while (counter < 3)
 			{
+				edict_t *coopspot = NULL;
+				vec3_t d;
+
 				coopspot = G_Find(coopspot, FOFS(classname), "info_player_coop");
 
 				if (!coopspot)
@@ -1356,12 +1363,13 @@ void
 InitBodyQue(void)
 {
 	int i;
-	edict_t *ent;
 
 	level.body_que = 0;
 
 	for (i = 0; i < BODY_QUEUE_SIZE; i++)
 	{
+		edict_t *ent;
+
 		ent = G_Spawn();
 		ent->classname = "bodyque";
 	}

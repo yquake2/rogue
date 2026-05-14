@@ -1398,7 +1398,7 @@ typedef struct dm_game_rs
 	void (*GameInit)(void);
 	void (*PostInitSetup)(void);
 	void (*ClientBegin)(edict_t *ent);
-	void (*SelectSpawnPoint)(edict_t *ent, vec3_t origin, vec3_t angles);
+	void (*SelectSpawnPoint)(const edict_t *ent, vec3_t origin, vec3_t angles);
 	void (*PlayerDeath)(edict_t *targ, edict_t *inflictor, edict_t *attacker);
 	void (*Score)(edict_t *attacker, edict_t *victim, int scoreChange);
 	void (*PlayerEffects)(edict_t *ent);
@@ -1413,7 +1413,7 @@ extern dm_game_rt DMGame;
 
 void DBall_GameInit(void);
 void DBall_ClientBegin(edict_t *ent);
-void DBall_SelectSpawnPoint(edict_t *ent, vec3_t origin, vec3_t angles);
+void DBall_SelectSpawnPoint(const edict_t *ent, vec3_t origin, vec3_t angles);
 int DBall_ChangeKnockback(edict_t *targ, edict_t *attacker, int knockback, int mod);
 int DBall_ChangeDamage(edict_t *targ, edict_t *attacker, int damage, int mod);
 void DBall_PostInitSetup(void);

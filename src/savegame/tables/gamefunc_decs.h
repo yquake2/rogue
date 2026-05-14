@@ -166,7 +166,7 @@ extern void respawn ( edict_t * self ) ;
 extern void CopyToBodyQue ( edict_t * ent ) ;
 extern void body_die ( edict_t * self , edict_t * inflictor , edict_t * attacker , int damage , const vec3_t point ) ;
 extern void InitBodyQue ( void ) ;
-extern void SelectSpawnPoint ( edict_t * ent , vec3_t origin , vec3_t angles ) ;
+extern void SelectSpawnPoint ( const edict_t * ent , vec3_t origin , vec3_t angles ) ;
 extern edict_t * SelectDeathmatchSpawnPoint ( void ) ;
 extern edict_t * SelectFarthestDeathmatchSpawnPoint ( void ) ;
 extern edict_t * SelectRandomDeathmatchSpawnPoint ( void ) ;
@@ -1454,7 +1454,7 @@ extern int DBall_ChangeKnockback ( edict_t * targ , edict_t * attacker , int kno
 extern int DBall_ChangeDamage ( edict_t * targ , edict_t * attacker , int damage , int mod ) ;
 extern void DBall_PostInitSetup ( void ) ;
 extern void DBall_GameInit ( void ) ;
-extern void DBall_SelectSpawnPoint ( edict_t * ent , vec3_t origin , vec3_t angles ) ;
+extern void DBall_SelectSpawnPoint ( const edict_t * ent , vec3_t origin , vec3_t angles ) ;
 extern void DBall_ClientBegin ( edict_t * ent ) ;
 extern int DBall_CheckDMRules ( void ) ;
 extern void wait_and_change_think(edict_t* ent);
