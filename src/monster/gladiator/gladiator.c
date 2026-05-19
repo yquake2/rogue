@@ -223,7 +223,7 @@ GaldiatorMelee(edict_t *self)
 
 	VectorSet(aim, MELEE_DISTANCE, self->mins[0], -4);
 
-	if (fire_hit(self, aim, (20 + (rand() % 5)), 300))
+	if (fire_hit(self, aim, (20 + (randk() % 5)), 300))
 	{
 		gi.sound(self, CHAN_AUTO, sound_cleaver_hit, 1, ATTN_NORM, 0);
 	}
@@ -486,7 +486,7 @@ mmove_t gladiator_move_death =
 void
 gladiator_die(edict_t *self, edict_t *inflictor /* unused */,
 	   	edict_t *attacker /* unused */, int damage /*unused */,
-		vec3_t point)
+		const vec3_t point)
 {
 	int n;
 

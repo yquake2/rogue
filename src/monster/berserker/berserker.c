@@ -250,7 +250,7 @@ berserk_attack_spike(edict_t *self)
 	}
 
 	static vec3_t aim = {MELEE_DISTANCE, 0, -24};
-	fire_hit(self, aim, (15 + (rand() % 6)), 400);
+	fire_hit(self, aim, (15 + (randk() % 6)), 400);
 }
 
 void
@@ -294,7 +294,7 @@ berserk_attack_club(edict_t *self)
 	}
 
 	VectorSet(aim, MELEE_DISTANCE, self->mins[0], -4);
-	fire_hit(self, aim, (5 + (rand() % 6)), 400);
+	fire_hit(self, aim, (5 + (randk() % 6)), 400);
 }
 
 static mframe_t berserk_frames_attack_club[] = {
@@ -360,7 +360,7 @@ berserk_melee(edict_t *self)
 
 	monster_done_dodge(self);
 
-	if ((rand() % 2) == 0)
+	if ((randk() % 2) == 0)
 	{
 		self->monsterinfo.currentmove = &berserk_move_attack_spike;
 	}
@@ -516,7 +516,7 @@ mmove_t berserk_move_death2 =
 
 void
 berserk_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
-		int damage, vec3_t point /* unused */)
+		int damage, const vec3_t point /* unused */)
 {
 	int n;
 

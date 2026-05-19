@@ -27,8 +27,8 @@
  * =======================================================================
  */
 
-#ifndef ROGUE_SHARED_H
-#define ROGUE_SHARED_H
+#ifndef SHARED_SHARED_H
+#define SHARED_SHARED_H
 
 #include <assert.h>
 #include <math.h>
@@ -708,7 +708,7 @@ typedef struct
 
 	/* callbacks to test the world */
 	trace_t (*trace)(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end);
-	int (*pointcontents)(vec3_t point);
+	int (*pointcontents)(const vec3_t point);
 } pmove_t;
 
 /* entity_state_t->effects
@@ -1318,4 +1318,4 @@ typedef char bitlist_t;
 /* test the value of bit i */
 #define BITLIST_ISSET(l, i) (l[(i) / BITLIST_BPU] & (1 << ((i) % BITLIST_BPU))) != 0
 
-#endif /* ROGUE_SHARED_H */
+#endif /* SHARED_SHARED_H */

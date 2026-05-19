@@ -784,7 +784,7 @@ soldier_fire(edict_t *self, int in_flash_number)
 		/* changed to wait from pausetime to not interfere with dodge code */
 		if (!(self->monsterinfo.aiflags & AI_HOLD_FRAME))
 		{
-			self->wait = level.time + (3 + rand() % 8) * FRAMETIME;
+			self->wait = level.time + (3 + randk() % 8) * FRAMETIME;
 		}
 
 		monster_fire_bullet(self, start, aim, 2, 4, DEFAULT_BULLET_HSPREAD,
@@ -1666,7 +1666,7 @@ mmove_t soldier_move_death6 =
 void
 soldier_die(edict_t *self, edict_t *inflictor /* unused */,
 		edict_t *attacker /* unused */, int damage,
-		vec3_t point /* unused */)
+		const vec3_t point /* unused */)
 {
 	int n;
 
@@ -1724,7 +1724,7 @@ soldier_die(edict_t *self, edict_t *inflictor /* unused */,
 		return;
 	}
 
-	n = rand() % 5;
+	n = randk() % 5;
 
 	if (n == 0)
 	{

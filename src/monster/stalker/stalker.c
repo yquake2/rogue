@@ -735,7 +735,7 @@ stalker_swing_attack(edict_t *self)
 
 	VectorSet(aim, MELEE_DISTANCE, 0, 0);
 
-	if (fire_hit(self, aim, (5 + (rand() % 5)), 50))
+	if (fire_hit(self, aim, (5 + (randk() % 5)), 50))
 	{
 		if (self->s.frame < FRAME_attack08)
 		{
@@ -1380,7 +1380,7 @@ mmove_t stalker_move_death = {
 
 void
 stalker_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
-		int damage, vec3_t point /* unused */)
+		int damage, const vec3_t point /* unused */)
 {
 	int n;
 

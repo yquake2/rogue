@@ -137,12 +137,12 @@ Move_Final(edict_t *ent)
 void
 Move_Begin(edict_t *ent)
 {
+	float frames;
+
 	if (!ent)
 	{
 		return;
 	}
-
-	float frames;
 
 	if ((ent->moveinfo.speed * FRAMETIME) >= ent->moveinfo.remaining_distance)
 	{
@@ -710,8 +710,8 @@ wait_and_change(edict_t* ent, void (*afterwaitfunc)(edict_t *))
 }
 
 void
-Touch_Plat_Center(edict_t *ent, edict_t *other, cplane_t *plane /* unsed */,
-		csurface_t *surf /* unused */)
+Touch_Plat_Center(edict_t *ent, edict_t *other, const cplane_t *plane /* unused */,
+		const csurface_t *surf /* unused */)
 {
 	if (!ent || !other)
 	{
@@ -1126,7 +1126,7 @@ plat2_operate(edict_t *ent, edict_t *other)
 	float platCenter;
 	edict_t *trigger;
 
-  	if (!ent || !other)
+	if (!ent || !other)
 	{
 		return;
 	}
@@ -1208,7 +1208,7 @@ plat2_operate(edict_t *ent, edict_t *other)
 
 void
 Touch_Plat_Center2(edict_t *ent, edict_t *other,
-		cplane_t *plane /* unused */, csurface_t *surf /* unused */)
+		const cplane_t *plane /* unused */, const csurface_t *surf /* unused */)
 {
 	if (!ent || !other)
 	{
@@ -1275,7 +1275,7 @@ plat2_blocked(edict_t *self, edict_t *other)
 
 void
 Use_Plat2(edict_t *ent, edict_t *other /* unused */,
-	   	edict_t *activator)
+		edict_t *activator)
 {
 	edict_t *trigger;
 	int i;
@@ -1315,7 +1315,7 @@ Use_Plat2(edict_t *ent, edict_t *other /* unused */,
 
 void
 plat2_activate(edict_t *ent, edict_t *other /* unused */,
-	   	edict_t *activator /* unused */)
+		edict_t *activator /* unused */)
 {
 	edict_t *trigger;
 
@@ -1562,8 +1562,7 @@ rotating_blocked(edict_t *self, edict_t *other)
 }
 
 void
-rotating_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
-	   	csurface_t *surf /* unused */)
+rotating_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */, const csurface_t *surf /* unused */)
 {
 	if (!self || !other)
 	{
@@ -1579,7 +1578,7 @@ rotating_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
 
 void
 rotating_use(edict_t *self, edict_t *other /* unused */,
-	   	edict_t *activator /* unused */)
+		edict_t *activator /* unused */)
 {
 	if (!self)
 	{
@@ -1836,8 +1835,8 @@ button_use(edict_t *self, edict_t *other /* unused */, edict_t *activator)
 }
 
 void
-button_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
-	   	csurface_t *surf /* unused */)
+button_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */,
+		const csurface_t *surf /* unused */)
 {
 	if (!self || !other)
 	{
@@ -1861,7 +1860,7 @@ button_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
 void
 button_killed(edict_t *self, edict_t *inflictor /* unused */,
 		edict_t *attacker, int damage /* unused */,
-		vec3_t point /* unused */)
+		const vec3_t point /* unused */)
 {
 	if (!self || !attacker)
 	{
@@ -2328,8 +2327,8 @@ door_use(edict_t *self, edict_t *other /* unused */, edict_t *activator)
 }
 
 void
-Touch_DoorTrigger(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
-	   	csurface_t *surf /* unused */)
+Touch_DoorTrigger(edict_t *self, edict_t *other, const cplane_t *plane /* unused */,
+		const csurface_t *surf /* unused */)
 {
 	if (!self || !other)
 	{
@@ -2533,7 +2532,7 @@ door_blocked(edict_t *self, edict_t *other)
 void
 door_killed(edict_t *self, edict_t *inflictor /* unused */,
 		edict_t *attacker, int damage /* unused */,
-		vec3_t point /* unused */)
+		const vec3_t point /* unused */)
 {
 	edict_t *ent;
 
@@ -2552,8 +2551,8 @@ door_killed(edict_t *self, edict_t *inflictor /* unused */,
 }
 
 void
-door_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */,
-		csurface_t *surf /* unused */)
+door_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */,
+		const csurface_t *surf /* unused */)
 {
 	if (!self || !other)
 	{
@@ -2710,7 +2709,7 @@ SP_func_door(edict_t *ent)
 
 void
 Door_Activate(edict_t *self, edict_t *other /* unused */,
-	   	edict_t *activator /* unused */)
+		edict_t *activator /* unused */)
 {
 	if (!self)
 	{
@@ -3356,7 +3355,7 @@ func_train_find(edict_t *self)
 
 void
 train_use(edict_t *self, edict_t *other /* unused */,
-	   	edict_t *activator)
+		edict_t *activator)
 {
 	if (!self || !activator)
 	{
@@ -3452,7 +3451,7 @@ SP_func_train(edict_t *self)
  */
 void
 trigger_elevator_use(edict_t *self, edict_t *other,
-	   	edict_t *activator /* unused */)
+		edict_t *activator /* unused */)
 {
 	edict_t *target;
 	edict_t *train;
@@ -3641,7 +3640,7 @@ SP_func_timer(edict_t *self)
  */
 void
 func_conveyor_use(edict_t *self, edict_t *other /* unused */,
-	   	edict_t *activator /* unused */)
+		edict_t *activator /* unused */)
 {
 	if (!self)
 	{
@@ -3708,7 +3707,7 @@ SP_func_conveyor(edict_t *self)
  */
 void
 door_secret_use(edict_t *self, edict_t *other /* unused */,
-	   	edict_t *activator /*unused */)
+		edict_t *activator /*unused */)
 {
 	if (!self)
 	{
@@ -3855,7 +3854,7 @@ door_secret_blocked(edict_t *self, edict_t *other)
 void
 door_secret_die(edict_t *self, edict_t *inflictor /* unused */,
 		edict_t *attacker, int damage /* unused */,
-		vec3_t point /* unused */)
+		const vec3_t point /* unused */)
 {
 	if (!self || !attacker)
 	{

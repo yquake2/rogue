@@ -120,7 +120,7 @@ gib_think(edict_t *self)
 }
 
 void
-gib_touch(edict_t *self, edict_t *other /* unused */, cplane_t *plane, csurface_t *surf /* unused */)
+gib_touch(edict_t *self, edict_t *other /* unused */, const cplane_t *plane, const csurface_t *surf /* unused */)
 {
 	vec3_t normal_angles, right;
 
@@ -154,7 +154,7 @@ gib_touch(edict_t *self, edict_t *other /* unused */, cplane_t *plane, csurface_
 }
 
 void
-gib_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */, int damage /* unused */, vec3_t point /* unused */)
+gib_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */, int damage /* unused */, const vec3_t point /* unused */)
 {
 	if (!self)
 	{
@@ -165,7 +165,7 @@ gib_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unu
 }
 
 void
-ThrowGib(edict_t *self, char *gibname, int damage, int type)
+ThrowGib(edict_t *self, const char *gibname, int damage, gibtype_t type)
 {
 	edict_t *gib;
 	vec3_t vd;
@@ -234,7 +234,7 @@ ThrowGib(edict_t *self, char *gibname, int damage, int type)
 }
 
 void
-ThrowHead(edict_t *self, char *gibname, int damage, int type)
+ThrowHead(edict_t *self, const char *gibname, int damage, gibtype_t type)
 {
 	vec3_t vd;
 	float vscale;
@@ -300,7 +300,7 @@ ThrowClientHead(edict_t *self, int damage)
 		return;
 	}
 
-	if (rand() & 1)
+	if (randk() & 1)
 	{
 		gibname = "models/objects/gibs/head2/tris.md2";
 		self->s.skinnum = 1; /* second skin is player */
@@ -346,7 +346,7 @@ ThrowClientHead(edict_t *self, int damage)
 }
 
 void
-debris_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */, int damage /* unused */, vec3_t point /* unused */)
+debris_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */, int damage /* unused */, const vec3_t point /* unused */)
 {
 	if (!self)
 	{
@@ -443,7 +443,7 @@ BecomeExplosion2(edict_t *self)
  *  this path_corner targeted touches it
  */
 void
-path_corner_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
+path_corner_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */, const csurface_t *surf /* unused */)
 {
 	vec3_t v;
 	edict_t *next;
@@ -545,7 +545,7 @@ SP_path_corner(edict_t *self)
  * hold is selected, it will stay here.
  */
 void
-point_combat_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
+point_combat_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */, const csurface_t *surf /* unused */)
 {
 	edict_t *activator;
 	vec3_t v;
@@ -889,7 +889,7 @@ SP_func_wall(edict_t *self)
  */
 
 void
-func_object_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf /* unused */)
+func_object_touch(edict_t *self, edict_t *other, const cplane_t *plane, const csurface_t *surf /* unused */)
 {
 	if (!self || !other)
 	{
@@ -1010,7 +1010,7 @@ SP_func_object(edict_t *self)
  */
 void
 func_explosive_explode(edict_t *self, edict_t *inflictor, edict_t *attacker,
-		int damage /* unused */, vec3_t point /* unused */)
+		int damage /* unused */, const vec3_t point /* unused */)
 {
 	vec3_t origin;
 	vec3_t chunkorigin;
@@ -1240,7 +1240,7 @@ SP_func_explosive(edict_t *self)
  */
 
 void
-barrel_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
+barrel_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */, const csurface_t *surf /* unused */)
 
 {
 	float ratio;
@@ -1354,7 +1354,7 @@ barrel_explode(edict_t *self)
 
 void
 barrel_delay(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker,
-		int damage /* unused */, vec3_t point /* unused */)
+		int damage /* unused */, const vec3_t point /* unused */)
 {
 	if (!self || !attacker)
 	{
@@ -1736,7 +1736,7 @@ SP_misc_banner(edict_t *ent)
 	ent->movetype = MOVETYPE_NONE;
 	ent->solid = SOLID_NOT;
 	ent->s.modelindex = gi.modelindex("models/objects/banner/tris.md2");
-	ent->s.frame = rand() % 16;
+	ent->s.frame = randk() % 16;
 	gi.linkentity(ent);
 
 	ent->think = misc_banner_think;
@@ -1750,7 +1750,7 @@ SP_misc_banner(edict_t *ent)
  */
 void
 misc_deadsoldier_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
-		int damage, vec3_t point /* unused */)
+		int damage, const vec3_t point /* unused */)
 {
 	int n;
 
@@ -1918,7 +1918,7 @@ SP_misc_bigviper(edict_t *ent)
  * "dmg"	how much boom should the bomb make?
  */
 void
-misc_viper_bomb_touch(edict_t *self, edict_t *other /* unused */, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
+misc_viper_bomb_touch(edict_t *self, edict_t *other /* unused */, const cplane_t *plane /* unused */, const csurface_t *surf /* unused */)
 {
 	if (!self)
 	{
@@ -2590,7 +2590,7 @@ SP_func_clock(edict_t *self)
 /* ================================================================================= */
 
 void
-teleporter_touch(edict_t *self, edict_t *other, cplane_t *plane /* unused */, csurface_t *surf /* unused */)
+teleporter_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused */, const csurface_t *surf /* unused */)
 {
 	edict_t *dest;
 	int i;

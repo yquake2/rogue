@@ -27,7 +27,7 @@ void carrier_die(edict_t *self,
 		edict_t *inflictor,
 		edict_t *attacker,
 		int damage,
-		vec3_t point);
+		const vec3_t point);
 void carrier_attack_gren(edict_t *self);
 void carrier_reattack_gren(edict_t *self);
 void carrier_start_spawn(edict_t *self);
@@ -1333,7 +1333,7 @@ carrier_dead(edict_t *self)
 
 void
 carrier_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* unused */,
-		int damage /* unused */, vec3_t point /* unused */)
+		int damage /* unused */, const vec3_t point /* unused */)
 {
 	if (!self)
 	{

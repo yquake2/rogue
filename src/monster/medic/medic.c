@@ -31,12 +31,10 @@
 #define MEDIC_MAX_HEAL_DISTANCE 400
 #define MEDIC_TRY_TIME 10.0
 
-qboolean visible(edict_t *self, edict_t *other);
 void M_SetEffects(edict_t *ent);
 qboolean FindTarget(edict_t *self);
 void HuntTarget(edict_t *self);
 void FoundTarget(edict_t *self);
-char *ED_NewString(char *string);
 void spawngrow_think(edict_t *self);
 void SpawnGrow_Spawn(vec3_t startpos, int size);
 void ED_CallSpawn(edict_t *ent);
@@ -883,7 +881,7 @@ mmove_t medic_move_death =
 void
 medic_die(edict_t *self, edict_t *inflictor /* unused */,
 		edict_t *attacker /* unused */, int damage,
-		vec3_t point /* unused */)
+		const vec3_t point /* unused */)
 {
 	int n;
 
