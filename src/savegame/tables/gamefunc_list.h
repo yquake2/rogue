@@ -719,8 +719,8 @@ static const fnlist_entry_t fnentries_mv_end[] =
 {
 	{"plat_hit_top", (byte *)plat_hit_top},
 	{"plat_hit_bottom", (byte *)plat_hit_bottom},
-	{"plat2_hit_top", (byte *)plat_hit_top},
-	{"plat2_hit_bottom", (byte *)plat_hit_bottom},
+	{"plat2_hit_top", (byte *)plat2_hit_top},
+	{"plat2_hit_bottom", (byte *)plat2_hit_bottom},
 	{"button_done", (byte *)button_done},
 	{"button_wait", (byte *)button_wait},
 	{"door_hit_top", (byte *)door_hit_top},
