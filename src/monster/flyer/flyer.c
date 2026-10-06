@@ -52,7 +52,7 @@ flyer_idle(edict_t *self)
 	gi.sound(self, CHAN_VOICE, sound_idle, 1, ATTN_IDLE, 0);
 }
 
-void
+static void
 flyer_pop_blades(edict_t *self)
 {
 	if (!self)
@@ -302,7 +302,7 @@ flyer_stand(edict_t *self)
 	}
 }
 
-void
+static void
 flyer_kamikaze_explode(edict_t *self)
 {
 	vec3_t dir;
@@ -386,45 +386,6 @@ mmove_t flyer_move_start = {
    	flyer_frames_start,
    	NULL
 };
-
-static mframe_t flyer_frames_stop[] = {
-	{ai_move, 0, NULL},
-	{ai_move, 0, NULL},
-	{ai_move, 0, NULL},
-	{ai_move, 0, NULL},
-	{ai_move, 0, NULL},
-	{ai_move, 0, NULL},
-	{ai_move, 0, flyer_nextmove}
-};
-
-mmove_t flyer_move_stop = {
-	FRAME_stop01,
-   	FRAME_stop07,
-   	flyer_frames_stop,
-   	NULL
-};
-
-void
-flyer_stop(edict_t *self)
-{
-	if (!self)
-	{
-		return;
-	}
-
-	self->monsterinfo.currentmove = &flyer_move_stop;
-}
-
-void
-flyer_start(edict_t *self)
-{
-	if (!self)
-	{
-		return;
-	}
-
-	self->monsterinfo.currentmove = &flyer_move_start;
-}
 
 static mframe_t flyer_frames_rollright[] = {
 	{ai_move, 0, NULL},
@@ -561,7 +522,7 @@ mmove_t flyer_move_bankleft = {
    	NULL
 };
 
-void
+static void
 flyer_fire(edict_t *self, int flash_number)
 {
 	vec3_t start;
@@ -602,7 +563,7 @@ flyer_fire(edict_t *self, int flash_number)
 	monster_fire_blaster(self, start, dir, 1, 1000, flash_number, effect);
 }
 
-void
+static void
 flyer_fireleft(edict_t *self)
 {
 	if (!self)
@@ -613,7 +574,7 @@ flyer_fireleft(edict_t *self)
 	flyer_fire(self, MZ2_FLYER_BLASTER_1);
 }
 
-void
+static void
 flyer_fireright(edict_t *self)
 {
 	if (!self)
@@ -679,7 +640,7 @@ mmove_t flyer_move_attack3 = {
    	flyer_run
 };
 
-void
+static void
 flyer_slash_left(edict_t *self)
 {
 	vec3_t aim;
@@ -694,7 +655,7 @@ flyer_slash_left(edict_t *self)
 	gi.sound(self, CHAN_WEAPON, sound_slash, 1, ATTN_NORM, 0);
 }
 
-void
+static void
 flyer_slash_right(edict_t *self)
 {
 	vec3_t aim;

@@ -441,7 +441,7 @@ infantry_sight(edict_t *self, edict_t *other /* unused */)
 	gi.sound(self, CHAN_BODY, sound_sight, 1, ATTN_NORM, 0);
 }
 
-void
+static void
 infantry_dead(edict_t *self)
 {
 	if (!self)
@@ -625,7 +625,7 @@ mmove_t infantry_move_duck = {
    	infantry_run
 };
 
-void
+static void
 infantry_cock_gun(edict_t *self)
 {
 	if (!self)
@@ -636,7 +636,7 @@ infantry_cock_gun(edict_t *self)
 	gi.sound(self, CHAN_WEAPON, sound_weapon_cock, 1, ATTN_NORM, 0);
 }
 
-void
+static void
 infantry_fire(edict_t *self)
 {
 	if (!self)
@@ -656,7 +656,7 @@ infantry_fire(edict_t *self)
 	}
 }
 
-void
+static void
 infantry_fire_prep(edict_t *self)
 {
 	int n;
@@ -695,7 +695,7 @@ mmove_t infantry_move_attack1 = {
    	infantry_run
 };
 
-void
+static void
 infantry_swing(edict_t *self)
 {
 	if (!self)
@@ -706,7 +706,7 @@ infantry_swing(edict_t *self)
 	gi.sound(self, CHAN_WEAPON, sound_punch_swing, 1, ATTN_NORM, 0);
 }
 
-void
+static void
 infantry_smack(edict_t *self)
 {
 	vec3_t aim;
@@ -762,7 +762,7 @@ infantry_attack(edict_t *self)
 	}
 }
 
-void
+static void
 infantry_jump_now(edict_t *self)
 {
 	vec3_t forward, up;
@@ -779,7 +779,7 @@ infantry_jump_now(edict_t *self)
 	VectorMA(self->velocity, 300, up, self->velocity);
 }
 
-void
+static void
 infantry_jump2_now(edict_t *self)
 {
 	vec3_t forward, up;
@@ -796,7 +796,7 @@ infantry_jump2_now(edict_t *self)
 	VectorMA(self->velocity, 400, up, self->velocity);
 }
 
-void
+static void
 infantry_jump_wait_land(edict_t *self)
 {
 	if (!self)
@@ -859,7 +859,7 @@ mmove_t infantry_move_jump2 = {
    	infantry_run
 };
 
-void
+static void
 infantry_jump(edict_t *self)
 {
 	if (!self)

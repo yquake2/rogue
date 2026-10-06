@@ -222,7 +222,7 @@ SV_Impact(edict_t *e1, trace_t *trace)
  * 2 = step / wall)
  */
 
-int
+static int
 ClipVelocity(vec3_t in, vec3_t normal, vec3_t out, float overbounce)
 {
 	float backoff;
@@ -265,7 +265,7 @@ ClipVelocity(vec3_t in, vec3_t normal, vec3_t out, float overbounce)
  * 2 = wall / step
  * 4 = dead stop
  */
-int
+static int
 SV_FlyMove(edict_t *ent, float time, int mask)
 {
 	edict_t *hit;

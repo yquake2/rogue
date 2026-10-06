@@ -39,7 +39,7 @@ static int  sound_step2;
 
 void berserk_fidget(edict_t *self);
 
-void
+static void
 berserk_footstep(edict_t *self)
 {
 	if (!g_monsterfootsteps->value)
@@ -241,7 +241,7 @@ berserk_run(edict_t *self)
 	}
 }
 
-void
+static void
 berserk_attack_spike(edict_t *self)
 {
 	if (!self)
@@ -253,7 +253,7 @@ berserk_attack_spike(edict_t *self)
 	fire_hit(self, aim, (15 + (randk() % 6)), 400);
 }
 
-void
+static void
 berserk_swing(edict_t *self)
 {
 	if (!self)
@@ -283,7 +283,7 @@ mmove_t berserk_move_attack_spike =
 	berserk_run
 };
 
-void
+static void
 berserk_attack_club(edict_t *self)
 {
 	vec3_t aim;
@@ -320,7 +320,7 @@ mmove_t berserk_move_attack_club =
 	berserk_run
 };
 
-void
+static void
 berserk_strike(edict_t *self)
 {
 }
@@ -455,7 +455,7 @@ berserk_pain(edict_t *self, edict_t *other /* unused */,
 	}
 }
 
-void
+static void
 berserk_dead(edict_t *self)
 {
 	if (!self)
@@ -566,7 +566,7 @@ berserk_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /*
 	}
 }
 
-void
+static void
 berserk_jump_now(edict_t *self)
 {
 	vec3_t forward, up;
@@ -583,7 +583,7 @@ berserk_jump_now(edict_t *self)
 	VectorMA(self->velocity, 300, up, self->velocity);
 }
 
-void
+static void
 berserk_jump2_now(edict_t *self)
 {
 	vec3_t forward,up;
@@ -600,7 +600,7 @@ berserk_jump2_now(edict_t *self)
 	VectorMA(self->velocity, 400, up, self->velocity);
 }
 
-void
+static void
 berserk_jump_wait_land(edict_t *self)
 {
 	if (!self)
@@ -661,7 +661,7 @@ mmove_t berserk_move_jump2 = {
 	berserk_run
 };
 
-void
+static void
 berserk_jump(edict_t *self)
 {
 	if (!self || !self->enemy)

@@ -132,7 +132,7 @@ realcheck:
 	return true;
 }
 
-qboolean
+static qboolean
 IsBadAhead(edict_t *self, edict_t *bad, vec3_t move)
 {
 	vec3_t dir;
@@ -174,7 +174,7 @@ IsBadAhead(edict_t *self, edict_t *bad, vec3_t move)
  * possible, no move is done, false is returned, and
  * pr_global_struct->trace_normal is set to the normal of the blocking wall
  */
-qboolean
+static qboolean
 SV_movestep(edict_t *ent, vec3_t move, qboolean relink)
 {
 	float dz;
@@ -565,7 +565,7 @@ M_ChangeYaw(edict_t *ent)
  * Turns to the movement direction, and
  * walks the current distance if facing it.
  */
-qboolean
+static qboolean
 SV_StepDirection(edict_t *ent, float yaw, float dist)
 {
 	vec3_t move, oldorigin;
@@ -621,7 +621,7 @@ SV_StepDirection(edict_t *ent, float yaw, float dist)
 	return false;
 }
 
-void
+static void
 SV_FixCheckBottom(edict_t *ent)
 {
 	if (!ent)
@@ -632,7 +632,7 @@ SV_FixCheckBottom(edict_t *ent)
 	ent->flags |= FL_PARTIALGROUND;
 }
 
-void
+static void
 SV_NewChaseDir(edict_t *actor, edict_t *enemy, float dist)
 {
 	float deltax, deltay;
@@ -767,7 +767,7 @@ SV_NewChaseDir(edict_t *actor, edict_t *enemy, float dist)
 	}
 }
 
-qboolean
+static qboolean
 SV_CloseEnough(edict_t *ent, edict_t *goal, float dist)
 {
 	int i;

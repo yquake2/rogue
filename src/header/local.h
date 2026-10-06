@@ -1425,6 +1425,7 @@ int DBall_CheckDMRules(void);
 #if DEBUG
 #include "../savegame/savegame.h"
 #include "../savegame/tables/gamefunc_decs.h"
+#include "../savegame/tables/spawnfunc_decs.h"
 #endif
 
 #endif /* ROGUE_LOCAL_H */

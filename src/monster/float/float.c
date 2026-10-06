@@ -45,7 +45,7 @@ floater_idle(edict_t *self)
 	gi.sound(self, CHAN_VOICE, sound_idle, 1, ATTN_IDLE, 0);
 }
 
-void
+static void
 floater_fire_blaster(edict_t *self)
 {
 	vec3_t start;

@@ -54,13 +54,13 @@ typedef struct
 ipfilter_t ipfilters[MAX_IPFILTERS];
 int numipfilters;
 
-void
+static void
 Svcmd_Test_f(void)
 {
 	gi.cprintf(NULL, PRINT_HIGH, "Svcmd_Test_f()\n");
 }
 
-qboolean
+static qboolean
 StringToFilter(char *s, ipfilter_t *f)
 {
 	char num[128];
@@ -165,7 +165,7 @@ SV_FilterPacket(char *from)
 	return (filterban->value == 0);
 }
 
-void
+static void
 SVCmd_AddIP_f(void)
 {
 	int i;
@@ -201,7 +201,7 @@ SVCmd_AddIP_f(void)
 	}
 }
 
-void
+static void
 SVCmd_RemoveIP_f(void)
 {
 	ipfilter_t f;
@@ -237,7 +237,7 @@ SVCmd_RemoveIP_f(void)
 	gi.cprintf(NULL, PRINT_HIGH, "Didn't find %s.\n", gi.argv(2));
 }
 
-void
+static void
 SVCmd_ListIP_f(void)
 {
 	int i;
@@ -253,7 +253,7 @@ SVCmd_ListIP_f(void)
 	}
 }
 
-void
+static void
 SVCmd_WriteIP_f(void)
 {
 	FILE *f;
