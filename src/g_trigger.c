@@ -52,7 +52,7 @@ multi_wait(edict_t *ent)
 	ent->nextthink = 0;
 }
 
-void
+static void
 multi_trigger(edict_t *ent)
 {
 	if (!ent)

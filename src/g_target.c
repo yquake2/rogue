@@ -862,7 +862,7 @@ target_laser_think(edict_t *self)
 	self->nextthink = level.time + FRAMETIME;
 }
 
-void
+static void
 target_laser_on(edict_t *self)
 {
 	if (!self)
@@ -880,7 +880,7 @@ target_laser_on(edict_t *self)
 	target_laser_think(self);
 }
 
-void
+static void
 target_laser_off(edict_t *self)
 {
 	if (!self)

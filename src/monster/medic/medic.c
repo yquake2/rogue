@@ -106,7 +106,7 @@ vec3_t reinforcement_position[] = {
 	{0, -80, 0}
 };
 
-void
+static void
 medic_footstep(edict_t *self)
 {
 	if (!g_monsterfootsteps->value)
@@ -129,7 +129,7 @@ medic_footstep(edict_t *self)
 	}
 }
 
-void
+static void
 cleanupHeal(edict_t *self, qboolean change_frame)
 {
 	if (!self)
@@ -152,7 +152,7 @@ cleanupHeal(edict_t *self, qboolean change_frame)
 	}
 }
 
-void
+static void
 abortHeal(edict_t *self, qboolean change_frame, qboolean gib, qboolean mark)
 {
 	int hurt;
@@ -211,34 +211,7 @@ abortHeal(edict_t *self, qboolean change_frame, qboolean gib, qboolean mark)
 	self->monsterinfo.medicTries = 0;
 }
 
-qboolean
-canReach(edict_t *self, edict_t *other)
-{
-	vec3_t spot1;
-	vec3_t spot2;
-	trace_t trace;
-
-	if (!self || !other)
-	{
-		return false;
-	}
-
-	VectorCopy(self->s.origin, spot1);
-	spot1[2] += self->viewheight;
-	VectorCopy(other->s.origin, spot2);
-	spot2[2] += other->viewheight;
-	trace = gi.trace(spot1, vec3_origin, vec3_origin, spot2,
-			self, MASK_SHOT | MASK_WATER);
-
-	if ((trace.fraction == 1.0) || (trace.ent == other))
-	{
-		return true;
-	}
-
-	return false;
-}
-
-edict_t *
+static edict_t *
 medic_FindDeadMonster(edict_t *self)
 {
 	float radius;
@@ -758,7 +731,7 @@ medic_pain(edict_t *self, edict_t *other /* unused */,
 	}
 }
 
-void
+static void
 medic_fire_blaster(edict_t *self)
 {
 	vec3_t start;
@@ -821,7 +794,7 @@ medic_fire_blaster(edict_t *self)
 	}
 }
 
-void
+static void
 medic_dead(edict_t *self)
 {
 	if (!self)
@@ -988,7 +961,7 @@ mmove_t medic_move_attackHyperBlaster =
    	medic_run
 };
 
-void
+static void
 medic_continue(edict_t *self)
 {
 	if (!self)
@@ -1029,7 +1002,7 @@ mmove_t medic_move_attackBlaster = {
    	medic_run
 };
 
-void
+static void
 medic_hook_launch(edict_t *self)
 {
 	if (!self)
@@ -1061,7 +1034,7 @@ static vec3_t medic_cable_offsets[] = {
 	{32.7, -19.7, 10.4}
 };
 
-void
+static void
 medic_cable_attack(edict_t *self)
 {
 	vec3_t offset, start, end, f, r;
@@ -1250,7 +1223,7 @@ medic_cable_attack(edict_t *self)
 	gi.multicast(self->s.origin, MULTICAST_PVS);
 }
 
-void
+static void
 medic_hook_retract(edict_t *self)
 {
 	if (!self)
@@ -1327,7 +1300,7 @@ mmove_t medic_move_attackCable =
    	medic_run
 };
 
-void
+static void
 medic_start_spawn(edict_t *self)
 {
 	if (!self)
@@ -1339,7 +1312,7 @@ medic_start_spawn(edict_t *self)
 	self->monsterinfo.nextframe = FRAME_attack48;
 }
 
-void
+static void
 medic_determine_spawn(edict_t *self)
 {
 	vec3_t f, r, offset, startpoint, spawnpoint;
@@ -1467,7 +1440,7 @@ medic_determine_spawn(edict_t *self)
 	}
 }
 
-void
+static void
 medic_spawngrows(edict_t *self)
 {
 	vec3_t f, r, offset, startpoint, spawnpoint;
@@ -1546,7 +1519,7 @@ medic_spawngrows(edict_t *self)
 	}
 }
 
-void
+static void
 medic_finish_spawn(edict_t *self)
 {
 	edict_t *ent;
@@ -1826,7 +1799,7 @@ medic_checkattack(edict_t *self)
 	return M_CheckAttack(self);
 }
 
-void
+static void
 MedicCommanderCache(void)
 {
 	edict_t *newEnt;

@@ -432,7 +432,7 @@ DBall_GoalTouch(edict_t *self, edict_t *other, const cplane_t *plane /* unused *
 	G_UseTargets(self, other);
 }
 
-edict_t *
+static edict_t *
 PickBallStart(edict_t *ent)
 {
 	int which, current;

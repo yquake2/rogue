@@ -102,7 +102,7 @@ SubstituteItemAllowed(const gitem_t *it)
 	return true;
 }
 
-const char *
+static const char *
 FindSubstituteItem(edict_t *ent)
 {
 	int i;

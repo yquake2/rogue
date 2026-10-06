@@ -104,7 +104,7 @@ widow_sight(edict_t *self, edict_t *other /* unused */)
 	self->monsterinfo.pausetime = 0;
 }
 
-float
+static float
 target_angle(edict_t *self)
 {
 	vec3_t target;
@@ -128,7 +128,7 @@ target_angle(edict_t *self)
 	return enemy_yaw;
 }
 
-int
+static int
 WidowTorso(edict_t *self)
 {
 	float enemy_yaw;
@@ -230,7 +230,7 @@ WidowTorso(edict_t *self)
 	return 1;
 }
 
-void
+static void
 WidowBlaster(edict_t *self)
 {
 	vec3_t forward, right, target, vec, targ_angles;
@@ -357,7 +357,7 @@ WidowBlaster(edict_t *self)
 	}
 }
 
-void
+static void
 WidowSpawn(edict_t *self)
 {
 	vec3_t f, r, u, offset, startpoint, spawnpoint;
@@ -419,7 +419,7 @@ widow_spawn_check(edict_t *self)
 	WidowSpawn(self);
 }
 
-void
+static void
 widow_ready_spawn(edict_t *self)
 {
 	vec3_t f, r, u, offset, startpoint, spawnpoint;
@@ -446,7 +446,7 @@ widow_ready_spawn(edict_t *self)
 	}
 }
 
-void
+static void
 widow_step(edict_t *self)
 {
 	gi.sound(self, CHAN_BODY, gi.soundindex("widow/bwstep3.wav"), 1, ATTN_NORM, 0);
@@ -520,7 +520,7 @@ mmove_t widow_move_run = {
    	NULL
 };
 
-void
+static void
 widow_stepshoot(edict_t *self)
 {
 	if (!self)
@@ -672,7 +672,7 @@ mmove_t widow_move_attack_post_blaster_l = {
    	NULL
 };
 
-void
+static void
 WidowRail(edict_t *self)
 {
 	vec3_t start;
@@ -712,7 +712,7 @@ WidowRail(edict_t *self)
 	self->timestamp = level.time + RAIL_TIME;
 }
 
-void
+static void
 WidowSaveLoc(edict_t *self)
 {
 	if (!self)
@@ -724,7 +724,7 @@ WidowSaveLoc(edict_t *self)
 	self->pos1[2] += self->enemy->viewheight;
 }
 
-void
+static void
 widow_start_rail(edict_t *self)
 {
 	if (!self)
@@ -735,7 +735,7 @@ widow_start_rail(edict_t *self)
 	self->monsterinfo.aiflags |= AI_MANUAL_STEERING;
 }
 
-void
+static void
 widow_rail_done(edict_t *self)
 {
 	if (!self)
@@ -928,7 +928,7 @@ mmove_t widow_move_pain_light = {
    	widow_run
 };
 
-void
+static void
 spawn_out_start(edict_t *self)
 {
 	vec3_t startpoint, f, r, u;
@@ -959,7 +959,7 @@ spawn_out_start(edict_t *self)
 	gi.sound(self, CHAN_VOICE, gi.soundindex("misc/bwidowbeamout.wav"), 1, ATTN_NORM, 0);
 }
 
-void
+static void
 spawn_out_do(edict_t *self)
 {
 	vec3_t startpoint, f, r, u;
@@ -1035,7 +1035,7 @@ mmove_t widow_move_death = {
    	NULL
 };
 
-void
+static void
 widow_attack_kick(edict_t *self)
 {
 	vec3_t aim;
@@ -1401,7 +1401,7 @@ widow_melee(edict_t *self)
 	self->monsterinfo.currentmove = &widow_move_attack_kick;
 }
 
-void
+static void
 WidowGoinQuad(edict_t *self, float framenum)
 {
 	if (!self)
@@ -1413,7 +1413,7 @@ WidowGoinQuad(edict_t *self, float framenum)
 	widow_damage_multiplier = 4;
 }
 
-void
+static void
 WidowDouble(edict_t *self, float framenum)
 {
 	if (!self)
@@ -1425,7 +1425,7 @@ WidowDouble(edict_t *self, float framenum)
 	widow_damage_multiplier = 2;
 }
 
-void
+static void
 WidowPent(edict_t *self, float framenum)
 {
 	if (!self)
@@ -1436,7 +1436,7 @@ WidowPent(edict_t *self, float framenum)
 	self->monsterinfo.invincible_framenum = framenum;
 }
 
-void
+static void
 WidowPowerArmor(edict_t *self)
 {
 	if (!self)
@@ -1453,7 +1453,7 @@ WidowPowerArmor(edict_t *self)
 	}
 }
 
-void
+static void
 WidowRespondPowerup(edict_t *self, edict_t *other)
 {
 	if (!self || !other)
@@ -1799,7 +1799,7 @@ WidowCalcSlots(edict_t *self)
 	}
 }
 
-void
+static void
 WidowPrecache(void)
 {
 	/* cache in all of the stalker stuff, widow stuff, spawngro stuff, gibs */

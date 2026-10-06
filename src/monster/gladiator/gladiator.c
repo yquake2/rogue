@@ -98,7 +98,7 @@ gladiator_search(edict_t *self)
 	gi.sound(self, CHAN_VOICE, sound_search, 1, ATTN_NORM, 0);
 }
 
-void
+static void
 gladiator_cleaver_swing(edict_t *self)
 {
 	if (!self)
@@ -211,7 +211,7 @@ gladiator_run(edict_t *self)
 	}
 }
 
-void
+static void
 GaldiatorMelee(edict_t *self)
 {
 	vec3_t aim;
@@ -272,7 +272,7 @@ gladiator_melee(edict_t *self)
 	self->monsterinfo.currentmove = &gladiator_move_attack_melee;
 }
 
-void
+static void
 GladiatorGun(edict_t *self)
 {
 	vec3_t start;
@@ -434,7 +434,7 @@ gladiator_pain(edict_t *self, edict_t *other /* unused */,
 	}
 }
 
-void
+static void
 gladiator_dead(edict_t *self)
 {
 	if (!self)

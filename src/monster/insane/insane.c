@@ -48,7 +48,7 @@ void insane_checkdown(edict_t *self);
 void insane_checkup(edict_t *self);
 void insane_onground(edict_t *self);
 
-void
+static void
 insane_footstep(edict_t *self)
 {
 	if (!g_monsterfootsteps->value)
@@ -85,7 +85,7 @@ insane_footstep(edict_t *self)
 }
 
 
-void
+static void
 insane_fist(edict_t *self)
 {
 	if (!self)
@@ -96,7 +96,7 @@ insane_fist(edict_t *self)
 	gi.sound(self, CHAN_VOICE, sound_fist, 1, ATTN_IDLE, 0);
 }
 
-void
+static void
 insane_shake(edict_t *self)
 {
 	if (!self)
@@ -107,7 +107,7 @@ insane_shake(edict_t *self)
 	gi.sound(self, CHAN_VOICE, sound_shake, 1, ATTN_IDLE, 0);
 }
 
-void
+static void
 insane_moan(edict_t *self)
 {
 	if (!self)
@@ -124,7 +124,7 @@ insane_moan(edict_t *self)
 	gi.sound(self, CHAN_VOICE, sound_moan, 1, ATTN_IDLE, 0);
 }
 
-void
+static void
 insane_scream(edict_t *self)
 {
 	if (!self)

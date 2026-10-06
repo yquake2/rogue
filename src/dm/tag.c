@@ -29,7 +29,7 @@ Tag_PlayerDeath(edict_t *targ, edict_t *inflictor /* unused */, edict_t *attacke
 	}
 }
 
-void
+static void
 Tag_KillItBonus(edict_t *self)
 {
 	edict_t *armor;
@@ -62,7 +62,7 @@ Tag_KillItBonus(edict_t *self)
 	}
 }
 
-void
+static void
 Tag_PlayerDisconnect(edict_t *self)
 {
 	if (self && (tag_owner == self))
@@ -73,7 +73,7 @@ Tag_PlayerDisconnect(edict_t *self)
 	}
 }
 
-void
+static void
 Tag_Score(edict_t *attacker, edict_t *victim, int scoreChange)
 {
 	int mod;
@@ -243,7 +243,7 @@ Tag_DropToken(edict_t *ent, gitem_t *item)
 	}
 }
 
-void
+static void
 Tag_PlayerEffects(edict_t *ent)
 {
 	if (!ent)
@@ -257,7 +257,7 @@ Tag_PlayerEffects(edict_t *ent)
 	}
 }
 
-void
+static void
 Tag_DogTag(const edict_t *ent, const edict_t *killer /* unused */, char **pic)
 {
 	if (!ent || !pic)
@@ -271,7 +271,7 @@ Tag_DogTag(const edict_t *ent, const edict_t *killer /* unused */, char **pic)
 	}
 }
 
-int
+static int
 Tag_ChangeDamage(edict_t *targ, edict_t *attacker, int damage, int mod)
 {
 	if (!targ || !attacker)
@@ -287,7 +287,7 @@ Tag_ChangeDamage(edict_t *targ, edict_t *attacker, int damage, int mod)
 	return damage;
 }
 
-void
+static void
 Tag_GameInit(void)
 {
 	it_token = FindItem("Tag Token");
@@ -311,7 +311,7 @@ Tag_SpawnToken(void)
 	SP_dm_tag_token(e);
 }
 
-void
+static void
 Tag_PostInitSetup(void)
 {
 	tag_owner = NULL;

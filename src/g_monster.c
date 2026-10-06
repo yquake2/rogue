@@ -590,7 +590,7 @@ M_SetEffects(edict_t *ent)
 	}
 }
 
-void
+static void
 M_MoveFrame(edict_t *self)
 {
 	mmove_t *move;
@@ -806,7 +806,7 @@ monster_triggered_spawn_use(edict_t *self, edict_t *other /* unused */, edict_t 
 	self->use = monster_use;
 }
 
-void
+static void
 monster_triggered_start(edict_t *self)
 {
 	if (!self)
@@ -1249,7 +1249,7 @@ stationarymonster_triggered_spawn_use(edict_t *self, edict_t *other /* unused */
 	self->use = monster_use;
 }
 
-void
+static void
 stationarymonster_triggered_start(edict_t *self)
 {
 	if (!self)

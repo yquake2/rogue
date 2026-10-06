@@ -45,7 +45,7 @@ void gunner_refire_chain(edict_t *self);
 
 void gunner_stand(edict_t *self);
 
-void
+static void
 gunner_footstep(edict_t *self)
 {
 	if (!g_monsterfootsteps->value)
@@ -69,7 +69,7 @@ gunner_footstep(edict_t *self)
 }
 
 
-void
+static void
 gunner_idlesound(edict_t *self)
 {
 	if (!self)
@@ -166,7 +166,7 @@ mmove_t gunner_move_fidget =
    	gunner_stand
 };
 
-void
+static void
 gunner_fidget(edict_t *self)
 {
 	if (!self)
@@ -318,34 +318,6 @@ gunner_run(edict_t *self)
 	}
 }
 
-static mframe_t gunner_frames_runandshoot[] = {
-	{ai_run, 32, NULL},
-	{ai_run, 15, gunner_footstep},
-	{ai_run, 10, NULL},
-	{ai_run, 18, NULL},
-	{ai_run, 8, gunner_footstep},
-	{ai_run, 20, NULL}
-};
-
-mmove_t gunner_move_runandshoot =
-{
-	FRAME_runs01,
-	FRAME_runs06,
-   	gunner_frames_runandshoot,
-	NULL
-};
-
-void
-gunner_runandshoot(edict_t *self)
-{
-	if (!self)
-	{
-		return;
-	}
-
-	self->monsterinfo.currentmove = &gunner_move_runandshoot;
-}
-
 static mframe_t gunner_frames_pain3[] = {
 	{ai_move, -3, NULL},
 	{ai_move, 1, NULL},
@@ -473,7 +445,7 @@ gunner_pain(edict_t *self, edict_t *other /* unused */,
 	}
 }
 
-void
+static void
 gunner_dead(edict_t *self)
 {
 	if (!self)
@@ -558,7 +530,7 @@ gunner_die(edict_t *self, edict_t *inflictor /* unused */,
 	self->monsterinfo.currentmove = &gunner_move_death;
 }
 
-void
+static void
 gunner_duck_down(edict_t *self)
 {
 	if (!self)
@@ -614,7 +586,7 @@ mmove_t gunner_move_duck =
 };
 
 /* gunner dodge moved below so I know about attack sequences */
-void
+static void
 gunner_opengun(edict_t *self)
 {
 	if (!self)
@@ -661,7 +633,7 @@ GunnerFire(edict_t *self)
 			DEFAULT_BULLET_VSPREAD, flash_number);
 }
 
-qboolean
+static qboolean
 gunner_grenade_check(edict_t *self)
 {
 	vec3_t start;
@@ -885,24 +857,6 @@ mmove_t gunner_move_endfire_chain =
 	gunner_run
 };
 
-void
-gunner_blind_check(edict_t *self)
-{
-	vec3_t aim;
-
-	if (!self)
-	{
-		return;
-	}
-
-	if (self->monsterinfo.aiflags & AI_MANUAL_STEERING)
-	{
-		VectorSubtract(self->monsterinfo.blind_fire_target, self->s.origin,
-				aim);
-		self->ideal_yaw = vectoyaw(aim);
-	}
-}
-
 static mframe_t gunner_frames_attack_grenade[] = {
 	{ai_charge, 0, NULL},
 	{ai_charge, 0, NULL},
@@ -1047,7 +1001,7 @@ gunner_refire_chain(edict_t *self)
 	self->monsterinfo.currentmove = &gunner_move_endfire_chain;
 }
 
-void
+static void
 gunner_jump_now(edict_t *self)
 {
 	vec3_t forward, up;
@@ -1064,7 +1018,7 @@ gunner_jump_now(edict_t *self)
 	VectorMA(self->velocity, 300, up, self->velocity);
 }
 
-void
+static void
 gunner_jump2_now(edict_t *self)
 {
 	vec3_t forward, up;
@@ -1081,7 +1035,7 @@ gunner_jump2_now(edict_t *self)
 	VectorMA(self->velocity, 400, up, self->velocity);
 }
 
-void
+static void
 gunner_jump_wait_land(edict_t *self)
 {
 	if (!self)
@@ -1144,7 +1098,7 @@ mmove_t gunner_move_jump2 = {
    	gunner_run
 };
 
-void
+static void
 gunner_jump(edict_t *self)
 {
 	if (!self)

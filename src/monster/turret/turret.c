@@ -459,7 +459,7 @@ turret_run(edict_t *self)
 	}
 }
 
-void
+static void
 TurretFire(edict_t *self)
 {
 	vec3_t forward;
@@ -582,7 +582,7 @@ TurretFire(edict_t *self)
 	}
 }
 
-void
+static void
 TurretFireBlind(edict_t *self)
 {
 	vec3_t forward;
@@ -795,7 +795,7 @@ turret_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* 
 	G_FreeEdict(self);
 }
 
-void
+static void
 turret_wall_spawn(edict_t *turret)
 {
 	edict_t *ent;

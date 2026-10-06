@@ -26,7 +26,7 @@ static uint64_t carry;
 static uint64_t xs;
 static uint64_t cng;
 
-uint64_t
+static uint64_t
 B64MWC(void)
 {
 	uint64_t t, x;

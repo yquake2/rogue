@@ -308,7 +308,7 @@ AngleMove_Begin(edict_t *ent)
 	}
 }
 
-void
+static void
 AngleMove_Calc(edict_t *ent, void (*func)(edict_t *))
 {
 	if (!ent || !func)
@@ -343,7 +343,7 @@ AngleMove_Calc(edict_t *ent, void (*func)(edict_t *))
  * change the speed for the next frame
  */
 
-void
+static void
 plat_CalcAcceleratedMove(moveinfo_t *moveinfo)
 {
 	float accel_dist;
@@ -377,7 +377,7 @@ plat_CalcAcceleratedMove(moveinfo_t *moveinfo)
 	moveinfo->decel_distance = decel_dist;
 }
 
-void
+static void
 plat_Accelerate(moveinfo_t *moveinfo)
 {
 	if (!moveinfo)
@@ -572,7 +572,7 @@ plat_go_down(edict_t *ent)
 	Move_Calc(ent, ent->moveinfo.end_origin, plat_hit_bottom);
 }
 
-void
+static void
 plat_go_up(edict_t *ent)
 {
 	if (!ent)
@@ -742,7 +742,7 @@ Touch_Plat_Center(edict_t *ent, edict_t *other, const cplane_t *plane /* unused 
 	}
 }
 
-edict_t *
+static edict_t *
 plat_spawn_inside_trigger(edict_t *ent)
 {
 	edict_t *trigger;
@@ -1122,7 +1122,7 @@ plat2_go_up(edict_t *ent)
 	Move_Calc(ent, ent->moveinfo.start_origin, plat2_hit_top);
 }
 
-void
+static void
 plat2_operate(edict_t *ent, edict_t *other)
 {
 	int otherState;
@@ -1802,7 +1802,7 @@ button_wait(edict_t *self)
 	}
 }
 
-void
+static void
 button_fire(edict_t *self)
 {
 	if (!self)
@@ -1995,7 +1995,7 @@ SP_func_button(edict_t *ent)
  *    4)	heavy
  */
 
-void
+static void
 door_use_areaportals(edict_t *self, qboolean open)
 {
 	edict_t *t = NULL;
@@ -2117,7 +2117,7 @@ door_go_down(edict_t *self)
 	}
 }
 
-void
+static void
 door_go_up(edict_t *self, edict_t *activator)
 {
 	if (!self)
@@ -3299,7 +3299,7 @@ again:
 	}
 }
 
-void
+static void
 train_resume(edict_t *self)
 {
 	edict_t *ent;

@@ -24,7 +24,7 @@ static int sound_thud;
 
 void mutant_walk(edict_t *self);
 
-void
+static void
 mutant_step(edict_t *self)
 {
 	int n;
@@ -70,17 +70,6 @@ mutant_search(edict_t *self)
 	}
 
 	gi.sound(self, CHAN_VOICE, sound_search, 1, ATTN_NORM, 0);
-}
-
-void
-mutant_swing(edict_t *self)
-{
-	if (!self)
-	{
-		return;
-	}
-
-	gi.sound(self, CHAN_VOICE, sound_swing, 1, ATTN_NORM, 0);
 }
 
 static mframe_t mutant_frames_stand[] = {
@@ -160,7 +149,7 @@ mutant_stand(edict_t *self)
 	self->monsterinfo.currentmove = &mutant_move_stand;
 }
 
-void
+static void
 mutant_idle_loop(edict_t *self)
 {
 	if (!self)
@@ -231,7 +220,7 @@ mmove_t mutant_move_walk = {
    	NULL
 };
 
-void
+static void
 mutant_walk_loop(edict_t *self)
 {
 	if (!self)
@@ -301,7 +290,7 @@ mutant_run(edict_t *self)
 	}
 }
 
-void
+static void
 mutant_hit_left(edict_t *self)
 {
 	vec3_t aim;
@@ -323,7 +312,7 @@ mutant_hit_left(edict_t *self)
 	}
 }
 
-void
+static void
 mutant_hit_right(edict_t *self)
 {
 	vec3_t aim;
@@ -345,7 +334,7 @@ mutant_hit_right(edict_t *self)
 	}
 }
 
-void
+static void
 mutant_check_refire(edict_t *self)
 {
 	if (!self)
@@ -438,7 +427,7 @@ mutant_jump_touch(edict_t *self, edict_t *other, const cplane_t *plane /* unused
 	self->touch = NULL;
 }
 
-void
+static void
 mutant_jump_takeoff(edict_t *self)
 {
 	vec3_t forward;
@@ -459,7 +448,7 @@ mutant_jump_takeoff(edict_t *self)
 	self->touch = mutant_jump_touch;
 }
 
-void
+static void
 mutant_check_landing(edict_t *self)
 {
 	if (!self)
@@ -514,7 +503,7 @@ mutant_jump(edict_t *self)
 	self->monsterinfo.currentmove = &mutant_move_jump;
 }
 
-qboolean
+static qboolean
 mutant_check_melee(edict_t *self)
 {
 	if (!self)
@@ -530,7 +519,7 @@ mutant_check_melee(edict_t *self)
 	return false;
 }
 
-qboolean
+static qboolean
 mutant_check_jump(edict_t *self)
 {
 	vec3_t v;
@@ -698,7 +687,7 @@ mutant_pain(edict_t *self, edict_t *other /* unused */, float kick, int damage)
 	}
 }
 
-void
+static void
 mutant_dead(edict_t *self)
 {
 	if (!self)
@@ -804,7 +793,7 @@ mutant_die(edict_t *self, edict_t *inflictor /* unused */, edict_t *attacker /* 
 	}
 }
 
-void
+static void
 mutant_jump_down(edict_t *self)
 {
 	vec3_t forward, up;
@@ -819,7 +808,7 @@ mutant_jump_down(edict_t *self)
 	VectorMA(self->velocity, 300, up, self->velocity);
 }
 
-void
+static void
 mutant_jump_up(edict_t *self)
 {
 	vec3_t forward, up;
@@ -834,7 +823,7 @@ mutant_jump_up(edict_t *self)
 	VectorMA(self->velocity, 450, up, self->velocity);
 }
 
-void
+static void
 mutant_jump_wait_land(edict_t *self)
 {
 	if (self->groundentity == NULL)
@@ -877,7 +866,7 @@ mmove_t mutant_move_jump_down = {
 	mutant_run
 };
 
-void
+static void
 mutant_jump_updown(edict_t *self)
 {
 	if (!self || !self->enemy)
