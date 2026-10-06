@@ -864,6 +864,7 @@ turret_wall_spawn(edict_t *turret)
 	gi.linkentity(ent);
 }
 
+/* ->moveinfo.endfunc = turret_wake; */
 void
 turret_wake(edict_t *self)
 {
